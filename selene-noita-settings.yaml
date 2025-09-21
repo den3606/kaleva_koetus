@@ -1,0 +1,116 @@
+# settings.lua
+base: lua51
+globals:
+  mod_settings_version:
+    property: "override-fields"
+  mod_settings:
+    property: "override-fields"
+  MOD_SETTING_SCOPE_RUNTIME:
+    property: "read-only"
+  MOD_SETTING_SCOPE_NEW_GAME:
+    property: "read-only"
+  ModSettingGetNextValue:
+    args:
+      - type: string
+        required: true
+  ModSettingsUpdate:
+    args:
+      - type: string
+        required: true
+  ModSettingsGuiCount:
+    args: []
+  ModSettingsGui:
+    args:
+      - type: table
+        required: true
+      - type: any
+        required: true
+  GuiButton:
+    args:
+      - type: table
+        required: true
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: string
+        required: true
+      - type: number
+        required: false
+      - type: string
+        required: false
+      - type: bool
+        required: false
+  mod_setting_get_id:
+    args:
+      - type: string
+        required: true
+      - type: table
+        required: true
+  mod_settings_get_version:
+    args:
+      - type: string
+        required: true
+  mod_settings_update:
+    args:
+      - type: string
+        required: true
+      - type: table
+        required: true
+      - type: string
+        required: true
+  mod_settings_gui_count:
+    args:
+      - type: string
+        required: true
+      - type: table
+        required: true
+  mod_settings_gui:
+    args:
+      - type: string
+        required: true
+      - type: table
+        required: true
+      - type: table
+        required: true
+      - type: bool
+        required: true
+  ## coroutines.lua
+  async:
+    args:
+      - type: function
+        required: true
+  async_loop:
+    args:
+      - type: function
+        required: true
+  wait:
+    args:
+      - type: number
+        required: true
+  wake_up_waiting_threads:
+    args:
+      - type: number
+        required: true
+  wait_signal:
+    args:
+      - type: string
+        required: true
+  wait_signal_callback:
+    args:
+      - type: string
+        required: true
+      - type: function
+        required: true
+  signal:
+    args:
+      - type: string
+        required: true
+  signal_2params:
+    args:
+      - type: string
+        required: true
+      - type: any
+        required: true
+      - type: any
+        required: true
