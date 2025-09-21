@@ -1,3 +1,6 @@
 {
-    "stylua.targetReleaseVersion": "latest"
+    "stylua.targetReleaseVersion": "latest",
+    "cSpell.words": [
+        "kaleva"
+    ]
 }
