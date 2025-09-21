@@ -23,7 +23,7 @@ function ascension:on_update()
 end
 
 -- Called when player spawns with this ascension active
-function ascension:on_player_spawn(player_entity)
+function ascension:on_player_spawn()
   -- Implement player-specific modifications
   -- Examples:
   -- - Modify starting HP
