@@ -1,7 +1,7 @@
 <Mod
-	name="noita-mod-template"
-	description=""
-  tags=""
+	name="Kaleva Koetus"
+	description="Test your mettle in the trials of Kaleva - An ascension mod for Noita"
+  tags="gameplay,challenge,progression"
   request_no_api_restrictions="0"
 >
 </Mod>

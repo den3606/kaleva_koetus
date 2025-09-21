@@ -1,6 +1,6 @@
 <Mod
-	name="noita-mod-template"
-  tags=""
+	name="Kaleva Koetus"
+  tags="gameplay,challenge,progression"
   dont_upload_folders="resources"
   dont_upload_files=".editorconfig"
 >
