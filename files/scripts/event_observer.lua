@@ -1,10 +1,10 @@
 -- Event Observer System
 -- Handles global event queue processing and dispatching
 
-dofile_once("data/scripts/lib/coroutines.lua")
+local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
-local EventTypes = EventDefs.Types
+-- local EventTypes = EventDefs.Types -- Not used in this file
 local EventArgs = EventDefs.Args
 local EventObserver = {}
 
@@ -112,7 +112,7 @@ function EventObserver:process_events()
 end
 
 -- Handle individual event
-function EventObserver:handle_event(event_id, event_data)
+function EventObserver:handle_event(_event_id, event_data)
   -- Parse event: "source|event_type|param1|param2|..."
   local parts = {}
   for part in string.gmatch(event_data, "([^|]+)") do
@@ -120,7 +120,7 @@ function EventObserver:handle_event(event_id, event_data)
   end
 
   if #parts >= 2 then
-    local source = parts[1]
+    local _source = parts[1]
     local event_type = parts[2]
 
     -- Extract actual event arguments (skip source and event_type)
