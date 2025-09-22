@@ -1,7 +1,7 @@
-dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
+local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 
 -- Load coroutine support for async processing
-dofile_once("data/scripts/lib/coroutines.lua")
+local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 -- Load Ascension Manager
 local AscensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")

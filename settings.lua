@@ -1,4 +1,4 @@
-dofile_once("data/scripts/lib/mod_settings.lua")
+local _ = dofile_once("data/scripts/lib/mod_settings.lua")
 
 -- Define mod_id for settings
 local mod_id = "kaleva_koetus"
@@ -23,7 +23,7 @@ end
 
 -- This function is called when the game is initializing settings
 function ModSettingsUpdate(init_scope)
-  local old_version = mod_settings_get_version(mod_id)
+  local _old_version = mod_settings_get_version(mod_id)
   mod_settings_update(mod_id, mod_settings, init_scope)
 end
 
@@ -74,7 +74,7 @@ mod_settings = {
             value_default = "Click to lock ascension",
             values = { { "ok", "OK" } },
             scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(mod_id, gui, in_main_menu, setting, old_value, new_value)
+            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
               -- Unlock all levels
               ModSettingSet("kaleva_koetus.ascension_highest", "1")
 
@@ -91,7 +91,7 @@ mod_settings = {
             value_default = "Click to unlock ascension",
             values = { { "ok", "OK" } },
             scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(mod_id, gui, in_main_menu, setting, old_value, new_value)
+            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
               -- Unlock all levels
               ModSettingSet("kaleva_koetus.ascension_highest", "20")
 
