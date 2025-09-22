@@ -25,8 +25,33 @@ local EventArgs = {
   },
 }
 
--- Export both EventTypes and EventArgs
+local AscensionTags = {
+  -- Prefixes for each ascension level
+  A1 = "kaleva_a1_",
+  A2 = "kaleva_a2_",
+  A3 = "kaleva_a3_",
+  A4 = "kaleva_a4_",
+  A5 = "kaleva_a5_",
+  A6 = "kaleva_a6_",
+  A7 = "kaleva_a7_",
+  A8 = "kaleva_a8_",
+  A9 = "kaleva_a9_",
+  A10 = "kaleva_a10_",
+  A11 = "kaleva_a11_",
+  A12 = "kaleva_a12_",
+  A13 = "kaleva_a13_",
+  A14 = "kaleva_a14_",
+  A15 = "kaleva_a15_",
+  A16 = "kaleva_a16_",
+  A17 = "kaleva_a17_",
+  A18 = "kaleva_a18_",
+  A19 = "kaleva_a19_",
+  A20 = "kaleva_a20_",
+}
+
+-- Export EventTypes, EventArgs, and AscensionTags
 return {
   Types = EventTypes,
   Args = EventArgs,
+  Tags = AscensionTags,
 }

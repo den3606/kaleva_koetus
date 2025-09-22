@@ -3,6 +3,7 @@
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventTypes = EventDefs.Types
+local AscensionTags = EventDefs.Tags
 
 local ascension = {}
 
@@ -44,7 +45,7 @@ function ascension:on_enemy_spawn(event_args)
   end
 
   -- Check if already processed to avoid duplicate application
-  local tag_name = "kaleva_a1_" .. EventTypes.ENEMY_SPAWN
+  local tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
   if EntityHasTag(enemy_entity, tag_name) then
     print("[A1] Entity " .. enemy_entity .. " already processed, skipping")
     return
@@ -75,17 +76,6 @@ end
 function ascension:should_unlock_next()
   -- Return true if player has met conditions to unlock next level
   return true -- Victory with A1 unlocks A2
-end
-
--- Get difficulty multipliers (optional)
-function ascension:get_modifiers()
-  return {
-    enemy_hp_mult = self.hp_multiplier,
-    enemy_damage_mult = 1.0,
-    shop_price_mult = 1.0,
-    healing_mult = 1.0,
-    -- Add more multipliers as needed
-  }
 end
 
 return ascension

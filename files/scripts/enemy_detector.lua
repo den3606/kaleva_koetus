@@ -1,6 +1,10 @@
 -- Enemy Detector
 -- Detects unprocessed enemies and returns them (stateless)
 
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local EventTypes = EventDefs.Types
+local AscensionTags = EventDefs.Tags
+
 local EnemyDetector = {}
 
 -- Initialize enemy detector
@@ -15,7 +19,7 @@ function EnemyDetector:get_unprocessed_enemies()
 
   for _, entity_id in ipairs(all_enemies) do
     -- Check if enemy has already been processed by any ascension
-    local already_processed = EntityHasTag(entity_id, "kaleva_a1_enemy_spawn")
+    local already_processed = EntityHasTag(entity_id, AscensionTags.A1 .. EventTypes.ENEMY_SPAWN)
 
     if not already_processed then
       local x, y = EntityGetTransform(entity_id)
