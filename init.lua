@@ -94,6 +94,4 @@ end
 function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
 end
 
-ModLuaFileAppend("data/scripts/director_helpers.lua", "mods/kaleva_koetus/files/scripts/appends/director_helpers.lua")
-
 print("Kaleva Koetus mod loaded successfully!")
