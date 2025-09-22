@@ -20,15 +20,12 @@ end
 
 function OnModInit()
   print("Mod - OnModInit()") -- After that this is called for all mods
-
-  -- Initialize Ascension System
-  AscensionManager:init()
-
-  -- Note: EventObserver initialization moved to OnWorldInitialized due to Globals dependency
 end
 
 function OnModPostInit()
   print("Mod - OnModPostInit()") -- Then this is called for all mods
+  -- Initialize Ascension System
+  AscensionManager:init()
 end
 
 function OnPlayerSpawned(player_entity) -- This runs when player entity has been created
