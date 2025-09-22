@@ -11,21 +11,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: sudo apt-get install -y xmlstarlet
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install xmldom
+        run: npm install xmldom
 
       - name: Validate mod.xml
         run: |
-          request_no_api_restriction=$(xmlstarlet sel -t -v '//Mod/@request_no_api_restrictions' mod.xml)
-          is_game_mode=$(xmlstarlet sel -t -v '//Mod/@is_game_mode' mod.xml)
+          node -e "
+          const fs = require('fs');
+          const { DOMParser } = require('xmldom');
 
-          if [ "$request_no_api_restriction" != "0" ]; then
-            echo "Error: request_no_api_restrictions must be '0'"
-            exit 1
-          fi
+          try {
+            const xml = fs.readFileSync('mod.xml', 'utf8');
+            const doc = new DOMParser().parseFromString(xml, 'text/xml');
+            const mod = doc.documentElement;
 
-          if [ "$is_game_mode" != "0" ]; then
-            echo "Error: is_game_mode must be '0'"
-            exit 1
-          fi
-          echo "mod.xml validation passed"
+            const requestNoApiRestriction = mod.getAttribute('request_no_api_restrictions');
+            const isGameMode = mod.getAttribute('is_game_mode');
+
+            if (requestNoApiRestriction !== '0') {
+              console.error('Error: request_no_api_restrictions must be \"0\"');
+              process.exit(1);
+            }
+
+            if (isGameMode !== '0') {
+              console.error('Error: is_game_mode must be \"0\"');
+              process.exit(1);
+            }
+
+            console.log('mod.xml validation passed');
+          } catch (error) {
+            console.error('Error parsing mod.xml:', error.message);
+            process.exit(1);
+          }
+          "
