@@ -104,13 +104,13 @@ end
 function AscensionManager:load_progress()
   -- Load from ModSettings instead of Globals
   self.highest_unlocked = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
-  self.current_level = 0 -- Will be set from current run's selection
+  self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_level") or "0") or 0
 
-  print("[Kaleva Koetus] Loaded progress. Highest unlocked: " .. self.highest_unlocked)
+  print("[Kaleva Koetus] Loaded progress. Current: " .. self.current_level .. ", Highest unlocked: " .. self.highest_unlocked)
 end
 
 -- Unlock next ascension level
-function AscensionManager:unlock_next_level()
+function AscensionManager:_unlock_next_level()
   if self.current_level > 0 and self.current_level == self.highest_unlocked then
     if self.highest_unlocked < self.MAX_LEVEL then
       self.highest_unlocked = self.highest_unlocked + 1
@@ -122,9 +122,12 @@ function AscensionManager:unlock_next_level()
   return false
 end
 
--- Check if player completed the game (called on victory)
 function AscensionManager:on_victory()
-  print("[Kaleva Koetus] Victory achieved on Ascension " .. self.current_level)
+  -- Display victory message with ascension info
+  local info = self:get_ascension_info()
+  if info.current > 0 then
+    GamePrint("Victory on Ascension " .. info.current .. "!")
+  end
 
   -- Check if should unlock next level
   local should_unlock = true
@@ -140,7 +143,10 @@ function AscensionManager:on_victory()
   end
 
   if should_unlock then
-    self:unlock_next_level()
+    local unlocked = self:_unlock_next_level()
+    if unlocked then
+      GamePrint("Ascension " .. self.highest_unlocked .. " unlocked!")
+    end
   end
 end
 
@@ -162,58 +168,13 @@ function AscensionManager:on_player_spawn(player_entity)
   end
 end
 
--- Generic event dispatcher
-function AscensionManager:dispatch_event(event_type, event_args)
-  -- Build handler method name: "on_" + event_type
-  local handler_name = "on_" .. event_type
-
-  -- Dispatch to all active ascensions that have this handler
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension[handler_name] then
-      -- Call the handler with the event arguments
-      ascension[handler_name](ascension, event_args)
-    end
-  end
-end
-
--- Legacy enemy spawn handler (kept for compatibility)
+-- Enemy spawn event handler
 function AscensionManager:on_enemy_spawn(enemy_entity)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
       ascension:on_enemy_spawn(enemy_entity)
     end
   end
-end
-
--- Get current modifiers (combined from all active ascensions)
-function AscensionManager:get_modifiers()
-  local combined_modifiers = {
-    enemy_hp_mult = 1.0,
-    enemy_damage_mult = 1.0,
-    shop_price_mult = 1.0,
-    healing_mult = 1.0,
-  }
-
-  -- Combine modifiers from all active ascensions
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.get_modifiers then
-      local modifiers = ascension:get_modifiers()
-      for key, value in pairs(modifiers) do
-        if combined_modifiers[key] then
-          combined_modifiers[key] = combined_modifiers[key] * value
-        end
-      end
-    end
-  end
-
-  return combined_modifiers
-end
-
--- Reset for new run (optional)
-function AscensionManager:reset_run()
-  ModSettingSet("kaleva_koetus.ascension_current", "0")
-  self.current_level = 0
-  self.active_ascensions = {}
 end
 
 -- Get info for UI

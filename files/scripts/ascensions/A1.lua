@@ -18,20 +18,6 @@ function ascension:on_activate()
   print("[Kaleva Koetus A1] Enemy HP increase - Active (x" .. self.hp_multiplier .. ")")
 end
 
--- Called every frame while this ascension is active (optional)
-function ascension:on_update()
-  -- Implement per-frame updates if needed
-end
-
--- Called when player spawns with this ascension active
-function ascension:on_player_spawn()
-  -- Implement player-specific modifications
-  -- Examples:
-  -- - Modify starting HP
-  -- - Change starting perks
-  -- - Adjust player stats
-end
-
 -- Called when an enemy spawns (event handler)
 function ascension:on_enemy_spawn(event_args)
   -- event_args: {entity_id, x, y}
