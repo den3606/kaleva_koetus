@@ -4,8 +4,8 @@
 local EventTypes = {
   -- Currently implemented events
   ENEMY_SPAWN = "enemy_spawn", -- enemy entity spawned
-  PLAYER_SPAWN = "player_spawn", -- player entity spawned
   ITEM_PICKUP = "item_pickup", -- item picked up (placeholder)
+  VICTORY = "victory", -- victory condition met (sampo ending)
 }
 
 -- Event argument definitions (for handlers)
@@ -16,12 +16,12 @@ local EventArgs = {
     { name = "x", type = "number" },
     { name = "y", type = "number" },
   },
-  [EventTypes.PLAYER_SPAWN] = {
-    { name = "entity_id", type = "number" },
-  },
   [EventTypes.ITEM_PICKUP] = {
     { name = "item_entity_id", type = "number" },
     { name = "picker_entity_id", type = "number" },
+  },
+  [EventTypes.VICTORY] = {
+    { name = "victory_type", type = "string" }, -- "sampo", "orb", etc.
   },
 }
 

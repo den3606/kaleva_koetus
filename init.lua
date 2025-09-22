@@ -6,11 +6,8 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 -- Load Ascension Manager
 local AscensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 
--- Load Victory Handler
-local VictoryHandler = dofile_once("mods/kaleva_koetus/files/scripts/victory_handler.lua")
-
 -- Load Event Observer
-local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/event_observer.lua")
+local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/observer/event_observer.lua")
 
 -- Load Enemy Detector
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
@@ -66,24 +63,19 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
     local EventTypes = EventDefs.Types
 
     for _, enemy_data in ipairs(unprocessed_enemies) do
-      EventObserver:publish_event("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
+      EventObserver:publish_event_async("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
     end
 
     print("[Init] Published " .. #unprocessed_enemies .. " enemy spawn events")
   end
 
-  -- Process events via Observer
-  EventObserver:process_events()
+  -- Flush pending events via Observer
+  EventObserver:flush_event_queue()
 
+  -- NOTE:
   -- Update ascension system
+  -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
   AscensionManager:update()
-
-  -- Check for victory every 60 frames (1 second)
-  if GameGetFrameNum() % 60 == 0 then
-    if VictoryHandler and VictoryHandler:check_victory() then
-      VictoryHandler:on_victory()
-    end
-  end
 end
 
 function OnWorldPostUpdate() -- This is called every time the game has finished updating the world
@@ -93,5 +85,11 @@ end
 
 function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
 end
+
+-- Append to sampo ending sequence for victory detection
+ModLuaFileAppend(
+  "data/entities/animals/boss_centipede/ending/sampo_start_ending_sequence.lua",
+  "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
+)
 
 print("Kaleva Koetus mod loaded successfully!")
