@@ -86,12 +86,15 @@ function EnemyDetector:get_unprocessed_enemies()
   local unprocessed_enemies = {}
 
   for _, entity_id in ipairs(all_enemies) do
-    -- Check if enemy has already been processed by any ascension
-    local already_processed = EntityHasTag(entity_id, AscensionTags.A1 .. EventTypes.ENEMY_SPAWN)
+    -- Check if enemy has already been detected by EnemyDetector
+    local already_detected = EntityHasTag(entity_id, "kaleva_enemy_detected")
 
-    if not already_processed then
+    if not already_detected then
       local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
+        -- Mark as detected to prevent duplicate events
+        EntityAddTag(entity_id, "kaleva_enemy_detected")
+
         table.insert(unprocessed_enemies, {
           id = entity_id,
           x = x,
@@ -101,9 +104,6 @@ function EnemyDetector:get_unprocessed_enemies()
     end
   end
 
-  if #unprocessed_enemies > 0 then
-    print("[EnemyDetector] Found " .. #unprocessed_enemies .. " unprocessed enemies")
-  end
 
   return unprocessed_enemies
 end

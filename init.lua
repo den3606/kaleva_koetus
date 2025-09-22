@@ -60,10 +60,9 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
     local EventTypes = EventDefs.Types
 
     for _, enemy_data in ipairs(unprocessed_enemies) do
-      EventObserver:publish_event_async("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
+      EventObserver:publish_event_sync("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
     end
 
-    print("[Init] Published " .. #unprocessed_enemies .. " enemy spawn events")
   end
 
   -- Flush pending events via Observer

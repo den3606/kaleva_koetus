@@ -32,16 +32,14 @@ local function _publish_event(source, event_type, ...)
       GlobalsSetValue("kaleva_queue_counter", tostring(new_counter))
       GlobalsSetValue("kaleva_queue_version", tostring(new_version))
 
-      print("[EventObserver] Queued event " .. new_counter .. " (v" .. new_version .. "): " .. event_data)
       return true -- Success
     end
 
     -- Version changed, retry
     retry = retry - 1
-    print("[EventObserver] Queue contention, retrying... (" .. retry .. " left)")
   end
 
-  print("[EventObserver] ERROR: Failed to queue event after retries: " .. event_data)
+  error("[EventObserver] Failed to queue event after retries: " .. event_data)
   return false
 end
 
@@ -61,7 +59,6 @@ function EventObserver:init()
   GlobalsSetValue("kaleva_last_processed", "0")
   GlobalsSetValue("kaleva_observer_initialized", "1")
 
-  print("[EventObserver] Initialized")
 end
 
 -- Synchronous event publishing
@@ -82,26 +79,28 @@ function EventObserver:flush_event_queue()
   local last_processed = tonumber(GlobalsGetValue("kaleva_last_processed", "0"))
   local current_counter = tonumber(GlobalsGetValue("kaleva_queue_counter", "0"))
 
+  -- Early return if no new events to process
+  if last_processed >= current_counter then
+    return
+  end
+
+
   -- Process all events from last_processed + 1 to current_counter
   for i = last_processed + 1, current_counter do
     local event_key = "kaleva_queue_item_" .. tostring(i)
     local event_data = GlobalsGetValue(event_key, "")
 
     if event_data ~= "" then
-      print("[EventObserver] Processing event " .. i .. ": " .. event_data)
       EventHandler.handle(i, event_data)
-      print("[EventObserver] Event " .. i .. " processing completed")
 
       -- Clear processed event to free memory
       GlobalsSetValue(event_key, "")
-    else
-      print("[EventObserver] Warning: Missing event " .. i .. ", possible race condition")
-    end
-  end
 
-  -- Update last processed counter
-  if current_counter > last_processed then
-    GlobalsSetValue("kaleva_last_processed", tostring(current_counter))
+      -- Update last_processed for each event
+      GlobalsSetValue("kaleva_last_processed", tostring(i))
+    else
+      error("[EventObserver] Missing event " .. i .. ", possible race condition")
+    end
   end
 end
 
