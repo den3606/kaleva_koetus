@@ -1,6 +1,3 @@
--- Ascension Manager
--- Manages the ascension system for Kaleva Koetus mod
-
 local AscensionManager = {}
 
 -- Configuration

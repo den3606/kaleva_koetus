@@ -1,14 +1,7 @@
--- Event Observer System
--- Handles global event queue processing and dispatching
-
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 -- Load Event Handler module
 local EventHandler = dofile_once("mods/kaleva_koetus/files/scripts/observer/_event_handler.lua")
-
--- =============================================================================
--- PRIVATE QUEUE MANAGEMENT
--- =============================================================================
 
 -- Internal helper for publishing events
 local function _publish_event(source, event_type, ...)

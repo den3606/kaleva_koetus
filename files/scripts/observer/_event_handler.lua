@@ -1,6 +1,3 @@
--- Event Handler Module
--- Handles individual event processing with validation and dispatch
-
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventArgs = EventDefs.Args
 local EventTypes = EventDefs.Types
@@ -142,10 +139,6 @@ local function _dispatch_event(event_type, event_args)
   AscensionDispatcher.dispatch(event_type, event_args)
   print("[EventHandler] Warning: Unknown event type: " .. event_type)
 end
-
--- =============================================================================
--- PUBLIC API
--- =============================================================================
 
 local EventHandler = {}
 

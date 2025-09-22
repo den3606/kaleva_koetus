@@ -1,6 +1,3 @@
--- Ascension Dispatcher
--- Handles dispatching events directly to active ascensions
-
 local AscensionDispatcher = {}
 
 function AscensionDispatcher.dispatch(event_type, event_args)

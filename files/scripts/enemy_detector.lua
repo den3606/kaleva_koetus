@@ -1,6 +1,3 @@
--- Enemy Detector
--- Detects unprocessed enemies and returns them (stateless)
-
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventTypes = EventDefs.Types
 local AscensionTags = EventDefs.Tags
