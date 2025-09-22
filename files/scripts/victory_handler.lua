@@ -36,7 +36,7 @@ function VictoryHandler:check_work_entered()
       local px, py = EntityGetTransform(player)
       for _, portal in ipairs(portal_entities) do
         local portal_x, portal_y = EntityGetTransform(portal)
-        local distance = math.sqrt((px - portal_x)^2 + (py - portal_y)^2)
+        local distance = math.sqrt((px - portal_x) ^ 2 + (py - portal_y) ^ 2)
         if distance < 20 then -- Within interaction distance
           return true
         end

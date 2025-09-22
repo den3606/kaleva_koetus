@@ -7,7 +7,7 @@ SoundPlayer = {
   SOUND_TYPES = {
     FORCE = "force", -- 強制的に他の音声を止めてから再生する
     COVER = "cover", -- 他の音声と被せて音声を再生する
-    ONLY_EMPTY = 'only_empty', -- 他の音声が登録されている場合、再生しない
+    ONLY_EMPTY = "only_empty", -- 他の音声が登録されている場合、再生しない
   },
 
   create = function(self, target_entity_id, sound_player_name, xml_file_variable_name)
@@ -191,4 +191,3 @@ SoundPlayer = {
     end
   end,
 }
-

@@ -4,13 +4,13 @@
 local ascension = {}
 
 -- Metadata
-ascension.level = 4  -- Change this to the actual ascension level (1-20)
-ascension.name = "Ascension 4"  -- Display name
+ascension.level = 4 -- Change this to the actual ascension level (1-20)
+ascension.name = "Ascension 4" -- Display name
 ascension.description = "Description of what this ascension level does"
 
 -- Called when this ascension level is activated
 function ascension:on_activate()
-  print('A4 activated')
+  print("A4 activated")
   -- Implement ascension-specific modifications here
   -- Examples:
   -- - Modify enemy stats

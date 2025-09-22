@@ -1,7 +1,7 @@
 WaitFrame = {
   SUFFIXES = {
-    wait_frame="wait_frame",
-    register_frame="register_frame"
+    wait_frame = "wait_frame",
+    register_frame = "register_frame",
   },
 
   removeRegister = function(self, entity_id, variable_name)
@@ -67,5 +67,5 @@ WaitFrame = {
       return true
     end
     return false
-  end
+  end,
 }

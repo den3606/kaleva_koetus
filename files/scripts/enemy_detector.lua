@@ -27,7 +27,7 @@ function EnemyDetector:get_unprocessed_enemies()
       table.insert(unprocessed_enemies, {
         id = entity_id,
         x = x,
-        y = y
+        y = y,
       })
     end
   end

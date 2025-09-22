@@ -4,8 +4,8 @@
 local ascension = {}
 
 -- Metadata
-ascension.level = 0  -- Change this to the actual ascension level (1-20)
-ascension.name = "Ascension 0"  -- Display name
+ascension.level = 0 -- Change this to the actual ascension level (1-20)
+ascension.name = "Ascension 0" -- Display name
 ascension.description = "Description of what this ascension level does"
 
 -- Called when this ascension level is activated

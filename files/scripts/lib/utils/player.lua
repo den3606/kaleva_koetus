@@ -17,7 +17,7 @@ end
 function GetPlayerHealth()
   local damagemodels = EntityGetComponent(GetPlayerEntity(), "DamageModelComponent")
   local health = 0
-  if (damagemodels ~= nil) then
+  if damagemodels ~= nil then
     for i, v in ipairs(damagemodels) do
       health = tonumber(ComponentGetValue(v, "hp"))
       break
@@ -30,9 +30,8 @@ end
 function GetPlayerMaxHealth()
   local damagemodels = EntityGetComponent(GetPlayerEntity(), "DamageModelComponent")
   local maxHealth = 0
-  if (damagemodels ~= nil) then
+  if damagemodels ~= nil then
     for i, v in ipairs(damagemodels) do
-
       maxHealth = tonumber(ComponentGetValue(v, "max_hp"))
 
       break
@@ -54,8 +53,12 @@ function FindPolymorphedPlayer()
   end
 
   for _, player_id in ipairs(polymorphed_players) do
-    if EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil and EntityGetFirstComponent(player_id, "WormAIComponent") ==
-      nil and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil then
+    if
+      EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "WormAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil
+    then
       return player_id
     end
   end
@@ -75,8 +78,12 @@ function FindSheepPlayer()
   end
 
   for _, player_id in ipairs(polymorphed_players) do
-    if EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil and EntityGetFirstComponent(player_id, "WormAIComponent") ==
-      nil and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil then
+    if
+      EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "WormAIComponent") == nil
+      and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil
+    then
       local entity_name = EntityGetName(player_id)
       if entity_name == "$animal_sheep_fly" or entity_name == "$animal_sheep_bat" or entity_name == "$animal_sheep" then
         return player_id
