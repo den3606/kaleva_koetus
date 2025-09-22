@@ -1,35 +1,12 @@
-name: ci
+name: Mod XML Validation
+
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
   pull_request:
+
 jobs:
-  selene-lint-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: NTBBloodbath/selene-action@v1.0.0
-        with:
-          # Github secret token
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # selene arguments
-          args: .
-          # selene version
-          version: 0.29.0
-  stylua-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: JohnnyMorganz/stylua-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: 2.0.2
-          # CLI arguments
-          args: --check .
   validate-mod-xml:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

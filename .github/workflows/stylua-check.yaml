@@ -1,0 +1,19 @@
+name: Stylua Check
+
+on:
+  workflow_call:
+  pull_request:
+
+jobs:
+  stylua-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Stylua Check
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: 2.0.2
+          args: --check .

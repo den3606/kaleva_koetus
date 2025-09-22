@@ -1,0 +1,19 @@
+name: Selene Lint Check
+
+on:
+  workflow_call:
+  pull_request:
+
+jobs:
+  selene-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Selene Lint
+        uses: NTBBloodbath/selene-action@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: .
+          version: 0.29.0

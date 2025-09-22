@@ -1,0 +1,22 @@
+name: CI on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-ci-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger all CI checks
+        run: echo "Triggering parallel CI workflows"
+
+  call-selene-lint:
+    uses: ./.github/workflows/selene-lint.yaml
+
+  call-stylua-check:
+    uses: ./.github/workflows/stylua-check.yaml
+
+  call-mod-validation:
+    uses: ./.github/workflows/mod-xml-validation.yaml
