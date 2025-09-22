@@ -95,8 +95,6 @@ function AscensionManager:_unlock_next_level()
     if self.highest_unlocked < self.MAX_LEVEL then
       self.highest_unlocked = self.highest_unlocked + 1
       self:save_progress()
-      print("[Kaleva Koetus] Unlocked Ascension " .. self.highest_unlocked .. "!")
-      GamePrint("Unlocked Ascension " .. self.highest_unlocked .. "!")
       return true
     end
   end
@@ -112,10 +110,10 @@ function AscensionManager:on_victory()
 
   if info.current > 0 then
     print("[Kaleva Koetus] Victory on Ascension " .. info.current .. "!")
-    GamePrint("Victory on Ascension " .. info.current .. "!")
+    GamePrintImportant("Victory on Ascension " .. info.current .. "!")
   else
     print("[AscensionManager] No ascension active (current_level = 0)")
-    GamePrint("Victory! (No ascension active)")
+    GamePrintImportant("Victory! (No ascension active)")
   end
 
   -- Check if should unlock next level
@@ -135,7 +133,7 @@ function AscensionManager:on_victory()
     local unlocked = self:_unlock_next_level()
     if unlocked then
       print("[Kaleva Koetus] Ascension " .. self.highest_unlocked .. " unlocked!")
-      GamePrint("Ascension " .. self.highest_unlocked .. " unlocked!")
+      GamePrintImportant("Ascension " .. self.highest_unlocked .. " unlocked!")
     end
   end
 end
@@ -160,11 +158,8 @@ end
 
 -- Enemy spawn event handler
 function AscensionManager:on_enemy_spawn(event_args)
-
   if #event_args > 0 then
-    local enemy_entity = event_args[1]
-
-    for i, ascension in ipairs(self.active_ascensions) do
+    for _i, ascension in ipairs(self.active_ascensions) do
       if ascension.on_enemy_spawn then
         ascension:on_enemy_spawn(event_args)
       end

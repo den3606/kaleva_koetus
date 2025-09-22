@@ -58,7 +58,6 @@ function EventObserver:init()
   GlobalsSetValue("kaleva_queue_version", "0")
   GlobalsSetValue("kaleva_last_processed", "0")
   GlobalsSetValue("kaleva_observer_initialized", "1")
-
 end
 
 -- Synchronous event publishing
@@ -83,7 +82,6 @@ function EventObserver:flush_event_queue()
   if last_processed >= current_counter then
     return
   end
-
 
   -- Process all events from last_processed + 1 to current_counter
   for i = last_processed + 1, current_counter do

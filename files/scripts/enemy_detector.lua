@@ -1,7 +1,3 @@
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
-local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
-
 local EnemyDetector = {}
 
 -- Private boss activation check functions
@@ -16,7 +12,7 @@ local function is_active_boss_limbs(entity_id)
   return damage_model ~= nil
 end
 
-local function is_active_boss_dragon(entity_id)
+local function is_active_boss_dragon()
   -- Dragon - usually spawned directly, so always active
   return true
 end
@@ -27,7 +23,7 @@ local function is_active_boss_robot(entity_id)
   return damage_model ~= nil
 end
 
-local function is_active_boss_alchemist(entity_id)
+local function is_active_boss_alchemist()
   -- Alchemist - usually spawned directly
   return true
 end

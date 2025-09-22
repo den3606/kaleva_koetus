@@ -62,7 +62,6 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
     for _, enemy_data in ipairs(unprocessed_enemies) do
       EventObserver:publish_event_sync("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
     end
-
   end
 
   -- Flush pending events via Observer
