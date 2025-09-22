@@ -79,7 +79,7 @@ local function _convert_arg_types(event_type, event_args, expected_args)
         })
 
         print(error_msg)
-        GamePrint("Event type conversion failed: " .. event_type)
+        GamePrint("[Kaleva Koetus] Event type conversion error. Please report to mod developer: " .. event_type)
         return false, event_args
       end
     end
@@ -104,7 +104,7 @@ local function _validate_args(event_type, event_args, expected_args)
     })
 
     print(error_msg)
-    GamePrint("Event validation failed: " .. event_type)
+    GamePrint("[Kaleva Koetus] Event validation error. Please report to mod developer: " .. event_type)
     return false
   end
 
@@ -123,7 +123,7 @@ local function _validate_args(event_type, event_args, expected_args)
       })
 
       print(error_msg)
-      GamePrint("Event type validation failed: " .. event_type)
+      GamePrint("[Kaleva Koetus] Event type validation error. Please report to mod developer: " .. event_type)
       return false
     end
   end
@@ -137,7 +137,6 @@ local AscensionDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/observ
 -- Dispatch event to appropriate managers
 local function _dispatch_event(event_type, event_args)
   AscensionDispatcher.dispatch(event_type, event_args)
-  print("[EventHandler] Warning: Unknown event type: " .. event_type)
 end
 
 local EventHandler = {}
@@ -163,6 +162,7 @@ function EventHandler.handle(_queue_index, event_data)
 
   if not is_valid_event_type then
     print("[EventHandler] Unknown event type: " .. event_type)
+    GamePrint("[Kaleva Koetus] Unknown event error. Please report to mod developer: " .. event_type)
     return
   end
 

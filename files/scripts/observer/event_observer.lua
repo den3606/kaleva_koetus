@@ -88,7 +88,9 @@ function EventObserver:flush_event_queue()
     local event_data = GlobalsGetValue(event_key, "")
 
     if event_data ~= "" then
+      print("[EventObserver] Processing event " .. i .. ": " .. event_data)
       EventHandler.handle(i, event_data)
+      print("[EventObserver] Event " .. i .. " processing completed")
 
       -- Clear processed event to free memory
       GlobalsSetValue(event_key, "")

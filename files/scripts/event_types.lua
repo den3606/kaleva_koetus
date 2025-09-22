@@ -20,9 +20,7 @@ local EventArgs = {
     { name = "item_entity_id", type = "number" },
     { name = "picker_entity_id", type = "number" },
   },
-  [EventTypes.VICTORY] = {
-    { name = "victory_type", type = "string" }, -- "sampo", "orb", etc.
-  },
+  [EventTypes.VICTORY] = {}, -- No arguments needed for victory events
 }
 
 local AscensionTags = {

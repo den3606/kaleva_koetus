@@ -112,6 +112,7 @@ function AscensionManager:_unlock_next_level()
     if self.highest_unlocked < self.MAX_LEVEL then
       self.highest_unlocked = self.highest_unlocked + 1
       self:save_progress()
+      print("[Kaleva Koetus] Unlocked Ascension " .. self.highest_unlocked .. "!")
       GamePrint("Unlocked Ascension " .. self.highest_unlocked .. "!")
       return true
     end
@@ -120,10 +121,18 @@ function AscensionManager:_unlock_next_level()
 end
 
 function AscensionManager:on_victory()
+  print("[AscensionManager] on_victory called")
+
   -- Display victory message with ascension info
   local info = self:get_ascension_info()
+  print("[AscensionManager] Current level: " .. info.current .. ", Highest unlocked: " .. info.highest_unlocked)
+
   if info.current > 0 then
+    print("[Kaleva Koetus] Victory on Ascension " .. info.current .. "!")
     GamePrint("Victory on Ascension " .. info.current .. "!")
+  else
+    print("[AscensionManager] No ascension active (current_level = 0)")
+    GamePrint("Victory! (No ascension active)")
   end
 
   -- Check if should unlock next level
@@ -142,6 +151,7 @@ function AscensionManager:on_victory()
   if should_unlock then
     local unlocked = self:_unlock_next_level()
     if unlocked then
+      print("[Kaleva Koetus] Ascension " .. self.highest_unlocked .. " unlocked!")
       GamePrint("Ascension " .. self.highest_unlocked .. " unlocked!")
     end
   end
