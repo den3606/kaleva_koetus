@@ -1,6 +1,6 @@
-# Kaleva Koetus (カレワ試練)
+# Kaleva Koetus (Kalevaの試練)
 
-Noita用アセンションシステムMod - 段階的難易度上昇でプレイヤーに新たな挑戦を提供
+Noita Ascension Mod
 
 ## 概要
 
