@@ -4,21 +4,26 @@ local _ = dofile_once("data/scripts/lib/mod_settings.lua")
 local mod_id = "kaleva_koetus"
 
 -- Build ascension level options for settings dropdown
+
 local function get_ascension_values()
   local values = {
-    { "disabled", "Disabled" },
+    { "0", "Disabled" },
   }
 
   local max_level = ModSettingGet("kaleva_koetus.ascension_highest") or 1
   -- Add unlocked ascension levels
   for i = 1, math.max(max_level, 1) do -- Show at least level 1 for testing
     table.insert(values, {
-      "ascension_" .. i,
+      tostring(i),
       "Ascension " .. i,
     })
   end
 
   return values
+end
+
+local function reset_ascension_level()
+  mod_settings[1].settings[1].values = get_ascension_values()
 end
 
 -- This function is called when the game is initializing settings
@@ -49,7 +54,7 @@ mod_settings = {
         id = "ascension_level",
         ui_name = "Ascension Level",
         ui_description = "Select the ascension level for this run",
-        value_default = "disabled",
+        value_default = "0",
         values = get_ascension_values(),
         scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
@@ -77,6 +82,7 @@ mod_settings = {
             change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
               -- Unlock all levels
               ModSettingSet("kaleva_koetus.ascension_highest", "1")
+              reset_ascension_level()
 
               print("[Kaleva Koetus] All ascensions locked!")
 
@@ -94,6 +100,7 @@ mod_settings = {
             change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
               -- Unlock all levels
               ModSettingSet("kaleva_koetus.ascension_highest", "20")
+              reset_ascension_level()
 
               print("[Kaleva Koetus] All ascensions unlocked!")
 
