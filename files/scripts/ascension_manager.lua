@@ -8,21 +8,6 @@ AscensionManager.current_level = 0
 AscensionManager.highest_unlocked = 0
 AscensionManager.active_ascensions = {}
 
--- Convert setting string to level number
-function AscensionManager:convert_setting_to_level(setting_value)
-  if setting_value == "disabled" then
-    return 0
-  end
-
-  -- Extract number from "ascension_X" format
-  local level = string.match(setting_value, "ascension_(%d+)")
-  if level then
-    return tonumber(level) or 0
-  end
-
-  return 0
-end
-
 -- Initialize the ascension system
 function AscensionManager:init()
   print("[Kaleva Koetus] Initializing Ascension Manager")
@@ -30,14 +15,13 @@ function AscensionManager:init()
   -- Load saved data
   self:load_progress()
 
-  -- Set current run's ascension level from ModSettings
-  local selected_level = 0
-
-  local setting_value = ModSettingGet("kaleva_koetus.ascension_level") or "disabled"
-  selected_level = self:convert_setting_to_level(setting_value)
-
-  if selected_level > 0 and selected_level <= self.highest_unlocked then
-    self:activate_ascension(selected_level)
+  -- Activate ascension if current_level is set
+  if self.current_level > 0 and self.current_level <= self.highest_unlocked then
+    self:activate_ascension(self.current_level)
+  else
+    print(
+      "[Kaleva Koetus] No valid ascension to activate (current: " .. self.current_level .. ", unlocked: " .. self.highest_unlocked .. ")"
+    )
   end
 end
 
@@ -61,15 +45,14 @@ function AscensionManager:load_ascension(level)
 end
 
 -- Activate all ascension levels up to the specified level
-function AscensionManager:activate_ascension(level)
-  print("[Kaleva Koetus] Activating Ascensions 1-" .. level)
+function AscensionManager:activate_ascension()
+  print("[Kaleva Koetus] Activating Ascensions 1-" .. self.current_level)
 
   -- Clear current ascensions
   self.active_ascensions = {}
-  self.current_level = level
 
   -- Load and activate all levels from 1 to specified level
-  for i = 1, level do
+  for i = 1, self.current_level do
     local ascension = self:load_ascension(i)
     if ascension then
       table.insert(self.active_ascensions, ascension)
@@ -84,10 +67,10 @@ function AscensionManager:activate_ascension(level)
   end
 
   -- Store current level in ModSettings for persistence
-  ModSettingSet("kaleva_koetus.ascension_current", tostring(level))
+  ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
 
-  if level > 0 then
-    GamePrint("Ascensions 1-" .. level .. " Active (" .. #self.active_ascensions .. " effects)")
+  if self.current_level > 0 then
+    GamePrint("Ascensions 1-" .. self.current_level .. " Active (" .. #self.active_ascensions .. " effects)")
   end
 end
 
@@ -176,11 +159,18 @@ function AscensionManager:on_player_spawn(player_entity)
 end
 
 -- Enemy spawn event handler
-function AscensionManager:on_enemy_spawn(enemy_entity)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_enemy_spawn then
-      ascension:on_enemy_spawn(enemy_entity)
+function AscensionManager:on_enemy_spawn(event_args)
+
+  if #event_args > 0 then
+    local enemy_entity = event_args[1]
+
+    for i, ascension in ipairs(self.active_ascensions) do
+      if ascension.on_enemy_spawn then
+        ascension:on_enemy_spawn(event_args)
+      end
     end
+  else
+    error("[AscensionManager] No enemy entity in event_args!")
   end
 end
 
