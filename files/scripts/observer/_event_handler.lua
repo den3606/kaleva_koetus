@@ -78,7 +78,7 @@ local function _convert_arg_types(event_type, event_args, expected_args)
           value = tostring(actual_value),
         })
 
-        print(error_msg)
+        error(error_msg)
         GamePrint("[Kaleva Koetus] Event type conversion error. Please report to mod developer: " .. event_type)
         return false, event_args
       end
@@ -103,7 +103,7 @@ local function _validate_args(event_type, event_args, expected_args)
       actual_count = #event_args,
     })
 
-    print(error_msg)
+    error(error_msg)
     GamePrint("[Kaleva Koetus] Event validation error. Please report to mod developer: " .. event_type)
     return false
   end
@@ -122,7 +122,7 @@ local function _validate_args(event_type, event_args, expected_args)
         value = tostring(actual_value),
       })
 
-      print(error_msg)
+      error(error_msg)
       GamePrint("[Kaleva Koetus] Event type validation error. Please report to mod developer: " .. event_type)
       return false
     end
@@ -161,7 +161,7 @@ function EventHandler.handle(_queue_index, event_data)
   end
 
   if not is_valid_event_type then
-    print("[EventHandler] Unknown event type: " .. event_type)
+    error("[EventHandler] Unknown event type: " .. event_type)
     GamePrint("[Kaleva Koetus] Unknown event error. Please report to mod developer: " .. event_type)
     return
   end
