@@ -62,9 +62,7 @@ local function is_active(entity_id)
     if EntityHasTag(entity_id, config.tag) then
       -- Found a boss, use its specific activation check
       local is_ready = config.is_active(entity_id)
-      if not is_ready then
-        print("[EnemyDetector] Boss not ready yet: " .. config.tag)
-      else
+      if is_ready then
         print("[EnemyDetector] Boss ready for processing: " .. config.tag)
       end
       return is_ready
@@ -103,7 +101,6 @@ function EnemyDetector:get_unprocessed_enemies()
       end
     end
   end
-
 
   return unprocessed_enemies
 end
