@@ -1,6 +1,5 @@
 local AscensionManager = {}
 
--- Configuration
 AscensionManager.MAX_LEVEL = 20
 
 -- State
@@ -8,7 +7,6 @@ AscensionManager.current_level = 0
 AscensionManager.highest_unlocked = 0
 AscensionManager.active_ascensions = {}
 
--- Initialize the ascension system
 function AscensionManager:init()
   print("[Kaleva Koetus] Initializing Ascension Manager")
 
@@ -25,8 +23,7 @@ function AscensionManager:init()
   end
 end
 
--- Load ascension for a specific level
-function AscensionManager:load_ascension(level)
+function AscensionManager:_load_ascension(level)
   if level < 1 or level > self.MAX_LEVEL then
     print("[Kaleva Koetus] Invalid ascension level: " .. tostring(level))
     return nil
@@ -53,7 +50,7 @@ function AscensionManager:activate_ascension()
 
   -- Load and activate all levels from 1 to specified level
   for i = 1, self.current_level do
-    local ascension = self:load_ascension(i)
+    local ascension = self:_load_ascension(i)
     if ascension then
       table.insert(self.active_ascensions, ascension)
 
@@ -66,7 +63,7 @@ function AscensionManager:activate_ascension()
     end
   end
 
-  -- Store current level in ModSettings for persistence
+  -- Store current level
   ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
 
   if self.current_level > 0 then
@@ -74,22 +71,19 @@ function AscensionManager:activate_ascension()
   end
 end
 
--- Save progress
 function AscensionManager:save_progress()
   ModSettingSet("kaleva_koetus.ascension_highest", tostring(self.highest_unlocked))
   print("[Kaleva Koetus] Saved progress. Highest unlocked: " .. self.highest_unlocked)
 end
 
--- Load progress
 function AscensionManager:load_progress()
-  -- Load from ModSettings instead of Globals
+  -- Load from ModSettings
   self.highest_unlocked = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
   self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_level") or "0") or 0
 
   print("[Kaleva Koetus] Loaded progress. Current: " .. self.current_level .. ", Highest unlocked: " .. self.highest_unlocked)
 end
 
--- Unlock next ascension level
 function AscensionManager:_unlock_next_level()
   if self.current_level > 0 and self.current_level == self.highest_unlocked then
     if self.highest_unlocked < self.MAX_LEVEL then
@@ -147,29 +141,44 @@ function AscensionManager:update()
   end
 end
 
--- Player spawn handler
-function AscensionManager:on_player_spawn(player_entity)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_player_spawn then
-      ascension:on_player_spawn(player_entity)
-    end
-  end
-end
-
--- Enemy spawn event handler
 function AscensionManager:on_enemy_spawn(event_args)
-  if #event_args > 0 then
-    for _i, ascension in ipairs(self.active_ascensions) do
-      if ascension.on_enemy_spawn then
-        ascension:on_enemy_spawn(event_args)
-      end
-    end
-  else
+  if #event_args == 0 then
     error("[AscensionManager] No enemy entity in event_args!")
+    return
+  end
+  for _i, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_enemy_spawn then
+      ascension:on_enemy_spawn(event_args)
+    end
   end
 end
 
--- Get info for UI
+function AscensionManager:on_shop_card_spawn(event_args)
+  if #event_args == 0 then
+    error("[AscensionManager] No enemy entity in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_shop_card_spawn then
+      ascension:on_shop_card_spawn(event_args)
+    end
+  end
+end
+
+function AscensionManager:on_shop_wand_spawn(event_args)
+  if #event_args == 0 then
+    error("[AscensionManager] No enemy entity in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_shop_wand_spawn then
+      ascension:on_shop_wand_spawn(event_args)
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,
