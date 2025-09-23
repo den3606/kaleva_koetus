@@ -16,6 +16,8 @@ function AscensionManager:init()
   -- Activate ascension if current_level is set
   if self.current_level > 0 and self.current_level <= self.highest_unlocked then
     self:activate_ascension(self.current_level)
+    print("[Kaleva Koetus]Start Ascension " .. self.current_level)
+    GamePrintImportant("Start Ascension " .. self.current_level)
   else
     print(
       "[Kaleva Koetus] No valid ascension to activate (current: " .. self.current_level .. ", unlocked: " .. self.highest_unlocked .. ")"
