@@ -1,6 +1,7 @@
 # Kaleva Koetus (Kalevaの試練)
 
 Noita Ascension Mod
+![サムネイル](./docs/thumbnail.png)
 
 ## 概要
 
