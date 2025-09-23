@@ -76,6 +76,6 @@ ModLuaFileAppend(
   "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
 )
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
-ModLuaFileAppend("data/scripts/biomes/temple_altar_empty.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
+ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 
 print("Kaleva Koetus mod loaded successfully!")
