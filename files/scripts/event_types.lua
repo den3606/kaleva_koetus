@@ -9,7 +9,7 @@ local EventTypes = {
 }
 
 -- Event argument definitions (for handlers)
--- Note: source and event_type are handled by EventObserver, not passed to handlers
+-- Note: source and event_type are handled by EventBroker
 local EventArgs = {
   [EventTypes.ENEMY_SPAWN] = {
     { name = "entity_id", type = "number" },

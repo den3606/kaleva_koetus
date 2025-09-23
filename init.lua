@@ -1,13 +1,16 @@
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local EventTypes = EventDefs.Types
+
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 
 -- Load coroutine support for async processing
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 -- Load Ascension Manager
-local AscensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
+local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 
 -- Load Event Observer
-local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/pubsubevent_manager.lua")
+local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 
 -- Load Enemy Detector
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
@@ -25,26 +28,30 @@ end
 function OnModPostInit()
   print("Mod - OnModPostInit()") -- Then this is called for all mods
   -- Initialize Ascension System
-  AscensionManager:init()
+  ascensionManager:init()
 end
 
 function OnPlayerSpawned(player_entity) -- This runs when player entity has been created
   -- Handle ascension on player spawn
-  AscensionManager:on_player_spawn(player_entity)
+  ascensionManager:on_player_spawn(player_entity)
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   -- Initialize Event Observer (requires WorldState to exist)
-  EventObserver:init()
+  eventBroker:init()
 
   -- Initialize Enemy Detector
   EnemyDetector:init()
+
+  for _, event_type in pairs(EventTypes) do
+    eventBroker:subscribe_event(event_type, ascensionManager)
+  end
 
   -- Reset victory flag for new run
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")
 
   -- Show current ascension info
-  local info = AscensionManager:get_ascension_info()
+  local info = ascensionManager:get_ascension_info()
   if info.current > 0 then
     GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
   end
@@ -56,21 +63,18 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
 
   -- Publish events for unprocessed enemies
   if #unprocessed_enemies > 0 then
-    local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
-    local EventTypes = EventDefs.Types
-
     for _, enemy_data in ipairs(unprocessed_enemies) do
-      EventObserver:publish_event_sync("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
+      eventBroker:publish_event_sync("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
     end
   end
 
   -- Flush pending events via Observer
-  EventObserver:flush_event_queue()
+  eventBroker:flush_event_queue()
 
   -- NOTE:
   -- Update ascension system
   -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
-  AscensionManager:update()
+  ascensionManager:update()
 end
 
 function OnWorldPostUpdate() -- This is called every time the game has finished updating the world
