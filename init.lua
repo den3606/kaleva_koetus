@@ -24,7 +24,8 @@ function OnModPostInit()
   ascensionManager:init()
 end
 
-function OnPlayerSpawned(_player_entity) -- This runs when player entity has been created
+function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
+  ascensionManager:on_player_spawn(player_entity_id)
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
@@ -60,7 +61,7 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
   eventBroker:flush_event_queue()
 
   -- NOTE:
-  -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
+  -- updateをEvent経由で呼ぶと大量に呼ばれてしまぁE�Eで、直接callする
   ascensionManager:update()
 end
 
@@ -79,3 +80,4 @@ ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/fil
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 
 print("Kaleva Koetus mod loaded successfully!")
+

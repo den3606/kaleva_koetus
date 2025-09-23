@@ -1,25 +1,55 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local EventTypes = EventDefs.Types
+local AscensionTags = EventDefs.Tags
+
 local ascension = setmetatable({}, { __index = AscensionBase })
 
 ascension.level = 3
 ascension.name = "Ascension 3"
 ascension.description = "Description of what this ascension level does"
 
+local TARGET_HP = 70
+local HP_TO_ENTITY_UNITS = 0.04
+
+local function to_entity_health(hit_points)
+  return hit_points * HP_TO_ENTITY_UNITS
+end
+
 function ascension:on_activate()
-  print("A3 activated")
+  print("[Kaleva Koetus A3] Reduced starting HP active (set to " .. TARGET_HP .. ")")
 end
 
-function ascension:on_update() end
+function ascension:on_player_spawn(player_entity_id)
+  local tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
+  if EntityHasTag(player_entity_id, tag_name) then
+    return
+  end
 
-function ascension:on_player_spawn() end
+  local damage_model = EntityGetFirstComponent(player_entity_id, "DamageModelComponent")
+  if damage_model == nil then
+    error("[Kaleva Koetus A3] Player DamageModelComponent not found")
+  end
 
-function ascension:on_enemy_spawn() end
+  local current_hp = ComponentGetValue2(damage_model, "hp")
+  local current_max_hp = ComponentGetValue2(damage_model, "max_hp")
+  local target_health = to_entity_health(TARGET_HP)
 
-function ascension:should_unlock_next()
-  return false
+  ComponentSetValue2(damage_model, "max_hp", target_health)
+  ComponentSetValue2(damage_model, "hp", target_health)
+
+  EntityAddTag(player_entity_id, tag_name)
+
+  print(
+    string.format(
+      "[Kaleva Koetus A3] Player HP adjusted: hp %.2f -> %.2f, max_hp %.2f -> %.2f",
+      current_hp,
+      target_health,
+      current_max_hp,
+      target_health
+    )
+  )
 end
-
-function ascension:get_modifiers() end
 
 return ascension
