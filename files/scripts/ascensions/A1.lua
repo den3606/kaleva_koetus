@@ -52,8 +52,4 @@ function ascension:on_enemy_spawn(event_args)
   end
 end
 
-function ascension:should_unlock_next()
-  return true
-end
-
 return ascension

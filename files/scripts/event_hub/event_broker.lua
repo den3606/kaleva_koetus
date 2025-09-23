@@ -13,22 +13,6 @@ local EventBroker = {}
 ---@type EventListenerEntry[]
 EventBroker.listener = {}
 
-local function dispatch(event_data)
-  local source, event_type, event_args = EventTransformer:parse_event_data(event_data)
-  if not source or not event_type then
-    error("[EventBroker] Event Data is broken")
-    return
-  end
-
-  print("[EventBroker] Event called from " .. source)
-
-  for _, entry in ipairs(EventBroker.listener) do
-    if entry.event_type == event_type then
-      EventDispatcher.dispatch(entry.listener, event_type, event_args)
-    end
-  end
-end
-
 function EventBroker:init()
   -- Check if already initialized
   if GlobalsGetValue("kaleva_event_broker_initialized", "0") == "1" then
@@ -63,12 +47,28 @@ function EventBroker:subscribe_event(event_type, listener)
   })
 end
 
+local function dispatch(event_data)
+  local source, event_type, event_args = EventTransformer:parse_event_data(event_data)
+  if not source or not event_type then
+    error("[EventBroker] Event Data is broken")
+    return
+  end
+
+  print("[EventBroker] Event called from " .. source)
+
+  for _, entry in ipairs(EventBroker.listener) do
+    if entry.event_type == event_type then
+      EventDispatcher.dispatch(entry.listener, event_type, event_args)
+    end
+  end
+end
+
 -- Flush all pending events from the queue
 function EventBroker:flush_event_queue()
   local last_processed = tonumber(GlobalsGetValue("kaleva_last_processed", "0"))
   local current_counter = tonumber(GlobalsGetValue("kaleva_queue_counter", "0"))
 
-  -- Early return if no new events to process
+  -- Early return if no new events
   local no_have_event = last_processed >= current_counter
   if no_have_event then
     return

@@ -2,17 +2,10 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua"
 local EventTypes = EventDefs.Types
 
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
-
--- Load coroutine support for async processing
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
--- Load Ascension Manager
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
-
--- Load Event Observer
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
-
--- Load Enemy Detector
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 
 print("Kaleva Koetus mod loading...")
@@ -37,10 +30,7 @@ function OnPlayerSpawned(player_entity) -- This runs when player entity has been
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
-  -- Initialize Event Observer (requires WorldState to exist)
   eventBroker:init()
-
-  -- Initialize Enemy Detector
   EnemyDetector:init()
 
   for _, event_type in pairs(EventTypes) do
@@ -68,18 +58,14 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
     end
   end
 
-  -- Flush pending events via Observer
   eventBroker:flush_event_queue()
 
   -- NOTE:
-  -- Update ascension system
   -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
   ascensionManager:update()
 end
 
 function OnWorldPostUpdate() -- This is called every time the game has finished updating the world
-  -- Post-update hook for debugging (commented out to reduce spam)
-  -- GamePrint( "Post-update hook " .. tostring(GameGetFrameNum()) )
 end
 
 function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
