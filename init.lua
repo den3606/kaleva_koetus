@@ -31,6 +31,7 @@ function OnWorldInitialized() -- This is called once the game world is initializ
   eventBroker:init()
   EnemyDetector:init()
 
+  -- 存在するイベントをすべて登録する
   for _, event_type in pairs(EventTypes) do
     eventBroker:subscribe_event(event_type, ascensionManager)
   end
