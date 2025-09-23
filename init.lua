@@ -7,7 +7,7 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 local AscensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 
 -- Load Event Observer
-local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/observer/event_observer.lua")
+local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/pubsubevent_manager.lua")
 
 -- Load Enemy Detector
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")

@@ -11,7 +11,7 @@ GlobalsSetValue("kaleva_koetus_victory_processed", "1")
 -- Load event system and send victory event
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventTypes = EventDefs.Types
-local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/observer/event_observer.lua")
+local EventObserver = dofile_once("mods/kaleva_koetus/files/scripts/pubsub/event_manager.lua")
 
 print("[Kaleva Koetus] Victory detected - Sampo ending sequence started")
 EventObserver:publish_event_sync("sampo_start_ending_sequence", EventTypes.VICTORY)

@@ -1,25 +1,22 @@
--- Ascension 1: 敵HP上昇
--- 敵のHPが1.1倍に増加
-
+local ascension = dofile_once("mods/kaleva_koetus/files/scripts/ascension1s/ascension1_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventTypes = EventDefs.Types
 local AscensionTags = EventDefs.Tags
 
-local ascension = {}
+local ascension1 = {}
+ascension1.__index = ascension
 
--- Metadata
-ascension.level = 1
-ascension.name = "敵HP上昇"
-ascension.description = "敵のHPが1.5倍に増加"
-ascension.hp_multiplier = 1.5
+ascension1.level = 1
+ascension1.name = "敵HP上昇"
+ascension1.description = "敵のHPが1.5倍に増加"
+ascension1.hp_multiplier = 1.5
 
--- Called when this ascension level is activated
-function ascension:on_activate()
+function ascension1:on_activate()
   print("[Kaleva Koetus A1] Enemy HP increase - Active (x" .. self.hp_multiplier .. ")")
 end
 
 -- Called when an enemy spawns (event handler)
-function ascension:on_enemy_spawn(event_args)
+function ascension1:on_enemy_spawn(event_args)
   -- event_args: {entity_id, x, y}
   if #event_args < 1 then
     return
@@ -58,10 +55,8 @@ function ascension:on_enemy_spawn(event_args)
   end
 end
 
--- Called to check if the next ascension level should be unlocked
-function ascension:should_unlock_next()
-  -- Return true if player has met conditions to unlock next level
-  return true -- Victory with A1 unlocks A2
+function ascension1:should_unlock_next()
+  return true
 end
 
-return ascension
+return ascension1

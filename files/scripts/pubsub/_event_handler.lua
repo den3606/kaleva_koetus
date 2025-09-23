@@ -132,7 +132,7 @@ local function _validate_args(event_type, event_args, expected_args)
 end
 
 -- Load dispatchers
-local AscensionDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/observer/dispatchers/ascension_dispatcher.lua")
+local AscensionDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/pubsubdispatchers/ascension_dispatcher.lua")
 
 -- Dispatch event to appropriate managers
 local function _dispatch_event(event_type, event_args)

@@ -1,7 +1,9 @@
 -- Ascension Level Template
 -- Each ascension level should implement these functions
 
-local ascension = {}
+local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+
+local ascension = setmetatable({}, { __index = AscensionBase })
 
 -- Metadata
 ascension.level = 8 -- Change this to the actual ascension level (1-20)

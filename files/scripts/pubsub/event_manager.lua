@@ -1,7 +1,7 @@
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 -- Load Event Handler module
-local EventHandler = dofile_once("mods/kaleva_koetus/files/scripts/observer/_event_handler.lua")
+local EventHandler = dofile_once("mods/kaleva_koetus/files/scripts/pubsub_event_handler.lua")
 
 -- Internal helper for publishing events
 local function _publish_event(source, event_type, ...)
