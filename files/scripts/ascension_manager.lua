@@ -73,6 +73,8 @@ end
 
 function AscensionManager:save_progress()
   ModSettingSet("kaleva_koetus.ascension_highest", tostring(self.highest_unlocked))
+  ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
+
   print("[Kaleva Koetus] Saved progress. Highest unlocked: " .. self.highest_unlocked)
 end
 
@@ -88,7 +90,7 @@ function AscensionManager:_unlock_next_level()
   if self.current_level > 0 and self.current_level == self.highest_unlocked then
     if self.highest_unlocked < self.MAX_LEVEL then
       self.highest_unlocked = self.highest_unlocked + 1
-      self:save_progress()
+      self.current_level = self.current_level + 1
       return true
     end
   end
@@ -126,6 +128,7 @@ function AscensionManager:on_victory()
   if should_unlock then
     local unlocked = self:_unlock_next_level()
     if unlocked then
+      self:save_progress()
       print("[Kaleva Koetus] Ascension " .. self.highest_unlocked .. " unlocked!")
       GamePrintImportant("Ascension " .. self.highest_unlocked .. " unlocked!")
     end
@@ -137,6 +140,20 @@ function AscensionManager:update()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_update then
       ascension:on_update()
+    end
+  end
+end
+
+function AscensionManager:on_player_spawn(player_entity_id)
+  local entity_id = tonumber(player_entity_id)
+  if not entity_id then
+    print("[AscensionManager] Invalid player entity id: " .. tostring(player_entity_id))
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_player_spawn then
+      ascension:on_player_spawn(entity_id)
     end
   end
 end
