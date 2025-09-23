@@ -24,9 +24,7 @@ function OnModPostInit()
   ascensionManager:init()
 end
 
-function OnPlayerSpawned(player_entity) -- This runs when player entity has been created
-  -- Handle ascension on player spawn
-  ascensionManager:on_player_spawn(player_entity)
+function OnPlayerSpawned(_player_entity) -- This runs when player entity has been created
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
