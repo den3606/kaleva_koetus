@@ -2,30 +2,39 @@ local ascension = {}
 
 -- Metadata
 ascension.level = 0
-ascension.name = "none"
-ascension.description = "none"
+ascension.name = (function()
+  error("name is not implement")
+end)()
+
+ascension.description = (function()
+  error("description is not implement")
+end)()
 
 function ascension:on_activate()
   error("on_activate is not implement")
 end
 
-function ascension:on_spawn_shop_item()
-  error("on_spawn_shop_item is not implement")
+function ascension:should_unlock_next()
+  return true
+end
+
+function ascension:on_shop_card_spawn(_cards)
+  -- Optional
+end
+
+function ascension:on_shop_wand_spawn(_wands)
+  -- Optional
 end
 
 function ascension:on_world_pre_update()
-  error("on_world_pre_update is not implement")
+  -- Optional
 end
 function ascension:on_player_spawn()
-  error("on_player_spawn is not implement")
+  -- Optional
 end
 
 function ascension:on_enemy_spawn(_enemy)
-  error("on_enemy_spawn is not implement")
-end
-
-function ascension:should_unlock_next()
-  return true
+  -- Optional
 end
 
 return ascension

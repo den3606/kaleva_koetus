@@ -4,22 +4,28 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 ascension.level = 2
 ascension.name = "Ascension 2"
-ascension.description = "Description of what this ascension level does"
+ascension.description = "ショップの品揃えが減少する (杖-1 / スペル-2)"
 
-function ascension:on_activate()
-  print("A2 activated")
+function ascension:on_shop_card_spawn(payload)
+  local entity_ids = tonumber(payload[1])
+  local x = tonumber(payload[2])
+  local y = tonumber(payload[3])
+  SetRandomSeed(x, y)
+
+  local rand = Random(1, #entity_ids)
+
+  EntityKill(rand)
 end
 
-function ascension:on_update() end
+function ascension:on_shop_wand_spawn(payload)
+  local entity_ids = tonumber(payload[1])
+  local x = tonumber(payload[2])
+  local y = tonumber(payload[3])
+  SetRandomSeed(x, y)
 
-function ascension:on_player_spawn() end
+  local rand = Random(1, #entity_ids)
 
-function ascension:on_enemy_spawn() end
-
-function ascension:should_unlock_next()
-  return false
+  EntityKill(rand)
 end
-
-function ascension:get_modifiers() end
 
 return ascension
