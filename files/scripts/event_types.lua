@@ -4,7 +4,6 @@
 local EventTypes = {
   -- Currently implemented events
   ENEMY_SPAWN = "enemy_spawn", -- enemy entity spawned
-  ITEM_PICKUP = "item_pickup", -- item picked up (placeholder)
   SHOP_CARD_SPAWN = "shop_card_spawn", -- spell card spawned in temple shop
   SHOP_WAND_SPAWN = "shop_wand_spawn", -- wand spawned in temple shop
   VICTORY = "victory", -- victory condition met (sampo ending)
@@ -18,17 +17,13 @@ local EventArgs = {
     { name = "x", type = "number" },
     { name = "y", type = "number" },
   },
-  [EventTypes.ITEM_PICKUP] = {
-    { name = "item_entity_id", type = "number" },
-    { name = "picker_entity_id", type = "number" },
-  },
   [EventTypes.SHOP_CARD_SPAWN] = {
-    { name = "entity_ids", type = "array" },
+    { name = "entity_ids", type = "table" },
     { name = "x", type = "number" },
     { name = "y", type = "number" },
   },
   [EventTypes.SHOP_WAND_SPAWN] = {
-    { name = "entity_ids", type = "array" },
+    { name = "entity_ids", type = "table" },
     { name = "x", type = "number" },
     { name = "y", type = "number" },
   },

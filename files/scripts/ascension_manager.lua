@@ -141,14 +141,16 @@ function AscensionManager:update()
   end
 end
 
-function AscensionManager:on_enemy_spawn(event_args)
-  if #event_args == 0 then
-    error("[AscensionManager] No enemy entity in event_args!")
+function AscensionManager:on_enemy_spawn(payload)
+  if #payload == 0 then
+    error("[AscensionManager] No enemy entity in payload!")
     return
   end
   for _i, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
-      ascension:on_enemy_spawn(event_args)
+      if #payload > 0 then
+        ascension:on_enemy_spawn(payload)
+      end
     end
   end
 end

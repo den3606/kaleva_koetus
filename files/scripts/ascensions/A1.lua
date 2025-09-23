@@ -14,13 +14,8 @@ function ascension:on_activate()
   print("[Kaleva Koetus A1] Enemy HP increase - Active (x" .. self.hp_multiplier .. ")")
 end
 
-function ascension:on_enemy_spawn(event_args)
-  -- event_args: {entity_id, x, y}
-  if #event_args < 1 then
-    return
-  end
-
-  local enemy_entity = tonumber(event_args[1])
+function ascension:on_enemy_spawn(payload)
+  local enemy_entity = tonumber(payload[1])
   if not enemy_entity then
     return
   end

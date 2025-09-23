@@ -73,10 +73,10 @@ function spawn_all_shopitems(x, y)
   local shop_wand_entity_ids = diff_entities(before_wand_entity_ids, after_wand_entity_ids)
 
   if #shop_card_entity_ids ~= 0 then
-    EventBroker:publish_event_async("temple_altar", EventTypes.SHOP_CARD_SPAWN, shop_card_entity_ids, x, y)
+    EventBroker:publish_event_sync("temple_altar", EventTypes.SHOP_CARD_SPAWN, shop_card_entity_ids, x, y)
   end
 
   if #shop_wand_entity_ids ~= 0 then
-    EventBroker:publish_event_async("temple_altar", EventTypes.SHOP_WAND_SPAWN, shop_wand_entity_ids, x, y)
+    EventBroker:publish_event_sync("temple_altar", EventTypes.SHOP_WAND_SPAWN, shop_wand_entity_ids, x, y)
   end
 end

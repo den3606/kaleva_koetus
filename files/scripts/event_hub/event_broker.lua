@@ -3,15 +3,11 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 -- Load Event Handler module
 local EventPublisher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_publisher.lua")
 local EventDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_dispatcher.lua")
-local EventTransformer = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_transformer.lua")
+local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua")
 
 local EventBroker = {}
 
----@class EventListenerEntry
----@field event_type string
----@field listener table<string, fun(self: table, ...)>
----@type EventListenerEntry[]
-EventBroker.listener = {}
+EventBroker.subscriptions = {}
 
 function EventBroker:init()
   -- Check if already initialized
@@ -29,38 +25,22 @@ end
 
 -- Synchronous event publishing
 function EventBroker:publish_event_sync(source, event_type, ...)
-  return EventPublisher.publish(source, event_type, ...)
+  return EventPublisher:publish(source, event_type, ...)
 end
 
 -- Asynchronous event publishing
 function EventBroker:publish_event_async(source, event_type, ...)
   local args = { ... }
   async(function()
-    EventPublisher.publish(source, event_type, unpack(args))
+    EventPublisher:publish(source, event_type, unpack(args))
   end)
 end
 
-function EventBroker:subscribe_event(event_type, listener)
-  table.insert(self.listener, {
+function EventBroker:subscribe_event(event_type, subscriber)
+  table.insert(self.subscriptions, {
     event_type = event_type,
-    listener = listener,
+    subscriber = subscriber,
   })
-end
-
-local function dispatch(event_data)
-  local source, event_type, event_args = EventTransformer:parse_event_data(event_data)
-  if not source or not event_type then
-    error("[EventBroker] Event Data is broken")
-    return
-  end
-
-  print("[EventBroker] Event called from " .. source)
-
-  for _, entry in ipairs(EventBroker.listener) do
-    if entry.event_type == event_type then
-      EventDispatcher.dispatch(entry.listener, event_type, event_args)
-    end
-  end
 end
 
 -- Flush all pending events from the queue
@@ -80,7 +60,19 @@ function EventBroker:flush_event_queue()
     local event_data = GlobalsGetValue(event_key, "")
 
     if event_data ~= "" then
-      dispatch(event_data)
+      for _, subscription in ipairs(EventBroker.subscriptions) do
+        local source, event_type, event_args = unpack(json.decode(event_data))
+
+        if not source or not event_type then
+          error("[EventBroker] Event Data is broken")
+          return
+        end
+
+        if subscription.event_type == event_type then
+          print("[EventBroker] Event called from " .. source)
+          EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
+        end
+      end
 
       GlobalsSetValue(event_key, "")
       GlobalsSetValue("kaleva_last_processed", tostring(i))

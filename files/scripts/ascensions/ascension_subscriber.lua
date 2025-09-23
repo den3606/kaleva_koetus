@@ -1,14 +1,21 @@
 local ascension = {}
 
--- Metadata
-ascension.level = 0
-ascension.name = (function()
-  error("name is not implement")
-end)()
+local REQUIRED_FIELDS = {
+  name = "name is not implement",
+  description = "description is not implement",
+  level = "level is not implement",
+}
 
-ascension.description = (function()
-  error("description is not implement")
-end)()
+setmetatable(ascension, {
+  __index = function(_, key)
+    local message = REQUIRED_FIELDS[key]
+    if message then
+      error(message)
+    end
+
+    return nil
+  end,
+})
 
 function ascension:on_activate()
   error("on_activate is not implement")
@@ -29,6 +36,7 @@ end
 function ascension:on_world_pre_update()
   -- Optional
 end
+
 function ascension:on_player_spawn()
   -- Optional
 end
