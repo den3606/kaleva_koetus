@@ -4,10 +4,7 @@ local mod_id = "kaleva_koetus"
 local ascension_setting
 
 local function get_ascension_values()
-  local values = {
-    { "0", "Disabled" },
-  }
-
+  local values = {}
   local max_level = ModSettingGet("kaleva_koetus.ascension_highest") or 1
   -- Add unlocked ascension levels
   for i = 1, math.max(max_level, 1) do -- Show at least level 1 for testing
