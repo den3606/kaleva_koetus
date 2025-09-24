@@ -76,11 +76,16 @@ function AscensionManager:load_progress()
 end
 
 function AscensionManager:save_progress()
-  ModSettingSet("kaleva_koetus.ascension_highest", tostring(self.highest_level))
-  ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
+  local highest_level = tostring(self.highest_level)
+  local current_level = tostring(self.current_level)
 
-  local highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
-  local current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "0") or 0
+  ModSettingSet("kaleva_koetus.ascension_highest", highest_level)
+  ModSettingSet("kaleva_koetus.ascension_current", current_level)
+  ModSettingSet("kaleva_koetus.show_ascension_info", true)
+
+  ModSettingSetNextValue("kaleva_koetus.ascension_highest", highest_level, false)
+  ModSettingSetNextValue("kaleva_koetus.ascension_current", current_level, false)
+  ModSettingSetNextValue("kaleva_koetus.show_ascension_info", true, false)
 
   print("[Kaleva Koetus] Saved progress. Current: " .. current_level .. ", Highest: " .. highest_level)
 end
@@ -103,12 +108,12 @@ function AscensionManager:on_victory()
       GamePrintImportant("Victory! (No ascension active)")
     elseif self:_can_unlock_next_level() then
       self.highest_level = self.highest_level + 1
-      print("[Kaleva Koetus] Victory on Ascension " .. self.current_level .. "!")
-      GamePrintImportant("Victory on Ascension " .. self.current_level .. "!", "Ascension " .. self.highest_level .. " unlocked!")
+      print("[Kaleva Koetus] Ascension " .. self.current_level .. " Cleared! ")
+      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Ascension " .. self.highest_level .. " Unlocked!")
       self.current_level = self.current_level + 1
     else
-      print("[Kaleva Koetus] Victory on Ascension " .. self.current_level .. "!")
-      GamePrintImportant("Victory on Ascension " .. self.current_level .. "!")
+      print("[Kaleva Koetus] Ascension " .. self.current_level .. " Cleared! ")
+      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
     end
   end
 

@@ -8,7 +8,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 ascension.level = 4
 ascension.name = "Ascension 4"
-ascension.description = "神は虫の居所が悪くなる"
+ascension.description = "神の虫の居所が悪くなる"
 
 function ascension:on_activate()
   print("A4 activated")

@@ -1,9 +1,7 @@
 local _ = dofile_once("data/scripts/lib/mod_settings.lua")
 
--- Define mod_id for settings
 local mod_id = "kaleva_koetus"
-
--- Build ascension level options for settings dropdown
+local ascension_setting
 
 local function get_ascension_values()
   local values = {
@@ -22,13 +20,55 @@ local function get_ascension_values()
   return values
 end
 
+local function locate_ascension_setting()
+  if ascension_setting ~= nil then
+    return ascension_setting
+  end
+
+  if not mod_settings then
+    return nil
+  end
+
+  local function search(settings)
+    for _, setting in ipairs(settings) do
+      if setting.id == "ascension_current" then
+        ascension_setting = setting
+        return true
+      end
+
+      if setting.settings and search(setting.settings) then
+        return true
+      end
+    end
+
+    return false
+  end
+
+  for _, category in ipairs(mod_settings) do
+    if category.settings and search(category.settings) then
+      break
+    end
+  end
+
+  return ascension_setting
+end
+
+local function update_ascension_setting_values()
+  local setting = locate_ascension_setting()
+  if setting then
+    setting.values = get_ascension_values()
+  end
+end
+
 local function reset_ascension_level()
-  mod_settings[1].settings[1].values = get_ascension_values()
+  ascension_setting = nil
+  update_ascension_setting_values()
 end
 
 -- This function is called when the game is initializing settings
 function ModSettingsUpdate(init_scope)
   local _old_version = mod_settings_get_version(mod_id)
+  update_ascension_setting_values()
   mod_settings_update(mod_id, mod_settings, init_scope)
 end
 
@@ -39,6 +79,7 @@ end
 
 -- This function is called when drawing the settings UI
 function ModSettingsGui(gui, in_main_menu)
+  update_ascension_setting_values()
   mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
 end
 
@@ -54,7 +95,7 @@ mod_settings = {
         id = "ascension_current",
         ui_name = "Ascension Level",
         ui_description = "Select the ascension level for this run",
-        value_default = "0",
+        value_default = "1",
         values = get_ascension_values(),
         scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
@@ -85,9 +126,6 @@ mod_settings = {
               reset_ascension_level()
 
               print("[Kaleva Koetus] All ascensions locked!")
-
-              -- Reset the checkbox
-              ModSettingSetNextValue("kaleva_koetus.unlock_all", "ok", false)
             end,
           },
           {
@@ -103,9 +141,6 @@ mod_settings = {
               reset_ascension_level()
 
               print("[Kaleva Koetus] All ascensions unlocked!")
-
-              -- Reset the checkbox
-              ModSettingSetNextValue("kaleva_koetus.unlock_all", "ok", false)
             end,
           },
         },
