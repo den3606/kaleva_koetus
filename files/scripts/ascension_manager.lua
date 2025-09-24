@@ -4,7 +4,7 @@ AscensionManager.MAX_LEVEL = 20
 
 -- State
 AscensionManager.current_level = 0
-AscensionManager.highest_unlocked = 0
+AscensionManager.highest_level = 0
 AscensionManager.active_ascensions = {}
 
 function AscensionManager:init()
@@ -14,13 +14,11 @@ function AscensionManager:init()
   self:load_progress()
 
   -- Activate ascension if current_level is set
-  if self.current_level > 0 and self.current_level <= self.highest_unlocked then
+  if self.current_level > 0 and self.current_level <= self.highest_level then
     self:activate_ascension(self.current_level)
     print("[Kaleva Koetus] Start Ascension " .. self.current_level)
   else
-    print(
-      "[Kaleva Koetus] No valid ascension to activate (current: " .. self.current_level .. ", unlocked: " .. self.highest_unlocked .. ")"
-    )
+    print("[Kaleva Koetus] No valid ascension to activate (current: " .. self.current_level .. ", unlocked: " .. self.highest_level .. ")")
   end
 end
 
@@ -69,28 +67,27 @@ function AscensionManager:activate_ascension()
   end
 end
 
-function AscensionManager:save_progress()
-  ModSettingSet("kaleva_koetus.ascension_highest", tostring(self.highest_unlocked))
-  ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
-
-  print("[Kaleva Koetus] Saved progress. Highest unlocked: " .. self.highest_unlocked)
-end
-
 function AscensionManager:load_progress()
   -- Load from ModSettings
-  self.highest_unlocked = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
+  self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
   self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "0") or 0
 
-  print("[Kaleva Koetus] Loaded progress. Current: " .. self.current_level .. ", Highest unlocked: " .. self.highest_unlocked)
+  print("[Kaleva Koetus] Loaded progress. Current: " .. self.current_level .. ", Highest: " .. self.highest_level)
 end
 
-function AscensionManager:_unlock_next_level()
-  if self.current_level > 0 and self.current_level == self.highest_unlocked then
-    if self.highest_unlocked < self.MAX_LEVEL then
-      self.highest_unlocked = self.highest_unlocked + 1
-      self.current_level = self.current_level + 1
-      return true
-    end
+function AscensionManager:save_progress()
+  ModSettingSet("kaleva_koetus.ascension_highest", tostring(self.highest_level))
+  ModSettingSet("kaleva_koetus.ascension_current", tostring(self.current_level))
+
+  local highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
+  local current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "0") or 0
+
+  print("[Kaleva Koetus] Saved progress. Current: " .. current_level .. ", Highest: " .. highest_level)
+end
+
+function AscensionManager:_can_unlock_next_level()
+  if self.current_level > 0 and self.current_level == self.highest_level then
+    return self.highest_level < self.MAX_LEVEL
   end
   return false
 end
@@ -98,39 +95,24 @@ end
 function AscensionManager:on_victory()
   print("[AscensionManager] on_victory called")
 
-  print("[AscensionManager] Current level: " .. self.current_level .. ", Highest unlocked: " .. self.highest_unlocked)
+  print("[AscensionManager] Current level: " .. self.current_level .. ", Highest unlocked: " .. self.highest_level)
 
-  -- Check if should unlock next level
-  local should_unlock = true
-
-  -- Check all active ascensions for unlock conditions
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.should_unlock_next then
-      if not ascension:should_unlock_next() then
-        should_unlock = false
-        break
-      end
-    end
-  end
-
-  if should_unlock then
-    local unlocked = self:_unlock_next_level()
-
+  if self.active_ascensions[self.current_level]:should_unlock_next() then
     if self.current_level == 0 then
       print("[AscensionManager] No ascension active (current_level = 0)")
       GamePrintImportant("Victory! (No ascension active)")
-    elseif unlocked then
-      self:save_progress()
+    elseif self:_can_unlock_next_level() then
+      self.highest_level = self.highest_level + 1
       print("[Kaleva Koetus] Victory on Ascension " .. self.current_level .. "!")
-      GamePrintImportant("Victory on Ascension " .. self.current_level .. "!", "Ascension " .. self.highest_unlocked .. " unlocked!")
+      GamePrintImportant("Victory on Ascension " .. self.current_level .. "!", "Ascension " .. self.highest_level .. " unlocked!")
+      self.current_level = self.current_level + 1
     else
       print("[Kaleva Koetus] Victory on Ascension " .. self.current_level .. "!")
       GamePrintImportant("Victory on Ascension " .. self.current_level .. "!")
     end
   end
 
-  print("hoge")
-  print(ModSettingGet("kaleva_koetus.ascension_current") or "0")
+  self:save_progress()
 end
 
 -- Update (called every frame)
@@ -214,7 +196,7 @@ end
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,
-    highest_unlocked = self.highest_unlocked,
+    highest_level = self.highest_level,
     max_level = self.MAX_LEVEL,
     active = #self.active_ascensions > 0,
   }
