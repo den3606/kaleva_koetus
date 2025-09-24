@@ -37,6 +37,10 @@ function ascension:on_world_pre_update()
   -- Optional
 end
 
+function ascension:on_necromancer_spawn(_positions)
+  -- Optional
+end
+
 function ascension:on_player_spawn()
   -- Optional
 end

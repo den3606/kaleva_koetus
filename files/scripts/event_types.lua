@@ -7,6 +7,7 @@ local EventTypes = {
   SHOP_CARD_SPAWN = "shop_card_spawn", -- spell card spawned in temple shop
   SHOP_WAND_SPAWN = "shop_wand_spawn", -- wand spawned in temple shop
   VICTORY = "victory", -- victory condition met (sampo ending)
+  NECROMANCER_SPAWN = "necromancer_spawn",
 }
 
 -- Event argument definitions (for handlers)
@@ -27,6 +28,10 @@ local EventArgs = {
     { name = "x", type = "number" },
     { name = "y", type = "number" },
   },
+  [EventTypes.NECROMANCER_SPAWN] = {
+    { name = "x", type = "number" },
+    { name = "y", type = "number" },
+  }, -- No arguments needed for victory events
   [EventTypes.VICTORY] = {}, -- No arguments needed for victory events
 }
 

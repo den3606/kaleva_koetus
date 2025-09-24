@@ -1,3 +1,4 @@
+local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local EventArgs = EventDefs.Args
@@ -18,6 +19,8 @@ end
 local function validate_event_args(event_type, event_args, expected_args)
   -- Check argument count
   if #event_args < #expected_args then
+    print("[Kaleva Koetus] event_args: " .. json.encode(event_args))
+    print("[Kaleva Koetus] expected_args: " .. json.encode(expected_args))
     GamePrint("[Kaleva Koetus] Event validation error. Please report to mod developer: " .. event_type)
     error("[Kaleva Koetus] Event validation error: " .. event_type)
   end
@@ -41,6 +44,8 @@ local function emit(event_type, callback_object, payload)
 
   if callback_object[handler_name] then
     callback_object[handler_name](callback_object, payload)
+  else
+    print("[Kaleva Koetus] Handler can not call: " .. handler_name)
   end
 end
 

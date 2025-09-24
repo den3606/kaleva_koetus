@@ -61,7 +61,7 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
   eventBroker:flush_event_queue()
 
   -- NOTE:
-  -- updateをEvent経由で呼ぶと大量に呼ばれてしまぁE�Eで、直接callする
+  -- updateをEvent経由で呼ぶと大量に呼ばれてしまぁE�Eで、直接callする
   ascensionManager:update()
 end
 
@@ -78,6 +78,5 @@ ModLuaFileAppend(
 )
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
-
+ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
 print("Kaleva Koetus mod loaded successfully!")
-

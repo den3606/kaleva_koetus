@@ -200,6 +200,19 @@ function AscensionManager:on_shop_wand_spawn(event_args)
   end
 end
 
+function AscensionManager:on_necromancer_spawn(event_args)
+  if #event_args == 0 then
+    error("[AscensionManager] No necromancer positions in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_necromancer_spawn then
+      ascension:on_necromancer_spawn(event_args)
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,
