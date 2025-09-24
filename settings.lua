@@ -51,7 +51,7 @@ mod_settings = {
     ui_description = "Configure ascension level for your run",
     settings = {
       {
-        id = "ascension_level",
+        id = "ascension_current",
         ui_name = "Ascension Level",
         ui_description = "Select the ascension level for this run",
         value_default = "0",
