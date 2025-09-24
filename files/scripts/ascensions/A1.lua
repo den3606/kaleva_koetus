@@ -7,8 +7,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 ascension.level = 1
 ascension.name = "敵HP上昇"
-ascension.description = "敵のHPが1.5倍に増加"
-ascension.hp_multiplier = 1.5
+ascension.description = "敵のHPが2倍に増加"
+ascension.hp_multiplier = 2
 
 function ascension:on_activate()
   print("[Kaleva Koetus A1] Enemy HP increase - Active (x" .. self.hp_multiplier .. ")")

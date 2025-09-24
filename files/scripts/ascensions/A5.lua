@@ -7,7 +7,7 @@ local MIN_FULL_SLOTS = 1
 
 ascension.level = 5
 ascension.name = "Ascension 5"
-ascension.description = "Reduces the player's spell inventory slots by " .. SLOT_REDUCTION .. "."
+ascension.description = "あなたのスロットは -" .. SLOT_REDUCTION .. "減ります。"
 
 local function clamp_slots(original_slots)
   local reduced = original_slots - SLOT_REDUCTION

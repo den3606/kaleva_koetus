@@ -8,7 +8,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 ascension.level = 3
 ascension.name = "Ascension 3"
-ascension.description = "Description of what this ascension level does"
+ascension.description = "開始HPが70"
 
 local TARGET_HP = 70
 local HP_TO_ENTITY_UNITS = 0.04
