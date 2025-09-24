@@ -7,6 +7,7 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
+local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 print("Kaleva Koetus mod loading...")
 
@@ -22,6 +23,11 @@ function OnModPostInit()
   print("Mod - OnModPostInit()") -- Then this is called for all mods
   -- Initialize Ascension System
   ascensionManager:init()
+  if ascensionManager.current_level >= 5 then
+    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/overrides/a5_background.png")
+  end
+
+  print("Kaleva Koetus mod loaded successfully!")
 end
 
 function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
@@ -79,4 +85,3 @@ ModLuaFileAppend(
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
-print("Kaleva Koetus mod loaded successfully!")
