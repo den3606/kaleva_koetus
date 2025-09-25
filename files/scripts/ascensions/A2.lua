@@ -3,6 +3,7 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
@@ -10,8 +11,8 @@ local log = Logger:new("A2.lua")
 
 ascension.level = 2
 ascension.name = "Ascension 2"
-ascension.description = "ショップの品揃えが減少する (杖-1 / スペル-2)"
-ascension.tag_name = AscensionTags.A2 .. "_removed"
+ascension.description = "お店の品揃えが悪くなりました"
+ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_WAND_SPAWN .. EventTypes.SHOP_WAND_SPAWN
 
 local function pick_random_two(ids, seed_a, seed_b)
   if type(ids) ~= "table" or #ids < 2 then

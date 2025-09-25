@@ -54,4 +54,8 @@ function ascension:on_potion_generated(_potion)
   -- Optional
 end
 
+function ascension:on_book_generated(_book)
+  -- Optional
+end
+
 return ascension

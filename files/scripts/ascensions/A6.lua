@@ -3,6 +3,7 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
@@ -13,7 +14,7 @@ local LEVITATION_SCALE = 0.7
 ascension.level = 6
 ascension.name = "上昇力減少"
 ascension.description = "上昇ゲージが70%になる"
-ascension.tag_name = AscensionTags.A6 .. "_player"
+ascension.tag_name = AscensionTags.A6 .. EventTypes.PLAYER_SPAWN
 
 local function scale_levitation(player_entity_id)
   if EntityHasTag(player_entity_id, ascension.tag_name) then

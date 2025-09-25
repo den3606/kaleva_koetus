@@ -22,12 +22,12 @@ end
 function ascension:on_potion_generated(payload)
   log:info("on_potion_generated")
   local potion_entity_id = tonumber(payload[1])
-  log:info("potion_entity: " .. potion_entity_id)
+  log:debug("potion_entity: " .. potion_entity_id)
   local component_id = EntityGetFirstComponentIncludingDisabled(potion_entity_id, "MaterialSuckerComponent")
 
   local original_barrel_size = ComponentGetValue2(component_id, "barrel_size")
   local resized_barrel_size = original_barrel_size * MATERIAL_SCALE
-  log:info("potion_entity: " .. resized_barrel_size)
+  log:debug("resized_barrel_size: " .. resized_barrel_size)
 
   ComponentSetValue2(component_id, "barrel_size", resized_barrel_size)
 

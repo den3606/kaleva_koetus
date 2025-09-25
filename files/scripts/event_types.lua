@@ -6,9 +6,11 @@ local EventTypes = {
   ENEMY_SPAWN = "enemy_spawn", -- enemy entity spawned
   SHOP_CARD_SPAWN = "shop_card_spawn", -- spell card spawned in temple shop
   SHOP_WAND_SPAWN = "shop_wand_spawn", -- wand spawned in temple shop
+  PLAYER_SPAWN = "player_spawn",
   VICTORY = "victory", -- victory condition met (sampo ending)
   NECROMANCER_SPAWN = "necromancer_spawn",
   POTION_GENERATED = "potion_generated",
+  BOOK_GENERATED = "book_generated",
 }
 
 -- Event argument definitions (for handlers)

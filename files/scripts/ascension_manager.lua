@@ -201,13 +201,26 @@ end
 
 function AscensionManager:on_potion_generated(event_args)
   if #event_args == 0 then
-    log:error("No necromancer positions in event_args!")
+    log:error("No potion entity in event_args!")
     return
   end
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_potion_generated then
       ascension:on_potion_generated(event_args)
+    end
+  end
+end
+
+function AscensionManager:on_book_generated(event_args)
+  if #event_args == 0 then
+    log:error("No book entity in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_book_generated then
+      ascension:on_book_generated(event_args)
     end
   end
 end

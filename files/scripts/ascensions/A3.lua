@@ -11,8 +11,8 @@ local log = Logger:new("A3.lua")
 
 ascension.level = 3
 ascension.name = "Ascension 3"
-ascension.description = "開始HPが70"
-ascension.tag_name = AscensionTags.A3 .. EventTypes.ENEMY_SPAWN
+ascension.description = "あなたは少し脆くなってしまいました"
+ascension.tag_name = AscensionTags.A3 .. EventTypes.PLAYER_SPAWN
 
 local TARGET_HP = 70
 local HP_TO_ENTITY_UNITS = 0.04

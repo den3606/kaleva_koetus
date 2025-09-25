@@ -11,8 +11,8 @@ local log = Logger:new("A4.lua")
 
 ascension.level = 4
 ascension.name = "Ascension 4"
-ascension.description = "神の虫の居所が悪くなる"
-ascension.tag_name = AscensionTags.A4 .. EventTypes.ENEMY_SPAWN
+ascension.description = "神は今、虫の居所が悪いようです"
+ascension.tag_name = AscensionTags.A4 .. EventTypes.NECROMANCER_SPAWN
 
 function ascension:on_activate()
   log:info("Divine retribution enabled")

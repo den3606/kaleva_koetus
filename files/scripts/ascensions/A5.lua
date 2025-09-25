@@ -3,6 +3,7 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
@@ -13,8 +14,8 @@ local MIN_FULL_SLOTS = 1
 
 ascension.level = 5
 ascension.name = "Ascension 5"
-ascension.description = "あなたのスロットは -" .. SLOT_REDUCTION .. "減ります。"
-ascension.tag_name = AscensionTags.A5 .. "_player"
+ascension.description = "あなたの呪文バッグが小さくなっている気がします"
+ascension.tag_name = AscensionTags.A5 .. EventTypes.PLAYER_SPAWN
 
 local function clamp_slots(original_slots)
   local reduced = original_slots - SLOT_REDUCTION
