@@ -83,7 +83,13 @@ function Logger:_emit(level, tag, message, ...)
   local resolved_tag = tag or "General"
   local resolved_message = format_message(message, ...)
 
-  print(string.format("%s[%s][%s] %s", self._prefix, level, resolved_tag, resolved_message))
+  local output = string.format("%s[%s][%s] %s", self._prefix, level, resolved_tag, resolved_message)
+
+  if level == "ERROR" then
+    error(output, 2)
+  else
+    print(output)
+  end
 end
 
 function Logger:trace(tag, message, ...)
