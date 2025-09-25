@@ -4,7 +4,7 @@ dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A16")
+local log = Logger:new("A16")
 
 local DRY_INTERVAL_FRAMES = 30
 local CONVERT_RADIUS = 72

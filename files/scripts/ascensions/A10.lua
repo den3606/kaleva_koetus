@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A10")
+local log = Logger:new("A10")
 
 local DURABILITY_VARIABLE = "kaleva_a10_durability"
 local DURABILITY_MAX_VARIABLE = "kaleva_a10_durability_max"

@@ -2,7 +2,7 @@ local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local AscensionManager = {}
 
-local log = Logger:bind("AscensionManager")
+local log = Logger:new("AscensionManager")
 
 AscensionManager.MAX_LEVEL = 20
 

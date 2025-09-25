@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A1")
+local log = Logger:new("A1")
 
 ascension.level = 1
 ascension.name = "敵HP上昇"

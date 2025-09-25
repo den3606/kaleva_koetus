@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A3")
+local log = Logger:new("A3")
 
 ascension.level = 3
 ascension.name = "Ascension 3"
@@ -44,13 +44,7 @@ function ascension:on_player_spawn(player_entity_id)
 
   EntityAddTag(player_entity_id, ascension.tag_name)
 
-  log:debug(
-    "Player HP adjusted %.2f -> %.2f, MaxHP %.2f -> %.2f",
-    current_hp,
-    target_health,
-    current_max_hp,
-    target_health
-  )
+  log:debug("Player HP adjusted %.2f -> %.2f, MaxHP %.2f -> %.2f", current_hp, target_health, current_max_hp, target_health)
 end
 
 return ascension

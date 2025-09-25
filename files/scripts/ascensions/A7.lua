@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A7")
+local log = Logger:new("A7")
 
 local MATERIAL_SCALE = 0.75
 local PROCESS_INTERVAL_FRAMES = 60

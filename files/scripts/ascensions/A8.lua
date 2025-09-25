@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A8")
+local log = Logger:new("A8")
 
 local TARGET_TAGS = { "tablet", "tablet_stone" }
 

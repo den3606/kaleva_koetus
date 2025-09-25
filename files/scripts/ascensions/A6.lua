@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A6")
+local log = Logger:new("A6")
 
 local LEVITATION_SCALE = 0.75
 

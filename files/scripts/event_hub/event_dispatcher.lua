@@ -7,7 +7,7 @@ local EventTypes = EventDefs.Types
 
 local EventDispatcher = {}
 
-local log = Logger:bind("EventDispatcher")
+local log = Logger:new("EventDispatcher")
 
 local function validate_event_type(event_type)
   for _, def_type in pairs(EventTypes) do

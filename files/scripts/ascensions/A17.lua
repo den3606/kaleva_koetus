@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A17")
+local log = Logger:new("A17")
 
 local RESISTANCE_FIELDS = {
   "fire_resistance",

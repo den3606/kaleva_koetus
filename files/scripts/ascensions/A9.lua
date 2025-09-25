@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A9")
+local log = Logger:new("A9")
 
 local MIN_PERK_COUNT = 1
 

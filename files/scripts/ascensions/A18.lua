@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A18")
+local log = Logger:new("A18")
 
 local MAX_ITEMS = 1
 

@@ -120,7 +120,7 @@ mod_settings = {
               { "WARN", "Warn" },
               { "INFO", "Info" },
               { "DEBUG", "Debug" },
-              { "TRACE", "Trace" },
+              { "VERBOSE", "Verbose" },
             },
             scope = MOD_SETTING_SCOPE_RUNTIME,
           },

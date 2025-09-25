@@ -11,17 +11,7 @@ local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/even
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
-local log = Logger:bind("Init")
-
-local function configure_logger()
-  local configured_level = ModSettingGet("kaleva_koetus.log_level")
-  if configured_level then
-    Logger:set_level(configured_level)
-  end
-  log:debug("Logger initialized with level %s", Logger:get_level())
-end
-
-configure_logger()
+local log = Logger:new("Init")
 
 log:info("Kaleva Koetus mod loading...")
 
@@ -38,8 +28,6 @@ function OnModPostInit()
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
-  configure_logger()
-
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then

@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:bind("A5")
+local log = Logger:new("A5")
 
 local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1

@@ -8,7 +8,7 @@ local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua"
 
 local EventBroker = {}
 
-local log = Logger:bind("EventBroker")
+local log = Logger:new("EventBroker")
 
 EventBroker.subscriptions = {}
 
