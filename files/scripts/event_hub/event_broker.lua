@@ -69,7 +69,7 @@ function EventBroker:flush_event_queue()
         end
 
         if subscription.event_type == event_type then
-          print("[EventBroker] Event called from " .. source)
+          print("[EventBroker] Event called from " .. source .. " / event_type: " .. event_type)
           EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
         end
       end

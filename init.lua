@@ -21,20 +21,15 @@ end
 
 function OnModPostInit()
   print("Mod - OnModPostInit()") -- Then this is called for all mods
+end
+
+function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
     ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/overrides/a5_background.png")
   end
 
-  print("Kaleva Koetus mod loaded successfully!")
-end
-
-function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
-  ascensionManager:on_player_spawn(player_entity_id)
-end
-
-function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   eventBroker:init()
   EnemyDetector:init()
 
@@ -51,6 +46,10 @@ function OnWorldInitialized() -- This is called once the game world is initializ
   if info.current > 0 then
     GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
   end
+end
+
+function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
+  ascensionManager:on_player_spawn(player_entity_id)
 end
 
 function OnWorldPreUpdate() -- This is called every time the game is about to start updating the world

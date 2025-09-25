@@ -81,11 +81,9 @@ function AscensionManager:save_progress()
 
   ModSettingSet("kaleva_koetus.ascension_highest", highest_level)
   ModSettingSet("kaleva_koetus.ascension_current", current_level)
-  ModSettingSet("kaleva_koetus.show_ascension_info", true)
 
   ModSettingSetNextValue("kaleva_koetus.ascension_highest", highest_level, false)
   ModSettingSetNextValue("kaleva_koetus.ascension_current", current_level, false)
-  ModSettingSetNextValue("kaleva_koetus.show_ascension_info", true, false)
 
   print("[Kaleva Koetus] Saved progress. Current: " .. current_level .. ", Highest: " .. highest_level)
 end
@@ -150,7 +148,7 @@ function AscensionManager:on_enemy_spawn(payload)
     error("[AscensionManager] No enemy entity in payload!")
     return
   end
-  for _i, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
       if #payload > 0 then
         ascension:on_enemy_spawn(payload)
