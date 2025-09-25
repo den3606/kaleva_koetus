@@ -2,22 +2,30 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-ascension.level = 8
-ascension.name = "Ascension 8"
-ascension.description = "Description of what this ascension level does"
+local TARGET_TAGS = { "tablet", "tablet_stone" }
 
-function ascension:on_activate()
-  print("A8 activated")
+ascension.level = 8
+ascension.name = "石板なし"
+ascension.description = "石板が出現しない"
+
+local function purge_tablets()
+  for _, tag in ipairs(TARGET_TAGS) do
+    local entity_ids = EntityGetWithTag(tag)
+    if entity_ids then
+      for _, entity_id in ipairs(entity_ids) do
+        EntityKill(entity_id)
+      end
+    end
+  end
 end
 
-function ascension:on_update() end
+function ascension:on_activate()
+  print("[Kaleva Koetus A8] Preventing tablet spawns")
+  purge_tablets()
+end
 
-function ascension:on_player_spawn() end
-
-function ascension:on_enemy_spawn() end
-
-function ascension:should_unlock_next()
-  return false
+function ascension:on_update()
+  purge_tablets()
 end
 
 return ascension

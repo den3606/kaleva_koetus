@@ -1,23 +1,56 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-ascension.level = 19
-ascension.name = "Ascension 19"
-ascension.description = "Description of what this ascension level does"
+local REFRESHER_PATHS = {
+  ["data/entities/items/pickup/perk_reroll.xml"] = true,
+  ["data/entities/items/pickup/perk_reroll_right.xml"] = true,
+}
 
-function ascension:on_activate()
-  print("A19 activated")
+ascension.level = 19
+ascension.name = "リフレッシャーなし"
+ascension.description = "ホーリーマウンテンにリフレッシャーが出現しなくなる"
+
+ascension._notified_levels = {}
+
+local function remove_refreshers(player_entity_id)
+  local px, py = EntityGetTransform(player_entity_id)
+  local candidates = EntityGetInRadiusWithTag(px, py, 256, "item_pickup") or {}
+  local removed = false
+
+  for _, entity_id in ipairs(candidates) do
+    local filename = EntityGetFilename(entity_id)
+    if filename and REFRESHER_PATHS[filename] then
+      EntityKill(entity_id)
+      removed = true
+    end
+  end
+
+  if removed then
+    local level_key = math.floor(py / 512)
+    if not ascension._notified_levels[level_key] then
+      GamePrintImportant("No perk refreshers", "The shrine offers no second chances.")
+      ascension._notified_levels[level_key] = true
+    end
+  end
 end
 
-function ascension:on_update() end
+function ascension:on_activate()
+  print("[Kaleva Koetus A19] Perk refreshers disabled")
+end
 
-function ascension:on_player_spawn() end
+function ascension:on_update()
+  local player_entity_id = GetPlayerEntity()
+  if not player_entity_id then
+    return
+  end
 
-function ascension:on_enemy_spawn() end
-
-function ascension:should_unlock_next()
-  return false
+  local px, py = EntityGetTransform(player_entity_id)
+  local biome_name = BiomeMapGetName(px, py)
+  if biome_name and string.find(biome_name, "temple", 1, true) then
+    remove_refreshers(player_entity_id)
+  end
 end
 
 return ascension

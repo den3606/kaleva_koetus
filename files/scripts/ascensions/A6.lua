@@ -1,23 +1,59 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+
+local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-ascension.level = 6
-ascension.name = "Ascension 6"
-ascension.description = "Description of what this ascension level does"
+local LEVITATION_SCALE = 0.75
 
-function ascension:on_activate()
-  print("A6 activated")
+ascension.level = 6
+ascension.name = "上昇力減少"
+ascension.description = "上昇ゲージが75%になる"
+
+local function scale_levitation(player_entity_id)
+  local processed_tag = AscensionTags.A6 .. "player"
+  if EntityHasTag(player_entity_id, processed_tag) then
+    return
+  end
+
+  local character_data_component = EntityGetFirstComponent(player_entity_id, "CharacterDataComponent")
+  if not character_data_component then
+    print("[Kaleva Koetus A6] CharacterDataComponent not found on player")
+    return
+  end
+
+  local ok_max, current_max = pcall(ComponentGetValue2, character_data_component, "fly_time_max")
+  if not ok_max then
+    print("[Kaleva Koetus A6] Failed to read fly_time_max: " .. tostring(current_max))
+    return
+  end
+
+  local new_max = current_max * LEVITATION_SCALE
+  ComponentSetValue2(character_data_component, "fly_time_max", new_max)
+
+  local ok_current, current_time = pcall(ComponentGetValue2, character_data_component, "fly_time")
+  if ok_current and current_time > new_max then
+    ComponentSetValue2(character_data_component, "fly_time", new_max)
+  end
+
+  EntityAddTag(player_entity_id, processed_tag)
+
+  print(
+    string.format(
+      "[Kaleva Koetus A6] Levitation capacity scaled: fly_time_max %.2f -> %.2f",
+      current_max,
+      new_max
+    )
+  )
 end
 
-function ascension:on_update() end
+function ascension:on_activate()
+  print(string.format("[Kaleva Koetus A6] Levitation reduced to %.0f%%", LEVITATION_SCALE * 100))
+end
 
-function ascension:on_player_spawn() end
-
-function ascension:on_enemy_spawn() end
-
-function ascension:should_unlock_next()
-  return false
+function ascension:on_player_spawn(player_entity_id)
+  scale_levitation(player_entity_id)
 end
 
 return ascension
