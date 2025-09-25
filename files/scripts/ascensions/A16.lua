@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A16")
 
 local DRY_INTERVAL_FRAMES = 30
 local CONVERT_RADIUS = 72
@@ -51,7 +54,7 @@ local function is_in_mountain(biome_name)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A16] Mountain water reduction enabled")
+  log:info("Mountain water reduction enabled")
   self._next_dry_frame = GameGetFrameNum()
 end
 
@@ -80,6 +83,7 @@ function ascension:on_update()
   local level_key = math.floor(py / 512)
   if not self._notified_levels[level_key] then
     GamePrintImportant("Holy Mountain dries up", "The pool is only half-full now...")
+    log:debug("Holy Mountain water reduced for level %d", level_key)
     self._notified_levels[level_key] = true
   end
 

@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
@@ -5,6 +6,8 @@ local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A11")
 
 local DUPLICATED_TAG = AscensionTags.A11 .. "duplicated"
 local SPAWN_CHANCE = 0.2
@@ -24,12 +27,12 @@ local function duplicate_enemy(enemy_entity_id, x, y)
   local duplicate_id = EntityLoad(entity_filename, x + offset_x, y + offset_y)
   if duplicate_id then
     EntityAddTag(duplicate_id, DUPLICATED_TAG)
-    print(string.format("[Kaleva Koetus A11] Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id))
+    log:debug("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
   end
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A11] Increasing enemy spawns")
+  log:info("Increasing enemy spawns")
 end
 
 function ascension:on_enemy_spawn(payload)

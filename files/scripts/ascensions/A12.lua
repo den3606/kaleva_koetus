@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A12")
 
 local FRAMES_PER_SECOND = 60
 local LIMIT_SECONDS = 90 * 60 -- 1時間30分
@@ -19,7 +22,7 @@ ascension._limit_reached = false
 
 function ascension:on_activate()
   self._start_frame = GameGetFrameNum()
-  print("[Kaleva Koetus A12] Time limit engaged")
+  log:info("Time limit engaged (%.0f minutes)", LIMIT_SECONDS / 60)
 end
 
 local function apply_damage(self, current_frame)

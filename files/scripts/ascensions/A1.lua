@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 local EventTypes = EventDefs.Types
@@ -5,13 +6,15 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
+local log = Logger:bind("A1")
+
 ascension.level = 1
 ascension.name = "敵HP上昇"
 ascension.description = "敵のHPが2倍に増加"
 ascension.hp_multiplier = 2
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A1] Enemy HP increase - Active (x" .. self.hp_multiplier .. ")")
+  log:info("Enemy HP increase active (x%d)", self.hp_multiplier)
 end
 
 function ascension:on_enemy_spawn(payload)
@@ -22,7 +25,7 @@ function ascension:on_enemy_spawn(payload)
 
   local tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
   if EntityHasTag(enemy_entity, tag_name) then
-    print("[Kaleva Koetus A1] Entity " .. enemy_entity .. " already processed, skipping")
+    log:debug("Entity %d already processed, skipping", enemy_entity)
     return
   end
 
@@ -39,11 +42,9 @@ function ascension:on_enemy_spawn(payload)
 
     EntityAddTag(enemy_entity, tag_name)
 
-    print(
-      string.format("[Kaleva Koetus A1] Entity %d: HP %.1f->%.1f, MaxHP %.1f->%.1f", enemy_entity, current_hp, new_hp, max_hp, new_max_hp)
-    )
+    log:debug("Entity %d HP %.1f -> %.1f, MaxHP %.1f -> %.1f", enemy_entity, current_hp, new_hp, max_hp, new_max_hp)
   else
-    print("[Kaleva Koetus A1] No DamageModelComponent found for entity " .. enemy_entity)
+    log:warn("No DamageModelComponent found for entity %d", enemy_entity)
   end
 end
 

@@ -1,5 +1,7 @@
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
+local Logger = KalevaLogger
+
 -- Load Event Handler module
 local EventPublisher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_publisher.lua")
 local EventDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_dispatcher.lua")
@@ -9,10 +11,12 @@ local EventBroker = {}
 
 EventBroker.subscriptions = {}
 
+local log = Logger:bind("EventBroker")
+
 function EventBroker:init()
   -- Check if already initialized
   if GlobalsGetValue("kaleva_event_broker_initialized", "0") == "1" then
-    print("[EventBroker] Already initialized, skipping")
+    log:debug("Already initialized, skipping")
     return
   end
 
@@ -69,7 +73,7 @@ function EventBroker:flush_event_queue()
         end
 
         if subscription.event_type == event_type then
-          print("[EventBroker] Event called from " .. source .. " / event_type: " .. event_type)
+          log:debug("Event called from %s / type: %s", source, event_type)
           EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
         end
       end

@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A17")
 
 local RESISTANCE_FIELDS = {
   "fire_resistance",
@@ -61,7 +64,7 @@ local function remove_protection_effects(player_entity_id)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A17] Player resistances removed")
+  log:info("Player resistances removed")
 end
 
 function ascension:on_player_spawn(player_entity_id)

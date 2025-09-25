@@ -1,9 +1,12 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A7")
 
 local MATERIAL_SCALE = 0.75
 local PROCESS_INTERVAL_FRAMES = 60
@@ -28,7 +31,7 @@ local function scale_inventory(entity_id)
 
   local ok_counts, counts = pcall(ComponentGetValue2, inventory_component, "count_per_material_type")
   if not ok_counts then
-    print("[Kaleva Koetus A7] Failed to read material inventory: " .. tostring(counts))
+    log:error("Failed to read material inventory: %s", tostring(counts))
     EntityAddTag(entity_id, PROCESSED_TAG)
     return
   end
@@ -44,9 +47,9 @@ local function scale_inventory(entity_id)
   if adjusted then
     local ok_set, err = pcall(ComponentSetValue2, inventory_component, "count_per_material_type", counts)
     if not ok_set then
-      print("[Kaleva Koetus A7] Failed to update material inventory: " .. tostring(err))
+      log:error("Failed to update material inventory: %s", tostring(err))
     else
-      print(string.format("[Kaleva Koetus A7] Scaled potion %d contents to %.0f%%", entity_id, MATERIAL_SCALE * 100))
+      log:debug("Scaled potion %d contents to %.0f%%", entity_id, MATERIAL_SCALE * 100)
     end
   end
 
@@ -65,7 +68,7 @@ local function process_tagged_entities()
 end
 
 function ascension:on_activate()
-  print(string.format("[Kaleva Koetus A7] Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100))
+  log:info("Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100)
 end
 
 function ascension:on_player_spawn(_player_entity_id)

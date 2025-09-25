@@ -1,8 +1,11 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
 local TARGET_TAGS = { "tablet", "tablet_stone" }
+
+local log = Logger:bind("A8")
 
 ascension.level = 8
 ascension.name = "石板なし"
@@ -20,7 +23,7 @@ local function purge_tablets()
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A8] Preventing tablet spawns")
+  log:info("Preventing tablet spawns")
   purge_tablets()
 end
 

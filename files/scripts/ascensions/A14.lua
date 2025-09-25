@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A14")
 
 local EFFECT_TAG = "kaleva_a14_effect"
 local EFFECT_POOL = {
@@ -54,7 +57,7 @@ local function pick_effect_for_biome(biome_name)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A14] Biome effects enforced")
+  log:info("Biome effects enforced")
 end
 
 function ascension:on_update()
@@ -76,6 +79,7 @@ function ascension:on_update()
   end
 
   apply_effect(player_entity_id, biome_name, self._biome_effect_map[biome_name])
+  log:debug("Applied biome effect %s", self._biome_effect_map[biome_name].effect)
 end
 
 return ascension

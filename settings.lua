@@ -81,7 +81,7 @@ function ModSettingsGui(gui, in_main_menu)
 end
 
 -- Define mod settings
-mod_settings_version = 1
+mod_settings_version = 2
 mod_settings = {
   {
     category_id = "ascension_settings",
@@ -101,6 +101,20 @@ mod_settings = {
         ui_name = "Show Ascension Info",
         ui_description = "Display current ascension level and effects during gameplay",
         value_default = true,
+        scope = MOD_SETTING_SCOPE_RUNTIME,
+      },
+      {
+        id = "log_level",
+        ui_name = "Log Level",
+        ui_description = "Control verbosity of Kaleva Koetus logs",
+        value_default = "INFO",
+        values = {
+          { "ERROR", "Error" },
+          { "WARN", "Warning" },
+          { "INFO", "Info" },
+          { "DEBUG", "Debug" },
+          { "TRACE", "Trace" },
+        },
         scope = MOD_SETTING_SCOPE_RUNTIME,
       },
       {

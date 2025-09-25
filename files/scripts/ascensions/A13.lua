@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
@@ -8,11 +9,13 @@ ascension.description = "開始時にきのこシフトが発生"
 
 ascension._shift_triggered = false
 
+local log = Logger:bind("A13")
+
 local function call_fungal_shift(player_entity_id)
   local x, y = EntityGetTransform(player_entity_id)
   local ok, result = pcall(dofile, "data/scripts/magic/fungal_shift.lua")
   if not ok then
-    print("[Kaleva Koetus A13] Failed to load fungal_shift.lua: " .. tostring(result))
+    log:error("Failed to load fungal_shift.lua: %s", tostring(result))
     return
   end
 
@@ -22,18 +25,18 @@ local function call_fungal_shift(player_entity_id)
   end
 
   if type(shift_fn) ~= "function" then
-    print("[Kaleva Koetus A13] fungal_shift.lua did not return a callable function")
+    log:error("fungal_shift.lua did not return a callable function")
     return
   end
 
   local success, err = pcall(shift_fn, player_entity_id, x, y)
   if not success then
-    print("[Kaleva Koetus A13] fungal_shift invocation failed: " .. tostring(err))
+    log:error("fungal_shift invocation failed: %s", tostring(err))
   end
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A13] Fungal shift scheduled on spawn")
+  log:info("Fungal shift scheduled on spawn")
 end
 
 function ascension:on_player_spawn(player_entity_id)

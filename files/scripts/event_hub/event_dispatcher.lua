@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
@@ -5,6 +6,8 @@ local EventArgs = EventDefs.Args
 local EventTypes = EventDefs.Types
 
 local EventDispatcher = {}
+
+local log = Logger:bind("EventDispatcher")
 
 local function validate_event_type(event_type)
   for _, def_type in pairs(EventTypes) do
@@ -19,8 +22,7 @@ end
 local function validate_event_args(event_type, event_args, expected_args)
   -- Check argument count
   if #event_args < #expected_args then
-    print("[Kaleva Koetus] event_args: " .. json.encode(event_args))
-    print("[Kaleva Koetus] expected_args: " .. json.encode(expected_args))
+    log:error("Payload mismatch for %s. args=%s expected=%s", event_type, json.encode(event_args), json.encode(expected_args))
     GamePrint("[Kaleva Koetus] Event validation error. Please report to mod developer: " .. event_type)
     error("[Kaleva Koetus] Event validation error: " .. event_type)
   end
@@ -31,9 +33,13 @@ local function validate_event_args(event_type, event_args, expected_args)
 
     if type(actual_value) ~= expected_type then
       GamePrint("[Kaleva Koetus] Event type validation error. Please report to mod developer: " .. event_type)
-      print(actual_value)
-      print("[Kaleva Koetus] actual_value: " .. type(actual_value))
-      print("[Kaleva Koetus] expected_type: " .. expected_type)
+      log:error(
+        "Event type mismatch for %s. value=%s actual_type=%s expected=%s",
+        event_type,
+        tostring(actual_value),
+        type(actual_value),
+        expected_type
+      )
       error("[Kaleva Koetus] Event type validation error: " .. event_type)
     end
   end
@@ -45,7 +51,7 @@ local function emit(event_type, callback_object, payload)
   if callback_object[handler_name] then
     callback_object[handler_name](callback_object, payload)
   else
-    print("[Kaleva Koetus] Handler can not call: " .. handler_name)
+    log:warn("Handler not implemented: %s", handler_name)
   end
 end
 

@@ -1,4 +1,8 @@
+local Logger = KalevaLogger
+
 local EnemyDetector = {}
+
+local log = Logger:bind("EnemyDetector")
 
 -- Private boss activation check functions
 local function is_active_boss_centipede(entity_id)
@@ -59,7 +63,7 @@ local function is_active(entity_id)
       -- Found a boss, use its specific activation check
       local is_ready = config.is_active(entity_id)
       if is_ready then
-        print("[EnemyDetector] Boss ready for processing: " .. config.tag)
+        log:debug("Boss ready for processing: %s", config.tag)
       end
       return is_ready
     end
@@ -71,7 +75,7 @@ end
 
 -- Initialize enemy detector
 function EnemyDetector:init()
-  print("[EnemyDetector] Initialized (stateless mode)")
+  log:debug("Initialized (stateless mode)")
 end
 
 -- Get all unprocessed enemies (enemies without ascension tags)

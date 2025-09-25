@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A15")
 
 local MAX_WANDS = 3
 
@@ -74,11 +77,12 @@ local function enforce_wand_limit()
 
   if dropped_any then
     GamePrint("You can only juggle three wands now!")
+    log:debug("Excess wands dropped to the ground")
   end
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A15] Limiting wand slots to " .. MAX_WANDS)
+  log:info("Limiting wand slots to %d", MAX_WANDS)
 end
 
 function ascension:on_player_spawn(_player_entity_id)

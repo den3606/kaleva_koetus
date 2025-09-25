@@ -1,6 +1,9 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A2")
 
 ascension.level = 2
 ascension.name = "Ascension 2"
@@ -26,11 +29,11 @@ local function pick_random_two(ids, seed_a, seed_b)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A2] Decrease card/wand - Active")
+  log:info("Shop inventory reduction active")
 end
 
 function ascension:on_shop_card_spawn(payload)
-  print("[Kaleva Koetus A2] Delete 2 shop cards")
+  log:debug("Removing two shop cards")
 
   local entity_ids = payload[1]
   local x = tonumber(payload[2])
@@ -46,7 +49,7 @@ function ascension:on_shop_card_spawn(payload)
 end
 
 function ascension:on_shop_wand_spawn(payload)
-  print("[Kaleva Koetus A2] Delete 1 shop wand")
+  log:debug("Removing one shop wand")
 
   local entity_ids = payload[1]
   local x = tonumber(payload[2])

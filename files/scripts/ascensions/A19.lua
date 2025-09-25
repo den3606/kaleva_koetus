@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
@@ -13,6 +14,8 @@ ascension.name = "リフレッシャーなし"
 ascension.description = "ホーリーマウンテンにリフレッシャーが出現しなくなる"
 
 ascension._notified_levels = {}
+
+local log = Logger:bind("A19")
 
 local function remove_refreshers(player_entity_id)
   local px, py = EntityGetTransform(player_entity_id)
@@ -32,12 +35,13 @@ local function remove_refreshers(player_entity_id)
     if not ascension._notified_levels[level_key] then
       GamePrintImportant("No perk refreshers", "The shrine offers no second chances.")
       ascension._notified_levels[level_key] = true
+      log:debug("Removed perk refresher for level %d", level_key)
     end
   end
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A19] Perk refreshers disabled")
+  log:info("Perk refreshers disabled")
 end
 
 function ascension:on_update()

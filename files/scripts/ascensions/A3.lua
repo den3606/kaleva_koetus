@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
@@ -5,6 +6,8 @@ local EventTypes = EventDefs.Types
 local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A3")
 
 ascension.level = 3
 ascension.name = "Ascension 3"
@@ -18,7 +21,7 @@ local function to_entity_health(hit_points)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A3] Reduced starting HP active (set to " .. TARGET_HP .. ")")
+  log:info("Reduced starting HP active (set to %d)", TARGET_HP)
 end
 
 function ascension:on_player_spawn(player_entity_id)
@@ -41,14 +44,12 @@ function ascension:on_player_spawn(player_entity_id)
 
   EntityAddTag(player_entity_id, tag_name)
 
-  print(
-    string.format(
-      "[Kaleva Koetus A3] Player HP adjusted: hp %.2f -> %.2f, max_hp %.2f -> %.2f",
-      current_hp,
-      target_health,
-      current_max_hp,
-      target_health
-    )
+  log:debug(
+    "Player HP adjusted %.2f -> %.2f, MaxHP %.2f -> %.2f",
+    current_hp,
+    target_health,
+    current_max_hp,
+    target_health
   )
 end
 

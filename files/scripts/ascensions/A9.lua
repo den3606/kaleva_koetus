@@ -1,8 +1,11 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
 local MIN_PERK_COUNT = 1
+
+local log = Logger:bind("A9")
 
 ascension.level = 9
 ascension.name = "パーク数減少"
@@ -26,7 +29,7 @@ end
 function ascension:on_activate()
   self._target_perk_count = determine_target_perk_count()
   enforce_perk_count(self._target_perk_count)
-  print(string.format("[Kaleva Koetus A9] Temple perks limited to %d", self._target_perk_count))
+  log:info("Temple perks limited to %d", self._target_perk_count)
 end
 
 function ascension:on_update()

@@ -1,6 +1,9 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A5")
 
 local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1
@@ -19,14 +22,14 @@ local function clamp_slots(original_slots)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A5] Spell inventory slot reduction active (-3)")
+  log:info("Spell inventory slot reduction active (-%d)", SLOT_REDUCTION)
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  print("[Kaleva Koetus A5] on_player_spawn")
+  log:debug("Adjusting spell slots for player")
   local inventory_component = EntityGetFirstComponent(player_entity_id, "Inventory2Component")
   if inventory_component == nil then
-    print("[Kaleva Koetus A5] Player inventory component missing on spawn")
+    log:warn("Player inventory component missing on spawn")
     return
   end
 
@@ -39,7 +42,7 @@ function ascension:on_player_spawn(player_entity_id)
 
   ComponentSetValue2(inventory_component, "full_inventory_slots_x", target_slots)
 
-  print(string.format("[Kaleva Koetus A5] Player full inventory slots reduced: %d -> %d", current_slots, target_slots))
+  log:debug("Full inventory slots reduced %d -> %d", current_slots, target_slots)
 end
 
 return ascension

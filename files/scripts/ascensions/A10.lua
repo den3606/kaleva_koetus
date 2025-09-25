@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
@@ -5,6 +6,8 @@ dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
 local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A10")
 
 local PROCESSED_TAG = AscensionTags.A10 .. "tracked"
 local DURABILITY_VARIABLE = "kaleva_a10_durability"
@@ -113,7 +116,7 @@ local function process_wands()
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A10] Wand durability enabled")
+  log:info("Wand durability enabled")
   self._next_process_frame = GameGetFrameNum()
 end
 
