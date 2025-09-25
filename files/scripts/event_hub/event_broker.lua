@@ -1,6 +1,6 @@
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
-local Logger = KalevaLogger
+local Logger = KalevaLogger or dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local EventPublisher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_publisher.lua")
 local EventDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_dispatcher.lua")

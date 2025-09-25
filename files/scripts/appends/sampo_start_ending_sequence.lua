@@ -11,7 +11,7 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua"
 local EventTypes = EventDefs.Types
 local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 
-local Logger = KalevaLogger
+local Logger = KalevaLogger or dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local log = Logger:bind("Victory")
 
 log:info("Victory detected - Sampo ending sequence started")
