@@ -1,7 +1,10 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A20")
 
 local AIR_MATERIAL = CellFactory_GetType("air")
 
@@ -13,6 +16,7 @@ local BOSS_HP_MULTIPLIER = 2.5
 ascension.level = 20
 ascension.name = "最終試練"
 ascension.description = "コルミが5オーブ状態で出現し、山頂が崩壊する"
+ascension.tag_name = "kaleva_a20_buffed"
 
 ascension._mountain_broken = false
 ascension._boss_buffed = {}
@@ -36,6 +40,7 @@ local function break_mountain_top()
   })
 
   GamePrintImportant("The holy mountain trembles", "The summit collapses under the strain!")
+  log:info("Holy Mountain summit collapsed")
 end
 
 local function buff_boss(enemy_entity_id)
@@ -54,14 +59,15 @@ local function buff_boss(enemy_entity_id)
   end
 
   AddNewInternalVariable(enemy_entity_id, "kaleva_a20_orb_count", "value_int", 5)
-  EntityAddTag(enemy_entity_id, "kaleva_a20_buffed")
+  EntityAddTag(enemy_entity_id, ascension.tag_name)
   ascension._boss_buffed[enemy_entity_id] = true
 
   GamePrintImportant("Kolmi awakens empowered", "The final trial begins!")
+  log:info("Buffed Kolmi (entity %d) with %d× HP", enemy_entity_id, BOSS_HP_MULTIPLIER)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A20] Final trial engaged")
+  log:info("Final trial engaged")
   GlobalsSetValue("TEMPLE_BOSS_ORB_COUNT", "5")
 end
 

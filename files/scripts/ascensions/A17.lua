@@ -1,7 +1,13 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
+local AscensionTags = EventDefs.Tags
+
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A17")
 
 local RESISTANCE_FIELDS = {
   "fire_resistance",
@@ -32,6 +38,7 @@ local NEGATED_EFFECTS = {
 ascension.level = 17
 ascension.name = "耐性なし"
 ascension.description = "プレイヤーの耐性がすべて剥がれる"
+ascension.tag_name = AscensionTags.A17 .. "_stripped"
 
 local function strip_resistances(player_entity_id)
   local damage_model = EntityGetFirstComponentIncludingDisabled(player_entity_id, "DamageModelComponent")
@@ -60,13 +67,18 @@ local function remove_protection_effects(player_entity_id)
   end
 end
 
+local function purge_resistances(player_entity_id)
+  strip_resistances(player_entity_id)
+  remove_protection_effects(player_entity_id)
+  EntityAddTag(player_entity_id, ascension.tag_name)
+end
+
 function ascension:on_activate()
-  print("[Kaleva Koetus A17] Player resistances removed")
+  log:info("Player resistances removed")
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  strip_resistances(player_entity_id)
-  remove_protection_effects(player_entity_id)
+  purge_resistances(player_entity_id)
 end
 
 function ascension:on_update()
@@ -75,8 +87,7 @@ function ascension:on_update()
     return
   end
 
-  strip_resistances(player_entity_id)
-  remove_protection_effects(player_entity_id)
+  purge_resistances(player_entity_id)
 end
 
 return ascension

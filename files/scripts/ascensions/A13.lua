@@ -1,10 +1,17 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+
+local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A13")
 
 ascension.level = 13
 ascension.name = "きのこシフト"
 ascension.description = "開始時にきのこシフトが発生"
+ascension.tag_name = AscensionTags.A13 .. "_shifted"
 
 ascension._shift_triggered = false
 
@@ -12,7 +19,7 @@ local function call_fungal_shift(player_entity_id)
   local x, y = EntityGetTransform(player_entity_id)
   local ok, result = pcall(dofile, "data/scripts/magic/fungal_shift.lua")
   if not ok then
-    print("[Kaleva Koetus A13] Failed to load fungal_shift.lua: " .. tostring(result))
+    log:error("Failed to load fungal_shift.lua: %s", tostring(result))
     return
   end
 
@@ -22,28 +29,29 @@ local function call_fungal_shift(player_entity_id)
   end
 
   if type(shift_fn) ~= "function" then
-    print("[Kaleva Koetus A13] fungal_shift.lua did not return a callable function")
+    log:error("fungal_shift.lua did not return a callable function")
     return
   end
 
   local success, err = pcall(shift_fn, player_entity_id, x, y)
   if not success then
-    print("[Kaleva Koetus A13] fungal_shift invocation failed: " .. tostring(err))
+    log:error("fungal_shift invocation failed: %s", tostring(err))
   end
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A13] Fungal shift scheduled on spawn")
+  log:info("Fungal shift scheduled on spawn")
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  if self._shift_triggered then
+  if self._shift_triggered or EntityHasTag(player_entity_id, ascension.tag_name) then
     return
   end
 
   call_fungal_shift(player_entity_id)
   GamePrint("The air shimmers... a fungal shift occurs!")
   self._shift_triggered = true
+  EntityAddTag(player_entity_id, ascension.tag_name)
 end
 
 return ascension

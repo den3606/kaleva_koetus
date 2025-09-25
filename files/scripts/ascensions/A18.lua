@@ -1,13 +1,20 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
+local AscensionTags = EventDefs.Tags
+
 local ascension = setmetatable({}, { __index = AscensionBase })
+
+local log = Logger:bind("A18")
 
 local MAX_ITEMS = 1
 
 ascension.level = 18
 ascension.name = "アイテム枠減少"
 ascension.description = "手持ちアイテム枠が1つ減少する"
+ascension.tag_name = AscensionTags.A18 .. "_limited"
 
 local function get_inventory_full(player_entity_id)
   local children = EntityGetAllChildren(player_entity_id)
@@ -67,11 +74,14 @@ local function enforce_item_limit()
 
   if dropped then
     GamePrint("Your pack feels cramped. Excess items spill out!")
+    log:debug("Dropped %d excess items", #items - MAX_ITEMS)
   end
+
+  EntityAddTag(player_entity_id, ascension.tag_name)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A18] Item slots limited to " .. MAX_ITEMS)
+  log:info("Item slots limited to %d", MAX_ITEMS)
 end
 
 function ascension:on_player_spawn(_player_entity_id)

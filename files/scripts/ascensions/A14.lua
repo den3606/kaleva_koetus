@@ -1,9 +1,11 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local EFFECT_TAG = "kaleva_a14_effect"
+local log = Logger:bind("A14")
+
 local EFFECT_POOL = {
   { effect = "MOVEMENT_FASTER", label = "加速" },
   { effect = "MOVEMENT_SLOWER", label = "鈍足" },
@@ -17,6 +19,7 @@ local EFFECT_POOL = {
 ascension.level = 14
 ascension.name = "エリア効果矯正付与"
 ascension.description = "各バイオームに必ず何らかの効果が付与される"
+ascension.tag_name = "kaleva_a14_effect"
 
 ascension._biome_effect_map = {}
 ascension._current_biome = nil
@@ -28,7 +31,7 @@ local function clear_effects(player_entity_id)
   end
 
   for _, component_id in ipairs(components) do
-    if ComponentHasTag(component_id, EFFECT_TAG) then
+    if ComponentHasTag(component_id, ascension.tag_name) then
       EntityRemoveComponent(player_entity_id, component_id)
     end
   end
@@ -40,10 +43,11 @@ local function apply_effect(player_entity_id, biome_name, effect_def)
   EntityAddComponent2(player_entity_id, "GameEffectComponent", {
     effect = effect_def.effect,
     frames = 0,
-    tags = EFFECT_TAG,
+    tags = ascension.tag_name,
   })
 
   GamePrintImportant("Biome Effect: " .. biome_name, string.format("%sの加護/災い", effect_def.label))
+  log:debug("Applied biome effect %s to %s", effect_def.effect, biome_name)
 end
 
 local function pick_effect_for_biome(biome_name)
@@ -54,7 +58,7 @@ local function pick_effect_for_biome(biome_name)
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A14] Biome effects enforced")
+  log:info("Biome effects enforced")
 end
 
 function ascension:on_update()

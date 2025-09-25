@@ -1,3 +1,4 @@
+local Logger = KalevaLogger
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
@@ -6,7 +7,8 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local PROCESSED_TAG = AscensionTags.A10 .. "tracked"
+local log = Logger:bind("A10")
+
 local DURABILITY_VARIABLE = "kaleva_a10_durability"
 local DURABILITY_MAX_VARIABLE = "kaleva_a10_durability_max"
 local LAST_MANA_VARIABLE = "kaleva_a10_last_mana"
@@ -19,6 +21,7 @@ local PROCESS_INTERVAL_FRAMES = 10
 ascension.level = 10
 ascension.name = "耐久値導入"
 ascension.description = "杖に耐久値が設定される"
+ascension.tag_name = AscensionTags.A10 .. "_tracked"
 
 ascension._next_process_frame = nil
 
@@ -38,7 +41,7 @@ local function ensure_variables(wand_entity_id, ability_component)
   AddNewInternalVariable(wand_entity_id, BASE_MANA_MAX_VARIABLE, "value_float", mana_max)
   AddNewInternalVariable(wand_entity_id, BASE_CHARGE_SPEED_VARIABLE, "value_float", mana_charge_speed)
 
-  EntityAddTag(wand_entity_id, PROCESSED_TAG)
+  EntityAddTag(wand_entity_id, ascension.tag_name)
 
   return max_durability
 end
@@ -113,7 +116,7 @@ local function process_wands()
 end
 
 function ascension:on_activate()
-  print("[Kaleva Koetus A10] Wand durability enabled")
+  log:info("Wand durability enabled")
   self._next_process_frame = GameGetFrameNum()
 end
 
