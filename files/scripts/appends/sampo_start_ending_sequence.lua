@@ -12,7 +12,7 @@ local EventTypes = EventDefs.Types
 local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("Victory")
+local log = Logger:new("sampo_start_ending_sequence.lua")
 
-log:info("Victory detected - Sampo ending sequence started")
+log:debug("Victory detected - Sampo ending sequence started")
 EventBroker:publish_event_sync("sampo_start_ending_sequence", EventTypes.VICTORY)

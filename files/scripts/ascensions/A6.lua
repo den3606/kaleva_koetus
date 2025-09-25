@@ -6,13 +6,13 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A6")
+local log = Logger:new("A6.lua")
 
-local LEVITATION_SCALE = 0.75
+local LEVITATION_SCALE = 0.7
 
 ascension.level = 6
 ascension.name = "上昇力減少"
-ascension.description = "上昇ゲージが75%になる"
+ascension.description = "上昇ゲージが70%になる"
 ascension.tag_name = AscensionTags.A6 .. "_player"
 
 local function scale_levitation(player_entity_id)
@@ -26,19 +26,14 @@ local function scale_levitation(player_entity_id)
     return
   end
 
-  local ok_max, current_max = pcall(ComponentGetValue2, character_data_component, "fly_time_max")
-  if not ok_max then
+  local current_max = ComponentGetValue2(character_data_component, "fly_time_max")
+  if not current_max then
     log:error("Failed to read fly_time_max: %s", tostring(current_max))
     return
   end
 
   local new_max = current_max * LEVITATION_SCALE
   ComponentSetValue2(character_data_component, "fly_time_max", new_max)
-
-  local ok_current, current_time = pcall(ComponentGetValue2, character_data_component, "fly_time")
-  if ok_current and current_time > new_max then
-    ComponentSetValue2(character_data_component, "fly_time", new_max)
-  end
 
   EntityAddTag(player_entity_id, ascension.tag_name)
 

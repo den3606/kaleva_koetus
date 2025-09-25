@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A19")
+local log = Logger:new("A19.lua")
 
 local REFRESHER_PATHS = {
   ["data/entities/items/pickup/perk_reroll.xml"] = true,

@@ -5,13 +5,12 @@ local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local log = Logger:new("init.lua")
 
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
-
-local log = Logger:new("Init")
 
 log:info("Kaleva Koetus mod loading...")
 
@@ -25,15 +24,14 @@ end
 
 function OnModPostInit()
   log:debug("Mod - OnModPostInit()")
-end
-
-function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
     ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/overrides/a5_background.png")
   end
+end
 
+function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   eventBroker:init()
   EnemyDetector:init()
 
@@ -80,7 +78,7 @@ end
 function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
 end
 
--- Append to sampo ending sequence for victory detection
+-- append files
 ModLuaFileAppend(
   "data/entities/animals/boss_centipede/ending/sampo_start_ending_sequence.lua",
   "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
@@ -88,3 +86,5 @@ ModLuaFileAppend(
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
+ModLuaFileAppend("data/scripts/items/potion.lua", "mods/kaleva_koetus/files/scripts/appends/potion.lua")
+ModLuaFileAppend("data/scripts/items/potion_starting.lua", "mods/kaleva_koetus/files/scripts/appends/potion_starting.lua")

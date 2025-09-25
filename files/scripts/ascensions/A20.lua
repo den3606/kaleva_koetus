@@ -4,7 +4,7 @@ dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A20")
+local log = Logger:new("A20.lua")
 
 local AIR_MATERIAL = CellFactory_GetType("air")
 

@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A12")
+local log = Logger:new("A12.lua")
 
 local FRAMES_PER_SECOND = 60
 local LIMIT_SECONDS = 90 * 60 -- 1時間30分

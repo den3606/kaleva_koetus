@@ -4,7 +4,7 @@ dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A14")
+local log = Logger:new("A14.lua")
 
 local EFFECT_POOL = {
   { effect = "MOVEMENT_FASTER", label = "加速" },

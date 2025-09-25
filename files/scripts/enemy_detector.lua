@@ -2,7 +2,7 @@ local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local EnemyDetector = {}
 
-local log = Logger:new("EnemyDetector")
+local log = Logger:new("enemy_detector.lua")
 
 -- Private boss activation check functions
 local function is_active_boss_centipede(entity_id)

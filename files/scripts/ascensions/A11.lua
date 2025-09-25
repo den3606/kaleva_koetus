@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A11")
+local log = Logger:new("A11.lua")
 
 local SPAWN_CHANCE = 0.2
 

@@ -7,12 +7,12 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A1")
+local log = Logger:new("A1.lua")
 
 ascension.level = 1
 ascension.name = "敵HP上昇"
-ascension.description = "敵のHPが2倍に増加"
-ascension.hp_multiplier = 2
+ascension.description = "敵のHPが1,5倍に増加"
+ascension.hp_multiplier = 1.5
 ascension.tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
 
 function ascension:on_activate()

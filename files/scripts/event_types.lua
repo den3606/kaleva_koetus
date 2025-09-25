@@ -8,6 +8,7 @@ local EventTypes = {
   SHOP_WAND_SPAWN = "shop_wand_spawn", -- wand spawned in temple shop
   VICTORY = "victory", -- victory condition met (sampo ending)
   NECROMANCER_SPAWN = "necromancer_spawn",
+  POTION_GENERATED = "potion_generated",
 }
 
 -- Event argument definitions (for handlers)
@@ -33,6 +34,9 @@ local EventArgs = {
     { name = "y", type = "number" },
   }, -- No arguments needed for victory events
   [EventTypes.VICTORY] = {}, -- No arguments needed for victory events
+  [EventTypes.POTION_GENERATED] = {
+    { name = "entity_id", type = "number" },
+  },
 }
 
 local AscensionTags = {

@@ -2,7 +2,7 @@ local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local AscensionManager = {}
 
-local log = Logger:new("AscensionManager")
+local log = Logger:new("ascension_manager.lua")
 
 AscensionManager.MAX_LEVEL = 20
 
@@ -149,7 +149,7 @@ end
 
 function AscensionManager:on_enemy_spawn(payload)
   if #payload == 0 then
-    error("[AscensionManager] No enemy entity in payload!")
+    log:error("No enemy entity in payload!")
     return
   end
 
@@ -162,7 +162,7 @@ end
 
 function AscensionManager:on_shop_card_spawn(event_args)
   if #event_args == 0 then
-    error("[AscensionManager] No enemy entity in event_args!")
+    log:error("No enemy entity in event_args!")
     return
   end
 
@@ -175,7 +175,7 @@ end
 
 function AscensionManager:on_shop_wand_spawn(event_args)
   if #event_args == 0 then
-    error("[AscensionManager] No enemy entity in event_args!")
+    log:error("No enemy entity in event_args!")
     return
   end
 
@@ -188,13 +188,26 @@ end
 
 function AscensionManager:on_necromancer_spawn(event_args)
   if #event_args == 0 then
-    error("[AscensionManager] No necromancer positions in event_args!")
+    log:error("No necromancer positions in event_args!")
     return
   end
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_necromancer_spawn then
       ascension:on_necromancer_spawn(event_args)
+    end
+  end
+end
+
+function AscensionManager:on_potion_generated(event_args)
+  if #event_args == 0 then
+    log:error("No necromancer positions in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_potion_generated then
+      ascension:on_potion_generated(event_args)
     end
   end
 end
