@@ -106,3 +106,4 @@ resources/FMOD/.*
 
 .claude
 .agents
+files/scripts/lib/jsonlua/
