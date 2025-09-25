@@ -116,12 +116,7 @@ function Logger:set_level(level)
     return true
   end
 
-  print(string.format(
-    "%s[WARN][Logger] Unknown log level '%s', keep %s",
-    self._prefix,
-    tostring(level),
-    self._level
-  ))
+  print(string.format("%s[WARN][Logger] Unknown log level '%s', keep %s", self._prefix, tostring(level), self._level))
 
   return false
 end
@@ -136,11 +131,7 @@ function Logger:_read_level_setting()
     return value
   end
 
-  print(string.format(
-    "%s[WARN][Logger] Failed to read log level setting: %s",
-    self._prefix,
-    tostring(value)
-  ))
+  print(string.format("%s[WARN][Logger] Failed to read log level setting: %s", self._prefix, tostring(value)))
 
   return nil
 end
