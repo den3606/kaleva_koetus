@@ -50,4 +50,8 @@ function ascension:on_enemy_spawn(_enemy)
   -- Optional
 end
 
+function ascension:on_potion_generated(_potion)
+  -- Optional
+end
+
 return ascension

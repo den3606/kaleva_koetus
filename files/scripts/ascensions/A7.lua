@@ -1,88 +1,43 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local log = Logger:new("A7.lua")
 
+local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A7")
-
-local MATERIAL_SCALE = 0.75
-local PROCESS_INTERVAL_FRAMES = 60
-local TARGET_TAGS = { "potion", "potion_powder_stash", "powder_stash" }
+local MATERIAL_SCALE = 0.5
 
 ascension.level = 7
 ascension.name = "ポーション量減少"
-ascension.description = "ポーションの量が75%に減少"
-ascension.tag_name = AscensionTags.A7 .. "_processed"
-
-ascension._last_process_frame = nil
-
-local function scale_inventory(entity_id)
-  if EntityHasTag(entity_id, ascension.tag_name) then
-    return
-  end
-
-  local inventory_component = EntityGetFirstComponentIncludingDisabled(entity_id, "MaterialInventoryComponent")
-  if not inventory_component then
-    return
-  end
-
-  local ok_counts, counts = pcall(ComponentGetValue2, inventory_component, "count_per_material_type")
-  if not ok_counts then
-    log:error("Failed to read material inventory: %s", tostring(counts))
-    EntityAddTag(entity_id, ascension.tag_name)
-    return
-  end
-
-  local adjusted = false
-  for index, amount in ipairs(counts) do
-    if amount ~= 0 then
-      counts[index] = amount * MATERIAL_SCALE
-      adjusted = true
-    end
-  end
-
-  if adjusted then
-    local ok_set, err = pcall(ComponentSetValue2, inventory_component, "count_per_material_type", counts)
-    if not ok_set then
-      log:error("Failed to update material inventory: %s", tostring(err))
-    else
-      log:debug("Scaled potion %d contents to %.0f%%", entity_id, MATERIAL_SCALE * 100)
-    end
-  end
-
-  EntityAddTag(entity_id, ascension.tag_name)
-end
-
-local function process_tagged_entities()
-  for _, tag in ipairs(TARGET_TAGS) do
-    local entity_ids = EntityGetWithTag(tag)
-    if entity_ids then
-      for _, entity_id in ipairs(entity_ids) do
-        scale_inventory(entity_id)
-      end
-    end
-  end
-end
+ascension.description = "ポーションの量が50%に減少"
+ascension.tag_name = AscensionTags.A7 .. EventTypes.POTION_GENERATED
 
 function ascension:on_activate()
   log:info("Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100)
 end
 
-function ascension:on_player_spawn(_player_entity_id)
-  process_tagged_entities()
-end
+function ascension:on_potion_generated(payload)
+  log:info("on_potion_generated")
+  local potion_entity_id = tonumber(payload[1])
+  log:info("potion_entity: " .. potion_entity_id)
+  local component_id = EntityGetFirstComponentIncludingDisabled(potion_entity_id, "MaterialSuckerComponent")
 
-function ascension:on_update()
-  local current_frame = GameGetFrameNum()
-  if self._last_process_frame and current_frame - self._last_process_frame < PROCESS_INTERVAL_FRAMES then
-    return
-  end
+  local original_barrel_size = ComponentGetValue2(component_id, "barrel_size")
+  local resized_barrel_size = original_barrel_size * MATERIAL_SCALE
+  log:info("potion_entity: " .. resized_barrel_size)
 
-  process_tagged_entities()
-  self._last_process_frame = current_frame
+  ComponentSetValue2(component_id, "barrel_size", resized_barrel_size)
+
+  local material_id = GetMaterialInventoryMainMaterial(potion_entity_id)
+  RemoveMaterialInventoryMaterial(potion_entity_id)
+  AddMaterialInventoryMaterial(potion_entity_id, CellFactory_GetName(material_id), resized_barrel_size)
+
+  log:debug("Scaled potion %d contents to %.0f%%", potion_entity_id, resized_barrel_size)
+
+  EntityAddTag(potion_entity_id, ascension.tag_name)
 end
 
 return ascension
