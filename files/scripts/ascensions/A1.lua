@@ -47,7 +47,7 @@ function ascension:on_enemy_spawn(payload)
 
   EntityAddTag(enemy_entity, ascension.tag_name)
 
-  log:debug("Entity %d HP %.1f -> %.1f, MaxHP %.1f -> %.1f", enemy_entity, current_hp, new_hp, max_hp, new_max_hp)
+  log:verbose("Entity %d HP %.1f -> %.1f, MaxHP %.1f -> %.1f", enemy_entity, current_hp, new_hp, max_hp, new_max_hp)
 end
 
 return ascension

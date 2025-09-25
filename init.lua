@@ -45,6 +45,8 @@ function OnWorldInitialized() -- This is called once the game world is initializ
   -- Reset victory flag for new run
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")
 
+  ascensionManager:on_world_initialized()
+
   -- Show current ascension info
   local info = ascensionManager:get_ascension_info()
   if info.current > 0 then

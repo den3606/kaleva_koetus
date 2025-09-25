@@ -147,6 +147,14 @@ function AscensionManager:on_player_spawn(player_entity_id)
   end
 end
 
+function AscensionManager:on_world_initialized()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_world_initialized then
+      ascension:on_world_initialized()
+    end
+  end
+end
+
 function AscensionManager:on_enemy_spawn(payload)
   if #payload == 0 then
     log:error("No enemy entity in payload!")

@@ -46,6 +46,10 @@ function ascension:on_player_spawn()
   -- Optional
 end
 
+function ascension:on_world_initialized()
+  -- Optional
+end
+
 function ascension:on_enemy_spawn(_enemy)
   -- Optional
 end
