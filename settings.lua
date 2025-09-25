@@ -111,6 +111,20 @@ mod_settings = {
         _folded = true,
         settings = {
           {
+            id = "log_level",
+            ui_name = "Log Level",
+            ui_description = "Select verbosity for Kaleva Koetus logs",
+            value_default = "INFO",
+            values = {
+              { "ERROR", "Error" },
+              { "WARN", "Warn" },
+              { "INFO", "Info" },
+              { "DEBUG", "Debug" },
+              { "VERBOSE", "Verbose" },
+            },
+            scope = MOD_SETTING_SCOPE_RUNTIME,
+          },
+          {
             id = "lock_all",
             ui_name = "Lock All Ascensions",
             ui_description = "Instantly lock all ascension levels (for testing)",

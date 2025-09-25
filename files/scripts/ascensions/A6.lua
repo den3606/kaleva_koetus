@@ -1,23 +1,51 @@
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+
+local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-ascension.level = 6
-ascension.name = "Ascension 6"
-ascension.description = "Description of what this ascension level does"
+local log = Logger:new("A6.lua")
 
-function ascension:on_activate()
-  print("A6 activated")
+local LEVITATION_SCALE = 0.7
+
+ascension.level = 6
+ascension.name = "上昇力減少"
+ascension.description = "上昇ゲージが70%になる"
+ascension.tag_name = AscensionTags.A6 .. "_player"
+
+local function scale_levitation(player_entity_id)
+  if EntityHasTag(player_entity_id, ascension.tag_name) then
+    return
+  end
+
+  local character_data_component = EntityGetFirstComponent(player_entity_id, "CharacterDataComponent")
+  if not character_data_component then
+    log:warn("CharacterDataComponent not found on player")
+    return
+  end
+
+  local current_max = ComponentGetValue2(character_data_component, "fly_time_max")
+  if not current_max then
+    log:error("Failed to read fly_time_max: %s", tostring(current_max))
+    return
+  end
+
+  local new_max = current_max * LEVITATION_SCALE
+  ComponentSetValue2(character_data_component, "fly_time_max", new_max)
+
+  EntityAddTag(player_entity_id, ascension.tag_name)
+
+  log:debug("Levitation capacity scaled %.2f -> %.2f", current_max, new_max)
 end
 
-function ascension:on_update() end
+function ascension:on_activate()
+  log:info("Levitation reduced to %.0f%%", LEVITATION_SCALE * 100)
+end
 
-function ascension:on_player_spawn() end
-
-function ascension:on_enemy_spawn() end
-
-function ascension:should_unlock_next()
-  return false
+function ascension:on_player_spawn(player_entity_id)
+  scale_levitation(player_entity_id)
 end
 
 return ascension

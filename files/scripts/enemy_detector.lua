@@ -1,4 +1,8 @@
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+
 local EnemyDetector = {}
+
+local log = Logger:new("enemy_detector.lua")
 
 -- Private boss activation check functions
 local function is_active_boss_centipede(entity_id)
@@ -41,8 +45,6 @@ local function is_active_boss_wizard(entity_id)
 end
 
 local function is_active(entity_id)
-  -- Check if this enemy is a boss and apply boss-specific activation check
-  -- Boss configuration with activation check functions
   local boss_configs = {
     { tag = "boss_centipede", is_active = is_active_boss_centipede },
     { tag = "boss_limbs", is_active = is_active_boss_limbs },
@@ -53,47 +55,42 @@ local function is_active(entity_id)
     { tag = "boss_wizard", is_active = is_active_boss_wizard },
   }
 
-  -- Check each boss type
   for _, config in ipairs(boss_configs) do
     if EntityHasTag(entity_id, config.tag) then
-      -- Found a boss, use its specific activation check
-      local is_ready = config.is_active(entity_id)
-      if is_ready then
-        print("[EnemyDetector] Boss ready for processing: " .. config.tag)
+      local ready = config.is_active(entity_id)
+      if ready then
+        log:debug("Boss ready for processing: %s", config.tag)
       end
-      return is_ready
+      return ready
     end
   end
 
-  -- Not a boss, always active
   return true
 end
 
--- Initialize enemy detector
 function EnemyDetector:init()
-  print("[EnemyDetector] Initialized (stateless mode)")
+  log:debug("Initialized (stateless mode)")
 end
 
--- Get all unprocessed enemies (enemies without ascension tags)
 function EnemyDetector:get_unprocessed_enemies()
   local all_enemies = EntityGetWithTag("enemy")
   local unprocessed_enemies = {}
 
-  for _, entity_id in ipairs(all_enemies) do
-    -- Check if enemy has already been detected by EnemyDetector
-    local already_detected = EntityHasTag(entity_id, "kaleva_enemy_detected")
+  if not all_enemies then
+    return unprocessed_enemies
+  end
 
-    if not already_detected then
+  for _, entity_id in ipairs(all_enemies) do
+    if not EntityHasTag(entity_id, "kaleva_enemy_detected") then
       local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
-        -- Mark as detected to prevent duplicate events
         EntityAddTag(entity_id, "kaleva_enemy_detected")
 
-        table.insert(unprocessed_enemies, {
+        unprocessed_enemies[#unprocessed_enemies + 1] = {
           id = entity_id,
           x = x,
           y = y,
-        })
+        }
       end
     end
   end
