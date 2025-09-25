@@ -1,4 +1,4 @@
-local Logger = KalevaLogger or dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local AscensionManager = {}
 

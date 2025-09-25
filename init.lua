@@ -4,26 +4,42 @@ local EventTypes = EventDefs.Types
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
-print("Kaleva Koetus mod loading...")
+local log = Logger:bind("Init")
+
+local function configure_logger()
+  local configured_level = ModSettingGet("kaleva_koetus.log_level")
+  if configured_level then
+    Logger:set_level(configured_level)
+  end
+  log:debug("Logger initialized with level %s", Logger:get_level())
+end
+
+configure_logger()
+
+log:info("Kaleva Koetus mod loading...")
 
 function OnModPreInit()
-  print("Mod - OnModPreInit()") -- First this is called for all mods
+  log:debug("Mod - OnModPreInit()")
 end
 
 function OnModInit()
-  print("Mod - OnModInit()") -- After that this is called for all mods
+  log:debug("Mod - OnModInit()")
 end
 
 function OnModPostInit()
-  print("Mod - OnModPostInit()") -- Then this is called for all mods
+  log:debug("Mod - OnModPostInit()")
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
+  configure_logger()
+
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
