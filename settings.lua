@@ -104,26 +104,26 @@ mod_settings = {
         scope = MOD_SETTING_SCOPE_RUNTIME,
       },
       {
-        id = "log_level",
-        ui_name = "Log Level",
-        ui_description = "Select verbosity for Kaleva Koetus logs",
-        value_default = "INFO",
-        values = {
-          { "ERROR", "Error" },
-          { "WARN", "Warn" },
-          { "INFO", "Info" },
-          { "DEBUG", "Debug" },
-          { "TRACE", "Trace" },
-        },
-        scope = MOD_SETTING_SCOPE_RUNTIME,
-      },
-      {
         category_id = "debug_settings",
         ui_name = "Debug Settings",
         ui_description = "Debug options for testing",
         foldable = true,
         _folded = true,
         settings = {
+          {
+            id = "log_level",
+            ui_name = "Log Level",
+            ui_description = "Select verbosity for Kaleva Koetus logs",
+            value_default = "INFO",
+            values = {
+              { "ERROR", "Error" },
+              { "WARN", "Warn" },
+              { "INFO", "Info" },
+              { "DEBUG", "Debug" },
+              { "TRACE", "Trace" },
+            },
+            scope = MOD_SETTING_SCOPE_RUNTIME,
+          },
           {
             id = "lock_all",
             ui_name = "Lock All Ascensions",
