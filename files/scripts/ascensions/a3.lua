@@ -10,8 +10,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a3.lua")
 
 ascension.level = 3
-ascension.name = "Ascension 3"
-ascension.description = "あなたは少し脆くなってしまいました"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A3 .. EventTypes.PLAYER_SPAWN
 
 local TARGET_HP = 70

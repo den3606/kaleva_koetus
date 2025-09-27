@@ -10,8 +10,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a2.lua")
 
 ascension.level = 2
-ascension.name = "Ascension 2"
-ascension.description = "お店の品揃えが悪くなりました"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_WAND_SPAWN .. EventTypes.SHOP_WAND_SPAWN
 
 local function pick_random_two(ids, seed_a, seed_b)

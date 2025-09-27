@@ -13,8 +13,8 @@ local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1
 
 ascension.level = 5
-ascension.name = "Ascension 5"
-ascension.description = "あなたの呪文バッグが小さくなっている気がします"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A5 .. EventTypes.PLAYER_SPAWN
 
 local function clamp_slots(original_slots)

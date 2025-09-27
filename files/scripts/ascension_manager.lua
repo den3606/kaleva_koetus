@@ -137,7 +137,9 @@ function AscensionManager:on_player_spawn(player_entity_id)
   end
 
   if self.current_level > 0 and self.active_ascensions[self.current_level] then
-    GamePrintImportant("Ascension " .. self.current_level, self.active_ascensions[self.current_level].description)
+    local translated_ascension = GameTextGetTranslatedOrNot("$kaleva_koetus_ascension")
+    local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[self.current_level].description)
+    GamePrintImportant(translated_ascension .. " " .. self.current_level, translated_description)
   end
 
   for _, ascension in ipairs(self.active_ascensions) do

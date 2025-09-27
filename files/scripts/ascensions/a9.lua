@@ -11,8 +11,8 @@ local log = Logger:new("a9.lua")
 local MIN_PERK_COUNT = 1
 
 ascension.level = 9
-ascension.name = "パーク数減少"
-ascension.description = "特典が3つもあったのは贅沢だったのかもしれません"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A9 .. "_temple"
 
 ascension._target_perk_count = nil

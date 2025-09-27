@@ -12,8 +12,8 @@ local log = Logger:new("a6.lua")
 local LEVITATION_SCALE = 0.7
 
 ascension.level = 6
-ascension.name = "上昇力減少"
-ascension.description = "上昇ゲージが70%になる"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A6 .. EventTypes.PLAYER_SPAWN
 
 local function scale_levitation(player_entity_id)

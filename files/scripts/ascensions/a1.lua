@@ -10,8 +10,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a1.lua")
 
 ascension.level = 1
-ascension.name = "敵HP上昇"
-ascension.description = "敵が以前よりもタフになったようです"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.hp_multiplier = 1.5
 ascension.tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
 

@@ -11,8 +11,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local MATERIAL_SCALE = 0.5
 
 ascension.level = 7
-ascension.name = "ポーション量減少"
-ascension.description = "ポーションの量が50%に減少"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A7 .. EventTypes.POTION_GENERATED
 
 function ascension:on_activate()

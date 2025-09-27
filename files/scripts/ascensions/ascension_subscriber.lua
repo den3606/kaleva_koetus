@@ -1,8 +1,8 @@
 local ascension = {}
 
 local REQUIRED_FIELDS = {
-  name = "name is not implement",
   description = "description is not implement",
+  specification = "specification is not implement",
   level = "level is not implement",
   tag_name = "ascension tag_name is not implement",
 }

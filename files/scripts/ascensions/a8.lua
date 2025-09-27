@@ -10,8 +10,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a8.lua")
 
 ascension.level = 8
-ascension.name = "石板なし"
-ascension.description = "タブレットは朽ち果てました"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A8 .. EventTypes.BOOK_GENERATED
 
 function ascension:on_activate()

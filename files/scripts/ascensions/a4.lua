@@ -10,7 +10,8 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a4.lua")
 
 ascension.level = 4
-ascension.name = "Ascension 4"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.description = "神は今、虫の居所が悪いようです"
 ascension.tag_name = AscensionTags.A4 .. EventTypes.NECROMANCER_SPAWN
 

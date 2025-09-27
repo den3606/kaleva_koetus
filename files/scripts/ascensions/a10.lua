@@ -15,8 +15,8 @@ local WAIT_FRAME = 60 * 60 * 30
 local DELAY_FRAME = 60 * 2
 
 ascension.level = 10
-ascension.name = "きのこシフトの呪い"
-ascension.description = "あなたの体は真菌に蝕まれつつあります"
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A10 .. EventTypes.PLAYER_SPAWN
 
 ascension._next_process_frame = nil
@@ -56,7 +56,7 @@ function ascension:on_fungal_shifted()
   local x, y = EntityGetTransform(player_entity_id)
   local effect_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/effect_fungal_shift_curse.xml", x, y)
   EntityAddChild(player_entity_id, effect_id)
-  GamePrintImportant("真菌の発作は一時的に落ち着いた…", "…しばらくすると再発するぞ！")
+  GamePrintImportant("$kaleva_koetus_fungal_shift_curse_again", "$kaleva_koetus_fungal_shift_curse_again_description")
 end
 
 return ascension
