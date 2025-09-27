@@ -1,0 +1,40 @@
+# Utility helpers shared across the mod
+base: lua51
+globals:
+  AddNewInternalVariable:
+    args:
+      - type: number
+        required: true
+      - type: string
+        required: true
+      - type: string
+        required: true
+      - type: any
+        required: true
+  GetInternalVariableValue:
+    args:
+      - type: number
+        required: true
+      - type: string
+        required: true
+      - type: string
+        required: true
+    must_use: true
+  RemoveInternalVariableValue:
+    args:
+      - type: number
+        required: true
+      - type: string
+        required: true
+      - type: string
+        required: true
+  SetInternalVariableValue:
+    args:
+      - type: number
+        required: true
+      - type: string
+        required: true
+      - type: string
+        required: true
+      - type: any
+        required: true
