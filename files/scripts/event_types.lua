@@ -11,6 +11,7 @@ local EventTypes = {
   NECROMANCER_SPAWN = "necromancer_spawn",
   POTION_GENERATED = "potion_generated",
   BOOK_GENERATED = "book_generated",
+  FUNGAL_SHIFTED = "fungal_shifted",
 }
 
 -- Event argument definitions (for handlers)
@@ -37,6 +38,9 @@ local EventArgs = {
   }, -- No arguments needed for victory events
   [EventTypes.VICTORY] = {}, -- No arguments needed for victory events
   [EventTypes.POTION_GENERATED] = {
+    { name = "entity_id", type = "number" },
+  },
+  [EventTypes.FUNGAL_SHIFTED] = {
     { name = "entity_id", type = "number" },
   },
 }

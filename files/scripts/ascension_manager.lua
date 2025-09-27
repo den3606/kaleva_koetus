@@ -233,6 +233,19 @@ function AscensionManager:on_book_generated(event_args)
   end
 end
 
+function AscensionManager:on_fungal_shifted(event_args)
+  if #event_args == 0 then
+    log:error("No entity_id in event_args!")
+    return
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_fungal_shifted then
+      ascension:on_fungal_shifted(event_args)
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,

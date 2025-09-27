@@ -38,3 +38,13 @@ globals:
         required: true
       - type: any
         required: true
+  fungal_shift:
+    args:
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: bool
+        required: false

@@ -1,0 +1,26 @@
+<Entity>
+  <InheritTransformComponent>
+  </InheritTransformComponent>
+
+  <GameEffectComponent
+    effect="KALEVA_KOETUS_FUNGAL_SHIFT_CURSE"
+    frame="-1"
+  >
+  </GameEffectComponent>
+
+  <LifetimeComponent
+    _tags="effect_curse_lifetime"
+    lifetime="300"
+  >
+  </LifetimeComponent>
+
+  <UIIconComponent
+    icon_sprite_file="mods/kaleva_koetus/files/ui_gfx/status_indicators/fungal_shift_curse.png"
+    name="$kaleva_koetus_fungal_shift_curse"
+    description="$kaleva_koetus_fungal_shift_curse_description"
+    display_above_head="0"
+    display_in_hud="1"
+    is_perk="1"
+  >
+  </UIIconComponent>
+</Entity>
