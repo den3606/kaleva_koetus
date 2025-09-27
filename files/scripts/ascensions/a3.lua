@@ -7,7 +7,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A3.lua")
+local log = Logger:new("a3.lua")
 
 ascension.level = 3
 ascension.name = "Ascension 3"

@@ -7,7 +7,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A19.lua")
+-- local log = Logger:new("a19.lua")
 
 -- local REFRESHER_PATHS = {
 --   ["data/entities/items/pickup/perk_reroll.xml"] = true,

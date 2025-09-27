@@ -7,7 +7,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A10.lua")
+-- local log = Logger:new("a10.lua")
 
 -- local DURABILITY_VARIABLE = "kaleva_a10_durability"
 -- local DURABILITY_MAX_VARIABLE = "kaleva_a10_durability_max"

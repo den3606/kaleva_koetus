@@ -6,7 +6,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A13.lua")
+-- local log = Logger:new("a13.lua")
 
 -- ascension.level = 13
 -- ascension.name = "きのこシフト"

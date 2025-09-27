@@ -7,7 +7,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A18.lua")
+-- local log = Logger:new("a18.lua")
 
 -- local MAX_ITEMS = 1
 

@@ -2,7 +2,7 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
 
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("A7.lua")
+local log = Logger:new("a7.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types

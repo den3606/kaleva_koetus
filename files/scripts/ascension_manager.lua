@@ -32,7 +32,7 @@ function AscensionManager:_load_ascension(level)
     return nil
   end
 
-  local path = "mods/kaleva_koetus/files/scripts/ascensions/A" .. level .. ".lua"
+  local path = "mods/kaleva_koetus/files/scripts/ascensions/a" .. level .. ".lua"
   local success, ascension = pcall(dofile, path)
 
   if success then

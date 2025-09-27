@@ -4,7 +4,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A16.lua")
+-- local log = Logger:new("a16.lua")
 
 -- local DRY_INTERVAL_FRAMES = 30
 -- local CONVERT_RADIUS = 72

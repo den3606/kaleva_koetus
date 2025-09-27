@@ -6,7 +6,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A11.lua")
+-- local log = Logger:new("a11.lua")
 
 -- local SPAWN_CHANCE = 0.2
 

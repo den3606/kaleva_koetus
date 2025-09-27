@@ -7,7 +7,7 @@ local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A5.lua")
+local log = Logger:new("a5.lua")
 
 local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1

@@ -7,7 +7,7 @@ local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("A6.lua")
+local log = Logger:new("a6.lua")
 
 local LEVITATION_SCALE = 0.7
 

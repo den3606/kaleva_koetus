@@ -4,7 +4,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A14.lua")
+-- local log = Logger:new("a14.lua")
 
 -- local EFFECT_POOL = {
 --   { effect = "MOVEMENT_FASTER", label = "加速" },

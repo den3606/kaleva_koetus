@@ -7,7 +7,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A17.lua")
+-- local log = Logger:new("a17.lua")
 
 -- local RESISTANCE_FIELDS = {
 --   "fire_resistance",

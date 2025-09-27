@@ -4,7 +4,7 @@
 
 -- local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("A20.lua")
+-- local log = Logger:new("a20.lua")
 
 -- local AIR_MATERIAL = CellFactory_GetType("air")
 
