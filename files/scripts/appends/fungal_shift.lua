@@ -12,5 +12,5 @@ function fungal_shift(entity, x, y, debug_no_limits)
   _fungal_shift(entity, x, y, debug_no_limits)
 
   log:debug("fungal shift detected")
-  EventBroker:publish_event_async("fungal_shift", EventTypes.FUNGAL_SHIFTED, entity)
+  EventBroker:publish_event_async("fungal_shift", EventTypes.FUNGAL_SHIFTED)
 end

@@ -35,14 +35,12 @@ local EventArgs = {
   [EventTypes.NECROMANCER_SPAWN] = {
     { name = "x", type = "number" },
     { name = "y", type = "number" },
-  }, -- No arguments needed for victory events
-  [EventTypes.VICTORY] = {}, -- No arguments needed for victory events
+  },
+  [EventTypes.VICTORY] = {},
   [EventTypes.POTION_GENERATED] = {
     { name = "entity_id", type = "number" },
   },
-  [EventTypes.FUNGAL_SHIFTED] = {
-    { name = "entity_id", type = "number" },
-  },
+  [EventTypes.FUNGAL_SHIFTED] = {},
 }
 
 local AscensionTags = {

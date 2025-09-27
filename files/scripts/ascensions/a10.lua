@@ -1,5 +1,5 @@
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
-local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/variable_storage.lua")
+local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
@@ -49,12 +49,13 @@ function ascension:on_player_spawn(player_entity_id)
     end
   end)
   EntityAddTag(player_entity_id, self.tag_name)
-
-  local effect_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/effect_fungal_shift_curse.xml", x, y)
-  EntityAddChild(player_entity_id, effect_id)
 end
 
 function ascension:on_fungal_shifted()
+  local player_entity_id = GetPlayerEntity()
+  local x, y = EntityGetTransform(player_entity_id)
+  local effect_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/effect_fungal_shift_curse.xml", x, y)
+  EntityAddChild(player_entity_id, effect_id)
   GamePrintImportant("真菌の発作は一時的に落ち着いた…", "…しばらくすると再発するぞ！")
 end
 

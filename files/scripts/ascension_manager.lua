@@ -233,15 +233,10 @@ function AscensionManager:on_book_generated(event_args)
   end
 end
 
-function AscensionManager:on_fungal_shifted(event_args)
-  if #event_args == 0 then
-    log:error("No entity_id in event_args!")
-    return
-  end
-
+function AscensionManager:on_fungal_shifted()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_fungal_shifted then
-      ascension:on_fungal_shifted(event_args)
+      ascension:on_fungal_shifted()
     end
   end
 end

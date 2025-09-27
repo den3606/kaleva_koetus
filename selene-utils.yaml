@@ -48,3 +48,5 @@ globals:
         required: true
       - type: bool
         required: false
+  GetPlayerEntity:
+    args: []
