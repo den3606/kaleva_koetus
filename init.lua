@@ -29,7 +29,7 @@ function OnModPostInit()
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
-    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/overrides/a5_background.png")
+    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
   end
 end
 
@@ -58,8 +58,7 @@ function OnPlayerSpawned(player_entity_id) -- This runs when player entity has b
   ascensionManager:on_player_spawn(player_entity_id)
 end
 
-function OnWorldPreUpdate() -- This is called every time the game is about to start updating the world
-  -- Check for unprocessed enemies
+function OnWorldPreUpdate()
   local unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
 
   -- Publish events for unprocessed enemies
@@ -78,11 +77,9 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
   wake_up_waiting_threads(1)
 end
 
-function OnWorldPostUpdate() -- This is called every time the game has finished updating the world
-end
+function OnWorldPostUpdate() end
 
-function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
-end
+function OnMagicNumbersAndWorldSeedInitialized() end
 
 -- append files
 ModLuaFileAppend(
