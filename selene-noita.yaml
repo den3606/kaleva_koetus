@@ -2728,3 +2728,13 @@ globals:
     args: []
   OnCountSecrets:
     args: []
+  fungal_shift:
+    args:
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: boolean
+        required: false

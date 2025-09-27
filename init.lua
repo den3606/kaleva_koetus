@@ -72,8 +72,10 @@ function OnWorldPreUpdate() -- This is called every time the game is about to st
   eventBroker:flush_event_queue()
 
   -- NOTE:
-  -- updateをEvent経由で呼ぶと大量に呼ばれてしまぁE�Eで、直接callする
+  -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
   ascensionManager:update()
+
+  wake_up_waiting_threads(1)
 end
 
 function OnWorldPostUpdate() -- This is called every time the game has finished updating the world
@@ -92,7 +94,13 @@ ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
 ModLuaFileAppend("data/scripts/items/potion.lua", "mods/kaleva_koetus/files/scripts/appends/potion.lua")
 ModLuaFileAppend("data/scripts/items/potion_starting.lua", "mods/kaleva_koetus/files/scripts/appends/potion_starting.lua")
+ModLuaFileAppend("data/scripts/magic/fungal_shift.lua", "mods/kaleva_koetus/files/scripts/appends/fungal_shift.lua")
+ModLuaFileAppend("data/scripts/status_effects/status_list.lua", "mods/kaleva_koetus/files/scripts/appends/status_list.lua")
 
 for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
   content:create_child("LuaComponent", { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua" })
 end
+
+local translation_csv = ModTextFileGetContent("data/translations/common.csv")
+local kaleva_koetus_translation_csv = ModTextFileGetContent("mods/kaleva_koetus/files/translations/common.csv")
+ModTextFileSetContent("data/translations/common.csv", translation_csv .. kaleva_koetus_translation_csv)
