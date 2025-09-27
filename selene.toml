@@ -1,5 +1,3 @@
-std = "selene-noita+selene-noita-settings"
+std = "selene-noita+selene-noita-settings+selene-utils"
 # VSCodeの拡張機能だと、excludeが考慮されていなさそう
-exclude = [
-  "files/scripts/lib/**/*.lua"
-]
+exclude = ["files/scripts/lib/**/*.lua"]
