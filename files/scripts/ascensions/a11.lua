@@ -9,7 +9,14 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 local log = Logger:new("a11.lua")
 
-local SPAWN_CHANCE = 0.25
+local SPAWN_CHANCE_1 = 0.30
+local SPAWN_CHANCE_2 = 0.20
+local SPAWN_CHANCE_3 = 0.05
+
+ascension.level = 11
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
+ascension.tag_name = AscensionTags.A11 .. EventTypes.ENEMY_SPAWN
 
 local function is_boss_entity(entity_id)
   if not entity_id or entity_id == 0 then
@@ -30,24 +37,21 @@ local function is_boss_entity(entity_id)
   return false
 end
 
-ascension.level = 11
-ascension.name = "洞窟がより騒がしくなりました"
-ascension.description = "モンスターの声がいつもよりも多い"
-ascension.tag_name = AscensionTags.A11 .. EventTypes.ENEMY_SPAWN
-
-local function duplicate_enemy(enemy_entity_id, x, y)
+local function duplicate_enemy(enemy_entity_id, x, y, how_many)
   local entity_filename = EntityGetFilename(enemy_entity_id)
   if not entity_filename or entity_filename == "" then
     return
   end
 
   SetRandomSeed(x, y)
-  local offset_x = Random(-16, 16)
-  local offset_y = Random(-16, 0)
-  local duplicate_id = EntityLoad(entity_filename, x + offset_x, y + offset_y)
-  if duplicate_id then
-    EntityAddTag(duplicate_id, ascension.tag_name)
-    log:debug("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
+  for _ = 1, how_many, 1 do
+    local offset_x = Random(-16, 16)
+    local offset_y = Random(-16, 0)
+    local duplicate_id = EntityLoad(entity_filename, x + offset_x, y + offset_y)
+    if duplicate_id then
+      EntityAddTag(duplicate_id, ascension.tag_name)
+      log:debug("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
+    end
   end
 end
 
@@ -76,8 +80,16 @@ function ascension:on_enemy_spawn(payload)
   local seed_x = math.floor(x)
   local seed_y = math.floor(y + GameGetFrameNum())
   SetRandomSeed(seed_x, seed_y)
-  if Randomf() <= SPAWN_CHANCE then
-    duplicate_enemy(enemy_entity_id, x, y)
+  local randf = Randomf()
+  if randf <= SPAWN_CHANCE_3 then
+    log:debug("4 enemy")
+    duplicate_enemy(enemy_entity_id, x, y, 3)
+  elseif randf <= SPAWN_CHANCE_2 then
+    log:debug("3 enemy")
+    duplicate_enemy(enemy_entity_id, x, y, 2)
+  elseif randf <= SPAWN_CHANCE_1 then
+    log:debug("2 enemy")
+    duplicate_enemy(enemy_entity_id, x, y, 1)
   end
 end
 
