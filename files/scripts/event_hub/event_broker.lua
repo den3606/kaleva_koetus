@@ -55,20 +55,20 @@ function EventBroker:flush_event_queue()
     local event_data = GlobalsGetValue(event_key, "")
 
     if event_data == "" then
-      error("[EventBroker] Missing event " .. i .. ", possible race condition")
+      log:error("Missing event " .. i .. ", possible race condition")
       return
     end
 
     local source, event_type, event_args = unpack(json.decode(event_data))
 
     if not source or not event_type then
-      error("[EventBroker] Event Data is broken")
+      log:error("Event Data is broken")
       return
     end
 
     for _, subscription in ipairs(EventBroker.subscriptions) do
       if subscription.event_type == event_type then
-        log:debug("Event called from %s / type: %s", source, event_type)
+        log:verbose("Event called from %s / type: %s", source, event_type)
         EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
       end
     end
