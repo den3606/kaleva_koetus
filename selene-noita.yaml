@@ -2,506 +2,506 @@ base: lua51
 globals:
   EntityLoad:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   EntityLoadEndGameItem:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   EntityLoadCameraBound:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
   EntityLoadToEntity:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   EntitySave:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityCreateNew:
     args:
-      - type: string
-        required: false
+    - type: string
+      required: false
     must_use: true
   EntityKill:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   EntityGetIsAlive:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityAddComponent:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntityRemoveComponent:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   EntityGetAllComponents:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetComponent:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntityGetFirstComponent:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntityGetComponentIncludingDisabled:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntityGetFirstComponentIncludingDisabled:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntitySetTransform:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   EntityApplyTransform:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   EntityGetTransform:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityAddChild:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   EntityGetAllChildren:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: false
     must_use: true
   EntityGetParent:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetRootEntity:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityRemoveFromParent:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   EntitySetComponentsWithTagEnabled:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: bool
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: bool
+      required: true
   EntitySetComponentIsEnabled:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
   EntityGetName:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntitySetName:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityGetTags:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetWithTag:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   EntityGetInRadius:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetInRadiusWithTag:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   EntityGetClosest:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetClosestWithTag:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   EntityGetWithName:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   EntityAddTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityRemoveTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityHasTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   EntityGetFilename:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntitiesGetMaxID:
     args: []
     must_use: true
   ComponentGetValue:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetValueBool:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetValueInt:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetValueFloat:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetValueVector2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentSetValue:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ComponentSetValueVector2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   ComponentSetValueValueRange:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   ComponentSetValueValueRangeInt:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   ComponentSetMetaCustom:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ComponentGetMetaCustom:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentObjectGetValue:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentObjectSetValue:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ComponentAddTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   ComponentRemoveTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   ComponentGetTags:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   ComponentHasTag:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetValue2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentSetValue2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   ComponentObjectGetValue2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentObjectSetValue2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   EntityAddComponent2:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
     must_use: true
   ComponentGetVectorSize:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetVectorValue:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
     must_use: true
   ComponentGetVector:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetIsEnabled:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   ComponentGetEntity:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   ComponentGetMembers:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   ComponentObjectGetMembers:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   ComponentGetTypeName:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GetUpdatedEntityID:
     args: []
@@ -511,161 +511,161 @@ globals:
     must_use: true
   SetTimeOut:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: false
   RegisterSpawnFunction:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   SpawnActionItem:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   SpawnStash:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   SpawnApparition:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
     must_use: true
   LoadEntityToStash:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   AddMaterialInventoryMaterial:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   RemoveMaterialInventoryMaterial:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: false
   GetMaterialInventoryMainMaterial:
     args:
-      - type: number
-        required: true
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: bool
+      required: false
     must_use: true
   GameScreenshake:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
   GameOnCompleted:
     args: []
   GameGiveAchievement:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameDoEnding2:
     args: []
   GetParallelWorldPosition:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   BiomeMapLoad_KeepPlayer:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: string
+      required: true
+    - type: string
+      required: false
   BiomeMapLoad:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   BiomeSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   BiomeGetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   BiomeObjectSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   BiomeVegetationSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   BiomeMaterialSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   BiomeMaterialGetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   GameIsIntroPlaying:
     args: []
@@ -687,13 +687,13 @@ globals:
     must_use: true
   GameGetOrbCollectedThisRun:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GameGetOrbCollectedAllTime:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GameClearOrbsFoundThisRun:
     args: []
@@ -702,112 +702,112 @@ globals:
     must_use: true
   CellFactory_GetName:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   CellFactory_GetType:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   CellFactory_GetUIName:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   CellFactory_GetAllLiquids:
     args:
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   CellFactory_GetAllSands:
     args:
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   CellFactory_GetAllGases:
     args:
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   CellFactory_GetAllFires:
     args:
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   CellFactory_GetAllSolids:
     args:
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   CellFactory_GetTags:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameGetCameraPos:
     args: []
     must_use: true
   GameSetCameraPos:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GameSetCameraFree:
     args:
-      - type: bool
-        required: true
+    - type: bool
+      required: true
   GameGetCameraBounds:
     args: []
     must_use: true
   GameRegenItemAction:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameRegenItemActionsInContainer:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameRegenItemActionsInPlayer:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameKillInventoryItem:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GamePickUpInventoryItem:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
   GameGetAllInventoryItems:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GameDropAllItems:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameDropPlayerInventoryItems:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameDestroyInventoryItems:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GameIsInventoryOpen:
     args: []
     must_use: true
@@ -815,434 +815,434 @@ globals:
     args: []
   LoadBackgroundSprite:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: bool
+      required: false
   RemovePixelSceneBackgroundSprite:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   RemovePixelSceneBackgroundSprites:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GameCreateParticle:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: true
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   GameCreateSpriteForXFrames:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: bool
+      required: false
   GameShootProjectile:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
+    - type: number
+      required: false
   EntityIngestMaterial:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   EntityRemoveIngestionStatusEffect:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityRemoveStainStatusEffect:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
   EntityAddRandomStains:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   EntitySetDamageFromMaterial:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   EntityRefreshSprite:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   EntityGetWandCapacity:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetHotspot:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: bool
-        required: true
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: bool
+      required: true
+    - type: bool
+      required: false
     must_use: true
   GamePlayAnimation:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: false
+    - type: number
+      required: false
   GameGetVelocityCompVelocity:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GameGetGameEffect:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   GameGetGameEffectCount:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   LoadGameEffectEntityTo:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   GetGameEffectLoadTo:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: bool
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: bool
+      required: true
     must_use: true
   PolymorphTableAddEntity:
     args:
-      - type: string
-        required: true
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   PolymorphTableRemoveEntity:
     args:
-      - type: string
-        required: true
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   PolymorphTableGet:
     args:
-      - type: bool
-        required: false
+    - type: bool
+      required: false
     must_use: true
   PolymorphTableSet:
     args:
-      - type: any
-        required: true
-      - type: bool
-        required: false
+    - type: any
+      required: true
+    - type: bool
+      required: false
   SetPlayerSpawnLocation:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   UnlockItem:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameGetPotionColorUint:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetFirstHitboxCenter:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   Raytrace:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   RaytraceSurfaces:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   RaytraceSurfacesAndLiquiform:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   RaytracePlatforms:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   FindFreePositionForBody:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GetSurfaceNormal:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GameGetSkyVisibility:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GameGetFogOfWar:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GameGetFogOfWarBilinear:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GameSetFogOfWar:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   DoesWorldExistAt:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   StringToHerdId:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   HerdIdToString:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GetHerdRelation:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetHerdRelation:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetHerdRelationSafe:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GenomeSetHerdId:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   EntityGetClosestWormAttractor:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   EntityGetClosestWormDetractor:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   GamePrint:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GamePrintImportant:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: false
-      - type: string
-        required: false
+    - type: string
+      required: true
+    - type: string
+      required: false
+    - type: string
+      required: false
   DEBUG_GetMouseWorld:
     args: []
     must_use: true
   DEBUG_MARK:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   GameGetFrameNum:
     args: []
     must_use: true
@@ -1251,79 +1251,79 @@ globals:
     must_use: true
   InputIsKeyDown:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputIsKeyJustDown:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputIsKeyJustUp:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputGetMousePosOnScreen:
     args: []
     must_use: true
   InputIsMouseButtonDown:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputIsMouseButtonJustDown:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputIsMouseButtonJustUp:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputIsJoystickButtonDown:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   InputIsJoystickButtonJustDown:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   InputGetJoystickAnalogButton:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   InputIsJoystickConnected:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   InputGetJoystickAnalogStick:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   IsPlayer:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   IsInvisible:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   GameIsDailyRun:
     args: []
@@ -1336,93 +1336,93 @@ globals:
     must_use: true
   GlobalsSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   GlobalsGetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: false
+    - type: string
+      required: true
+    - type: string
+      required: false
   MagicNumbersGetValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   SetWorldSeed:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   SessionNumbersGetValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   SessionNumbersSetValue:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   SessionNumbersSave:
     args: []
   AutosaveDisable:
     args: []
   StatsGetValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   StatsGlobalGetValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   StatsBiomeGetValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   StatsBiomeReset:
     args: []
   StatsLogPlayerKill:
     args:
-      - type: number
-        required: false
+    - type: number
+      required: false
   CreateItemActionEntity:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   GetRandomActionWithType:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   GetRandomAction:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   GameGetDateAndTimeUTC:
     args: []
@@ -1432,918 +1432,918 @@ globals:
     must_use: true
   GameCutThroughWorldVertical:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   BiomeMapSetSize:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   BiomeMapGetSize:
     args: []
     must_use: true
   BiomeMapSetPixel:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   BiomeMapGetPixel:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   BiomeMapConvertPixelFromUintToInt:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   BiomeMapLoadImage:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   BiomeMapLoadImageCropped:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   BiomeMapGetVerticalPositionInsideBiome:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   BiomeMapGetName:
     args:
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   SetRandomSeed:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   Random:
     args:
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   Randomf:
     args:
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   RandomDistribution:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   RandomDistributionf:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   ProceduralRandom:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   ProceduralRandomf:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   ProceduralRandomi:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   PhysicsAddBodyCreateBox:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
     must_use: true
   PhysicsAddJoint:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
     must_use: true
   PhysicsApplyForce:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsApplyTorque:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsApplyTorqueToComponent:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsApplyForceOnArea:
     args:
-      - type: function
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: function
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsRemoveJoints:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsSetStatic:
     args:
-      - type: number
-        required: true
-      - type: bool
-        required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
   PhysicsGetComponentVelocity:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsGetComponentAngularVelocity:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsComponentGetTransform:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsComponentSetTransform:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsBodyIDGetFromEntity:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   PhysicsBodyIDGetTransform:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsBodyIDSetTransform:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsBodyIDApplyForce:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
   PhysicsBodyIDApplyTorque:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsBodyIDGetWorldCenter:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsBodyIDGetDamping:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsBodyIDSetDamping:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
   PhysicsBodyIDGetGravityScale:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsBodyIDSetGravityScale:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   PhysicsBodyIDGetBodyAABB:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   PhysicsBody2InitFromComponents:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   PhysicsPosToGamePos:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   GamePosToPhysicsPos:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   PhysicsVecToGameVec:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   GameVecToPhysicsVec:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: false
     must_use: true
   LooseChunk:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
   VerletApplyCircularForce:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   VerletApplyDirectionalForce:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   AddFlagPersistent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   RemoveFlagPersistent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   HasFlagPersistent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   GameAddFlagRun:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameRemoveFlagRun:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameHasFlagRun:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   GameTriggerMusicEvent:
     args:
-      - type: string
-        required: true
-      - type: bool
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: bool
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GameTriggerMusicCue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameTriggerMusicFadeOutAndDequeueAll:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   GamePlaySound:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GameEntityPlaySound:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   GameEntityPlaySoundLoop:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
   GameSetPostFxParameter:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GameUnsetPostFxParameter:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameSetPostFxTextureParameter:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
   GameUnsetPostFxTextureParameter:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   GameTextGetTranslatedOrNot:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   GameTextGet:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: false
-      - type: string
-        required: false
-      - type: string
-        required: false
+    - type: string
+      required: true
+    - type: string
+      required: false
+    - type: string
+      required: false
+    - type: string
+      required: false
     must_use: true
   GuiCreate:
     args: []
     must_use: true
   GuiDestroy:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiStartFrame:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiOptionsAdd:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiOptionsRemove:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiOptionsClear:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiOptionsAddForNextWidget:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiColorSetForNextWidget:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   GuiZSet:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiZSetForNextWidget:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiIdPush:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
   GuiIdPushString:
     args:
-      - type: any
-        required: true
-      - type: string
-        required: true
+    - type: any
+      required: true
+    - type: string
+      required: true
   GuiIdPop:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiAnimateBegin:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiAnimateEnd:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiAnimateAlphaFadeIn:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
   GuiAnimateScaleIn:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
   GuiText:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: string
-        required: false
-      - type: bool
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: string
+      required: false
+    - type: bool
+      required: false
   GuiTextCentered:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
   GuiImage:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: string
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: string
+      required: false
   GuiImageNinePiece:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: false
-      - type: string
-        required: false
-      - type: string
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: false
+    - type: string
+      required: false
+    - type: string
+      required: false
   GuiButton:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: string
-        required: false
-      - type: bool
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: string
+      required: false
+    - type: bool
+      required: false
     must_use: true
   GuiImageButton:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
     must_use: true
   GuiSlider:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
     must_use: true
   GuiTextInput:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: false
     must_use: true
   GuiBeginAutoBox:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiTooltip:
     args:
-      - type: any
-        required: true
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: any
+      required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   GuiBeginScrollContainer:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   GuiEndScrollContainer:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiLayoutBeginHorizontal:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   GuiLayoutBeginVertical:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: bool
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   GuiLayoutAddHorizontalSpacing:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: false
   GuiLayoutAddVerticalSpacing:
     args:
-      - type: any
-        required: true
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: number
+      required: false
   GuiLayoutEnd:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiLayoutBeginLayer:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiLayoutEndLayer:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
   GuiGetScreenDimensions:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
     must_use: true
   GuiGetTextDimensions:
     args:
-      - type: any
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: string
-        required: false
-      - type: bool
-        required: false
+    - type: any
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: string
+      required: false
+    - type: bool
+      required: false
     must_use: true
   GuiGetImageDimensions:
     args:
-      - type: any
-        required: true
-      - type: string
-        required: true
-      - type: number
-        required: false
+    - type: any
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: false
     must_use: true
   GuiGetPreviousWidgetInfo:
     args:
-      - type: any
-        required: true
+    - type: any
+      required: true
     must_use: true
   GameIsBetaBuild:
     args: []
@@ -2360,56 +2360,56 @@ globals:
     args: []
   DebugBiomeMapGetFilename:
     args:
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
     must_use: true
   EntityConvertToMaterial:
     args:
-      - type: number
-        required: true
-      - type: string
-        required: true
-      - type: bool
-        required: false
-      - type: bool
-        required: false
+    - type: number
+      required: true
+    - type: string
+      required: true
+    - type: bool
+      required: false
+    - type: bool
+      required: false
   ConvertEverythingToGold:
     args:
-      - type: string
-        required: false
-      - type: string
-        required: false
+    - type: string
+      required: false
+    - type: string
+      required: false
   ConvertMaterialEverywhere:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   LoadRagdoll:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: string
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
-      - type: number
-        required: false
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
+    - type: number
+      required: false
   GetDailyPracticeRunSeed:
     args: []
     must_use: true
   ModIsEnabled:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModGetActiveModIDs:
     args: []
@@ -2425,40 +2425,40 @@ globals:
     must_use: true
   ModSettingGet:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModSettingSet:
     args:
-      - type: string
-        required: true
-      - type: any
-        required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
   ModSettingGetNextValue:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModSettingSetNextValue:
     args:
-      - type: string
-        required: true
-      - type: any
-        required: true
-      - type: bool
-        required: true
+    - type: string
+      required: true
+    - type: any
+      required: true
+    - type: bool
+      required: true
   ModSettingRemove:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModSettingGetCount:
     args: []
     must_use: true
   ModSettingGetAtIndex:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
     must_use: true
   StreamingGetIsConnected:
     args: []
@@ -2477,132 +2477,132 @@ globals:
     must_use: true
   StreamingSetCustomPhaseDurations:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   StreamingForceNewVoting:
     args: []
   StreamingSetVotingEnabled:
     args:
-      - type: bool
-        required: true
+    - type: bool
+      required: true
   ModLuaFileAppend:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ModLuaFileGetAppends:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModLuaFileSetAppends:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ModTextFileGetContent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModTextFileSetContent:
     args:
-      - type: string
-        required: true
-      - type: string
-        required: true
+    - type: string
+      required: true
+    - type: string
+      required: true
   ModTextFileWhoSetContent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModImageMakeEditable:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   ModImageIdFromFilename:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModImageGetPixel:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   ModImageSetPixel:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
   ModImageWhoSetContent:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModImageDoesExist:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   ModMagicNumbersFileAdd:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   ModMaterialsFileAdd:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   ModRegisterAudioEventMappings:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   ModRegisterMusicBank:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   ModDevGenerateSpriteUVsForDirectory:
     args:
-      - type: string
-        required: true
-      - type: bool
-        required: false
+    - type: string
+      required: true
+    - type: bool
+      required: false
   RegisterProjectile:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   RegisterGunAction:
     args: []
   RegisterGunShotEffects:
     args: []
   BeginProjectile:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   EndProjectile:
     args: []
   BeginTriggerTimer:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   BeginTriggerHitWorld:
     args: []
   BeginTriggerDeath:
@@ -2613,93 +2613,93 @@ globals:
     args: []
   StartReload:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   ActionUsesRemainingChanged:
     args:
-      - type: number
-        required: true
-      - type: number
-        required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
     must_use: true
   ActionUsed:
     args:
-      - type: number
-        required: true
+    - type: number
+      required: true
   LogAction:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   OnActionPlayed:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   OnNotEnoughManaForAction:
     args: []
   BaabInstruction:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   SetValueNumber:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   GetValueNumber:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
     must_use: true
   SetValueInteger:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   GetValueInteger:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
     must_use: true
   SetValueBool:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
   GetValueBool:
     args:
-      - type: string
-        required: true
-      - type: number
-        required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
     must_use: true
   dofile:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   dofile_once:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   print_error:
     args: []
   loadfile:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
     must_use: true
   do_mod_appends:
     args:
-      - type: string
-        required: true
+    - type: string
+      required: true
   OnModPreInit:
     args: []
   OnModInit:
@@ -2728,3 +2728,25 @@ globals:
     args: []
   OnCountSecrets:
     args: []
+  LoadPixelScene:
+    args:
+    - type: string
+      required: true
+    - type: string
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: string
+      required: false
+    - type: bool
+      required: false
+    - type: bool
+      required: false
+    - type: table
+      required: false
+    - type: number
+      required: false
+    - type: bool
+      required: false

@@ -87,13 +87,15 @@ ModLuaFileAppend(
   "data/entities/animals/boss_centipede/ending/sampo_start_ending_sequence.lua",
   "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
 )
-ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
 ModLuaFileAppend("data/scripts/items/potion.lua", "mods/kaleva_koetus/files/scripts/appends/potion.lua")
 ModLuaFileAppend("data/scripts/items/potion_starting.lua", "mods/kaleva_koetus/files/scripts/appends/potion_starting.lua")
 ModLuaFileAppend("data/scripts/magic/fungal_shift.lua", "mods/kaleva_koetus/files/scripts/appends/fungal_shift.lua")
 ModLuaFileAppend("data/scripts/status_effects/status_list.lua", "mods/kaleva_koetus/files/scripts/appends/status_list.lua")
+
+ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
+ModLuaFileAppend("data/scripts/biomes/temple_altar_left.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar_left.lua")
 
 for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
   content:create_child("LuaComponent", { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua" })

@@ -1,5 +1,3 @@
-local _ = dofile_once("mods/kaleva_koetus/files/scripts/spawn_all_shopitems.lua")
-
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local AscensionTags = EventDefs.Tags
 
@@ -15,7 +13,7 @@ function init(x, y, w, h)
     -- selene: allow(undefined_variable)
     spawn_altar_top(x, y, false)
     LoadPixelScene(
-      "mods/kaleva_koetus/files/biome_impl/temple/altar.png",
+      "mods/kaleva_koetus/files/biome_impl/temple/altar_left.png",
       "data/biome_impl/temple/altar_visual.png",
       x,
       y - 40 + 300,
