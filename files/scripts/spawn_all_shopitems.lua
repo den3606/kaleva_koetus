@@ -4,6 +4,34 @@ local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/even
 
 local _spawn_all_shopitems = spawn_all_shopitems
 
+local function get_shop_card_entities()
+  local entity_ids = EntityGetWithTag("card_action")
+  local shop_entity_ids = {}
+
+  for _, entity_id in ipairs(entity_ids) do
+    local is_shop_entity = not not EntityGetFirstComponent(entity_id, "ItemCostComponent", "shop_cost")
+    if is_shop_entity then
+      table.insert(shop_entity_ids, entity_id)
+    end
+  end
+
+  return shop_entity_ids
+end
+
+local function get_shop_wand_entities()
+  local entity_ids = EntityGetWithTag("wand")
+  local shop_entity_ids = {}
+
+  for _, entity_id in ipairs(entity_ids) do
+    local is_shop_entity = not not EntityGetFirstComponent(entity_id, "ItemCostComponent", "shop_cost")
+    if is_shop_entity then
+      table.insert(shop_entity_ids, entity_id)
+    end
+  end
+
+  return shop_entity_ids
+end
+
 ---@param ids EntityIdList
 ---@return table<EntityId, boolean>
 local function to_lookup(ids)
@@ -38,36 +66,15 @@ local function diff_entities(before, after)
   return new_entities
 end
 
----@param tag string
----@return EntityIdList
-local function get_entities_with_tag(tag)
-  local ids = EntityGetWithTag(tag)
-  if not ids then
-    return {}
-  end
-
-  local result = {}
-  for _, entity_id in ipairs(ids) do
-    local numeric_id = tonumber(entity_id)
-    if numeric_id then
-      result[#result + 1] = numeric_id
-    end
-  end
-
-  return result
-end
-
----@param x number
----@param y number
 -- selene: allow(unused_variable)
 function spawn_all_shopitems(x, y)
-  local before_card_entity_ids = get_entities_with_tag("card_action")
-  local before_wand_entity_ids = get_entities_with_tag("wand")
+  local before_card_entity_ids = get_shop_card_entities()
+  local before_wand_entity_ids = get_shop_wand_entities()
 
   _spawn_all_shopitems(x, y)
 
-  local after_card_entity_ids = get_entities_with_tag("card_action")
-  local after_wand_entity_ids = get_entities_with_tag("wand")
+  local after_card_entity_ids = get_shop_card_entities()
+  local after_wand_entity_ids = get_shop_wand_entities()
 
   local shop_card_entity_ids = diff_entities(before_card_entity_ids, after_card_entity_ids)
   local shop_wand_entity_ids = diff_entities(before_wand_entity_ids, after_wand_entity_ids)
