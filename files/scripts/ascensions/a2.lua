@@ -17,7 +17,7 @@ local MIN_PRICE_INCREASE = 10
 ascension.level = 2
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A2 .. "_price_adjusted"
+ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
 
 local function is_sale_indicator_near(entity_id)
   if not entity_id then

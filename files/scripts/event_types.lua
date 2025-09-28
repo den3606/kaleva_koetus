@@ -12,7 +12,7 @@ local EventTypes = {
   POTION_GENERATED = "potion_generated",
   BOOK_GENERATED = "book_generated",
   FUNGAL_SHIFTED = "fungal_shifted",
-  FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released"
+  FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released",
 }
 
 -- Event argument definitions (for handlers)
