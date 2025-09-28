@@ -11,7 +11,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 local log = Logger:new("a10.lua")
 
-local WAIT_FRAME = 60 * 60 * 30
+local WAIT_FRAME = 60 * 60 * 20
 local DELAY_FRAME = 60 * 2
 
 ascension.level = 10
