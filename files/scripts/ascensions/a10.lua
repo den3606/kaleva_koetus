@@ -58,7 +58,9 @@ end
 
 function ascension:on_fungal_shift_curse_released()
   local player_entity_id = GetPlayerEntity()
-  start_fungal_shift(player_entity_id)
+  if player_entity_id then
+    start_fungal_shift(player_entity_id)
+  end
 end
 
 return ascension
