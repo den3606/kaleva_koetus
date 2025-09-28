@@ -9,8 +9,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 local log = Logger:new("a2.lua")
 
-local SALE_TAG = AscensionTags.A2 .. "sale_indicator"
-local SALE_DISTANCE = 20
+local SALE_TAG = "sale_indicator"
 local SPELL_PRICE_MULTIPLIER = 1.35
 local WAND_PRICE_MULTIPLIER = 1.75
 local MIN_PRICE_INCREASE = 10
@@ -18,40 +17,22 @@ local MIN_PRICE_INCREASE = 10
 ascension.level = 2
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
+ascension.tag_name = AscensionTags.A2 .. "_price_adjusted"
+
 local function is_sale_indicator_near(entity_id)
-  local x, y = EntityGetTransform(entity_id)
-  local indicators = EntityGetWithTag(SALE_TAG)
-  if not indicators then
+  if not entity_id then
     return false
   end
 
-  local closest_id = 0
-  local closest_distance_sq = SALE_DISTANCE * SALE_DISTANCE
-
-  for _, indicator_id in ipairs(indicators) do
-    local sx, sy = EntityGetTransform(indicator_id)
-    local dx = sx - x
-    local dy = sy - y
-    local dist_sq = dx * dx + dy * dy
-    if dist_sq <= closest_distance_sq then
-      local hit, _, _ = RaytracePlatforms(x, y, sx, sy)
-      if not hit then
-        closest_id = indicator_id
-        break
-      end
-    end
-  end
-
-  return closest_id ~= 0
+  local x, y = EntityGetTransform(entity_id)
+  local indicator_id = EntityGetClosestWithTag(x, y, SALE_TAG)
+  return not not indicator_id
 end
 
 local function round_price(current_price, multiplier)
   local scaled = math.floor(current_price * multiplier + 0.5)
   local minimum = current_price + MIN_PRICE_INCREASE
-  if minimum < 0 then
-    minimum = 0
-  end
+
   if scaled < minimum then
     scaled = minimum
   end
