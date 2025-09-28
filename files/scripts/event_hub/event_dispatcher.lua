@@ -1,6 +1,6 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua")
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventArgs = EventDefs.Args
 local EventTypes = EventDefs.Types

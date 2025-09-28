@@ -1,6 +1,6 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 -- local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
--- local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+-- local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 -- dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 -- local AscensionTags = EventDefs.Tags

@@ -7,7 +7,7 @@ end
 
 GlobalsSetValue("kaleva_koetus_victory_processed", "1")
 
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local EventTypes = EventDefs.Types
 local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 
