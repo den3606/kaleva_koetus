@@ -3,17 +3,13 @@
     _enabled="1">
   </InheritTransformComponent>
 
+  <!-- NOTE: Lifetime defined in a10.lua -->
+
   <GameEffectComponent
     effect="CUSTOM"
     custom_effect_id="KALEVA_KOETUS_FUNGAL_SHIFT_CURSE"
-    frames="108000"
   >
   </GameEffectComponent>
-
-  <LifetimeComponent
-    lifetime="108000"
-  >
-  </LifetimeComponent>
 
   <UIIconComponent
     name="$kaleva_koetus_fungal_shift_curse_next"
@@ -24,4 +20,11 @@
     is_perk="0"
   >
   </UIIconComponent>
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/fungal_shift_curse_released.lua"
+    execute_every_n_frame="-1"
+    execute_on_removed="1"
+  >
+  </LuaComponent>
 </Entity>

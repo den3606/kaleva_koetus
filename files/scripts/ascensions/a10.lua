@@ -34,20 +34,11 @@ function ascension:on_activate()
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  local frame_count = 0
-  local is_first = true
-  local x, y = EntityGetTransform(player_entity_id)
-  local fluctuation_frame = ProceduralRandom(x, y, 0, 60 * 5)
-
   async(function()
-    frame_count = frame_count + 1
-    if frame_count >= (WAIT_FRAME + fluctuation_frame) or is_first then
-      is_first = false
-      wait(DELAY_FRAME)
-      start_fungal_shift(player_entity_id)
-      frame_count = 0
-    end
+    wait(DELAY_FRAME)
+    start_fungal_shift(player_entity_id)
   end)
+
   EntityAddTag(player_entity_id, self.tag_name)
 end
 
@@ -55,8 +46,19 @@ function ascension:on_fungal_shifted()
   local player_entity_id = GetPlayerEntity()
   local x, y = EntityGetTransform(player_entity_id)
   local effect_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/effect_fungal_shift_curse.xml", x, y)
+  local game_effect_component_id = EntityGetFirstComponentIncludingDisabled(effect_id, "GameEffectComponent")
+  ComponentSetValue2(game_effect_component_id, "frames", WAIT_FRAME)
+
+  local _ = EntityAddComponent2(effect_id, "LifetimeComponent", {
+    lifetime = WAIT_FRAME,
+  })
   EntityAddChild(player_entity_id, effect_id)
   GamePrintImportant("$kaleva_koetus_fungal_shift_curse_again", "$kaleva_koetus_fungal_shift_curse_again_description")
+end
+
+function ascension:on_fungal_shift_curse_released()
+  local player_entity_id = GetPlayerEntity()
+  start_fungal_shift(player_entity_id)
 end
 
 return ascension

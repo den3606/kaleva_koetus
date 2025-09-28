@@ -243,6 +243,14 @@ function AscensionManager:on_fungal_shifted()
   end
 end
 
+function AscensionManager:on_fungal_shift_curse_released()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_fungal_shift_curse_released then
+      ascension:on_fungal_shift_curse_released()
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,
