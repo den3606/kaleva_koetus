@@ -50,7 +50,7 @@ local function duplicate_enemy(enemy_entity_id, x, y, how_many)
     local duplicate_id = EntityLoad(entity_filename, x + offset_x, y + offset_y)
     if duplicate_id then
       EntityAddTag(duplicate_id, ascension.tag_name)
-      log:debug("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
+      log:verbose("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
     end
   end
 end
@@ -82,13 +82,13 @@ function ascension:on_enemy_spawn(payload)
   SetRandomSeed(seed_x, seed_y)
   local randf = Randomf()
   if randf <= SPAWN_CHANCE_3 then
-    log:debug("4 enemy")
+    log:verbose("4 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 3)
   elseif randf <= SPAWN_CHANCE_2 then
-    log:debug("3 enemy")
+    log:verbose("3 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 2)
   elseif randf <= SPAWN_CHANCE_1 then
-    log:debug("2 enemy")
+    log:verbose("2 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 1)
   end
 end
