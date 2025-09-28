@@ -1,6 +1,7 @@
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_types.lua")
+local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
@@ -96,6 +97,10 @@ ModLuaFileAppend("data/scripts/status_effects/status_list.lua", "mods/kaleva_koe
 
 for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
   content:create_child("LuaComponent", { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua" })
+end
+
+for content in nxml.edit_file("data/entities/misc/sale_indicator.xml") do
+  content:set("tags", AscensionTags.A2 .. "sale_indicator")
 end
 
 local translation_csv = ModTextFileGetContent("data/translations/common.csv")

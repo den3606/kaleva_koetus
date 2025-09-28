@@ -9,69 +9,125 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 local log = Logger:new("a2.lua")
 
+local SALE_TAG = AscensionTags.A2 .. "sale_indicator"
+local SALE_DISTANCE = 20
+local SPELL_PRICE_MULTIPLIER = 1.35
+local WAND_PRICE_MULTIPLIER = 1.75
+local MIN_PRICE_INCREASE = 10
+
 ascension.level = 2
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_WAND_SPAWN .. EventTypes.SHOP_WAND_SPAWN
-
-local function pick_random_two(ids, seed_a, seed_b)
-  if type(ids) ~= "table" or #ids < 2 then
-    return nil, nil
+ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
+local function is_sale_indicator_near(entity_id)
+  local x, y = EntityGetTransform(entity_id)
+  local indicators = EntityGetWithTag(SALE_TAG)
+  if not indicators then
+    return false
   end
 
-  local copy = {}
-  for i = 1, #ids do
-    copy[i] = ids[i]
+  local closest_id = 0
+  local closest_distance_sq = SALE_DISTANCE * SALE_DISTANCE
+
+  for _, indicator_id in ipairs(indicators) do
+    local sx, sy = EntityGetTransform(indicator_id)
+    local dx = sx - x
+    local dy = sy - y
+    local dist_sq = dx * dx + dy * dy
+    if dist_sq <= closest_distance_sq then
+      local hit, _, _ = RaytracePlatforms(x, y, sx, sy)
+      if not hit then
+        closest_id = indicator_id
+        break
+      end
+    end
   end
 
-  SetRandomSeed(seed_a, seed_b)
-  for i = #copy, 2, -1 do
-    local j = Random(1, i)
-    copy[i], copy[j] = copy[j], copy[i]
-  end
-
-  return copy[1], copy[2]
+  return closest_id ~= 0
 end
 
-local function mark_and_destroy(entity_id)
-  if not entity_id then
-    return
+local function round_price(current_price, multiplier)
+  local scaled = math.floor(current_price * multiplier + 0.5)
+  local minimum = current_price + MIN_PRICE_INCREASE
+  if minimum < 0 then
+    minimum = 0
+  end
+  if scaled < minimum then
+    scaled = minimum
+  end
+  return scaled
+end
+
+local function update_item_cost(entity_id, multiplier)
+  local updated = false
+
+  local cost_components = EntityGetComponentIncludingDisabled(entity_id, "ItemCostComponent")
+  if cost_components then
+    for _, comp_id in ipairs(cost_components) do
+      local current_cost = ComponentGetValue2(comp_id, "cost")
+      if current_cost and current_cost > 0 then
+        local new_cost = round_price(current_cost, multiplier)
+        ComponentSetValue2(comp_id, "cost", new_cost)
+        updated = true
+      end
+    end
   end
 
-  if EntityHasTag(entity_id, ascension.tag_name) then
-    return
+  local storages = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+  if storages then
+    for _, comp_id in ipairs(storages) do
+      local name = ComponentGetValue2(comp_id, "name")
+      if name == "shop_cost" or name == "item_cost" or name == "price" then
+        local current = ComponentGetValue2(comp_id, "value_int")
+        if current and current > 0 then
+          local new_value = round_price(current, multiplier)
+          ComponentSetValue2(comp_id, "value_int", new_value)
+          updated = true
+        end
+      end
+    end
   end
 
-  EntityAddTag(entity_id, ascension.tag_name)
-  EntityKill(entity_id)
+  if updated then
+    EntityAddTag(entity_id, ascension.tag_name)
+  end
+
+  return updated
+end
+
+local function increase_prices(entity_ids, multiplier)
+  for _, entity_id in ipairs(entity_ids) do
+    local should_skip = false
+
+    if EntityHasTag(entity_id, ascension.tag_name) then
+      should_skip = true
+    elseif is_sale_indicator_near(entity_id) then
+      log:debug("Skipping sale item %d", entity_id)
+      should_skip = true
+    end
+
+    if not should_skip then
+      if update_item_cost(entity_id, multiplier) then
+        log:debug("Price increased for entity %d", entity_id)
+      else
+        log:debug("No cost component found for entity %d", entity_id)
+      end
+    end
+  end
 end
 
 function ascension:on_activate()
-  log:info("Shop inventory reduction active")
+  log:info("Shop price increase active")
 end
 
 function ascension:on_shop_card_spawn(payload)
-  log:debug("Removing two shop cards")
-
   local entity_ids = payload[1]
-  local x = tonumber(payload[2])
-  local y = tonumber(payload[3])
-
-  local first_id, second_id = pick_random_two(entity_ids, x, y)
-  mark_and_destroy(first_id)
-  mark_and_destroy(second_id)
+  increase_prices(entity_ids, SPELL_PRICE_MULTIPLIER)
 end
 
 function ascension:on_shop_wand_spawn(payload)
-  log:debug("Removing one shop wand")
-
   local entity_ids = payload[1]
-  local x = tonumber(payload[2])
-  local y = tonumber(payload[3])
-
-  SetRandomSeed(x, y)
-  local rand = Random(1, #entity_ids)
-  mark_and_destroy(entity_ids[rand])
+  increase_prices(entity_ids, WAND_PRICE_MULTIPLIER)
 end
 
 return ascension
