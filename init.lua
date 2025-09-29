@@ -23,15 +23,15 @@ end
 
 function OnModInit()
   log:debug("Mod - OnModInit()")
-end
-
-function OnModPostInit()
-  log:debug("Mod - OnModPostInit()")
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
     ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
   end
+end
+
+function OnModPostInit()
+  log:debug("Mod - OnModPostInit()")
 end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
