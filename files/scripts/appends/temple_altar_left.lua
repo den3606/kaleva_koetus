@@ -14,10 +14,10 @@ function init(x, y, w, h)
     spawn_altar_top(x, y, false)
     LoadPixelScene(
       "mods/kaleva_koetus/files/biome_impl/temple/altar_left.png",
-      "data/biome_impl/temple/altar_visual.png",
+      "data/biome_impl/temple/altar_left_visual.png",
       x,
       y - 40 + 300,
-      "data/biome_impl/temple/altar_background.png",
+      "data/biome_impl/temple/altar_left_background.png",
       true
     )
   else
