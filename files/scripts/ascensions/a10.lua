@@ -38,12 +38,14 @@ function ascension:on_player_spawn(player_entity_id)
     wait(DELAY_FRAME)
     start_fungal_shift(player_entity_id)
   end)
-
-  EntityAddTag(player_entity_id, self.tag_name)
 end
 
 function ascension:on_fungal_shifted()
   local player_entity_id = GetPlayerEntity()
+  if EntityHasTag(player_entity_id, self.tag_name) then
+    return
+  end
+
   local x, y = EntityGetTransform(player_entity_id)
   local effect_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/effect_fungal_shift_curse.xml", x, y)
   local game_effect_component_id = EntityGetFirstComponentIncludingDisabled(effect_id, "GameEffectComponent")
@@ -54,11 +56,13 @@ function ascension:on_fungal_shifted()
   })
   EntityAddChild(player_entity_id, effect_id)
   GamePrintImportant("$kaleva_koetus_fungal_shift_curse_again", "$kaleva_koetus_fungal_shift_curse_again_description")
+  EntityAddTag(player_entity_id, self.tag_name)
 end
 
 function ascension:on_fungal_shift_curse_released()
   local player_entity_id = GetPlayerEntity()
   if player_entity_id then
+    EntityRemoveTag(player_entity_id, self.tag_name)
     start_fungal_shift(player_entity_id)
   end
 end
