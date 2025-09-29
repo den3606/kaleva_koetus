@@ -15,6 +15,8 @@ ascension.tag_name = AscensionTags.A12 .. "unused"
 
 function ascension:on_activate()
   log:info("Temple Alter's water withered")
+  ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
+  ModLuaFileAppend("data/scripts/biomes/temple_altar_left.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar_left.lua")
 end
 
 function ascension:on_world_initialized()
