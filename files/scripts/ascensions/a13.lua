@@ -11,6 +11,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a13.lua")
 
 local UPGRADE_CHANCE = 0.20
+local HP_MULTIPLIER = 2
 
 ascension.level = 13
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -67,18 +68,61 @@ local function add_elite_effect(enemy_entity_id)
   })
 end
 
+local function add_homing(enemy_entity_id)
+  local homing_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "HomingComponent")
+
+  if not homing_component_id then
+    EntityAddComponent2(enemy_entity_id, "HomingComponent", {
+      target_tag = "prey",
+      homing_targeting_coeff = "9",
+      detect_distance = "350",
+      homing_velocity_multiplier = "1.0",
+    })
+  end
+end
+
+local function increase_hp(enemy_entity_id)
+  local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
+  local hp = ComponentGetValue2(damage_model_component_id, "hp")
+  ComponentSetValue2(damage_model_component_id, "hp", hp * HP_MULTIPLIER)
+end
+
+local function increase_fire_rate(enemy_entity_id)
+  -- 2倍
+end
+
+local function increase_power(enemy_entity_id)
+  -- 1.5倍
+end
+
+local function increase_explosion(enemy_entity_id)
+  -- 2倍
+end
+
+local function resurrection_myself(enemy_entity_id)
+  -- 通常個体として再度スポーン
+  -- お金はない
+end
+
+local function use_wand(enemy_entity_id)
+  -- 杖持ちとして現れる
+  -- 中身、杖はどうするか考え中
+end
+
 local function upgrade_enemy(enemy_entity_id, x, y)
   add_elite_effect(enemy_entity_id)
 
-  -- ランダムで何個か付与する？
-  -- ホーミングがなかったらホーミング付与
-  -- 発射スピード強化
-  -- 爆発強化
-  -- 火力強化
-  -- HPx1.5
   -- 血をvoid waterに(must)
-  local offset_x = Random(-16, 16)
-  local offset_y = Random(-16, 0)
+  local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
+  ComponentSetValue2(damage_model_component_id, "blood_spray_material", "void_liquid")
+
+  add_homing(enemy_entity_id)
+  increase_hp(enemy_entity_id)
+  increase_fire_rate()
+  increase_power()
+  increase_explosion()
+  resurrection_myself()
+  use_wand()
 
   EntityAddTag(enemy_entity_id, ascension.tag_name)
   log:verbose("Upgrade enemy %d", enemy_entity_id)
