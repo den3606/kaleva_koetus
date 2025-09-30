@@ -417,7 +417,7 @@ globals:
       required: true
     - type: string
       required: true
-    - type: any
+    - type: ...
       required: true
   ComponentObjectGetValue2:
     args:
