@@ -58,7 +58,7 @@ globals:
       required: true
     - type: string
       required: true
-    - type: string
+    - type: table
       required: false
     must_use: true
   EntityRemoveComponent:

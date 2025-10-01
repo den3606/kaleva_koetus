@@ -50,3 +50,11 @@ globals:
         required: false
   GetPlayerEntity:
     args: []
+  generate_gun:
+    args:
+      - type: number
+        required: true
+      - type: number
+        required: true
+      - type: bool
+        required: true

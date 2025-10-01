@@ -69,7 +69,9 @@ function EventBroker:flush_event_queue()
     for _, subscription in ipairs(EventBroker.subscriptions) do
       if subscription.event_type == event_type then
         log:verbose("Event called from %s / type: %s", source, event_type)
-        EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
+        async(function()
+          EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
+        end)
       end
     end
 

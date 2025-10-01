@@ -1,22 +1,41 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
+local A13EliteSkills = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a13_elite_skills.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
+local log = Logger:new("a13.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("a13.lua")
-
 local UPGRADE_CHANCE = 0.20
-local HP_MULTIPLIER = 2
 
 ascension.level = 13
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_SPAWN
+
+function random_unique_integers(min, max, count)
+  local numbers = {}
+  for i = min, max do
+    table.insert(numbers, i)
+  end
+
+  -- Fisher-Yates shuffle
+  for i = #numbers, 2, -1 do
+    local j = Random(1, i)
+    numbers[i], numbers[j] = numbers[j], numbers[i]
+  end
+
+  local result = {}
+  for i = 1, count do
+    table.insert(result, numbers[i])
+  end
+
+  return result
+end
+
 local function add_elite_effect(enemy_entity_id)
   local _ = EntityAddComponent2(enemy_entity_id, "ParticleEmitterComponent", {
     emitted_material_name = "spark_blue_dark",
@@ -64,49 +83,8 @@ local function add_elite_effect(enemy_entity_id)
     radius = 150,
     r = 138,
     g = 43,
-    b = 226, -- 赤色など
+    b = 226,
   })
-end
-
-local function add_homing(enemy_entity_id)
-  local homing_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "HomingComponent")
-
-  if not homing_component_id then
-    EntityAddComponent2(enemy_entity_id, "HomingComponent", {
-      target_tag = "prey",
-      homing_targeting_coeff = "9",
-      detect_distance = "350",
-      homing_velocity_multiplier = "1.0",
-    })
-  end
-end
-
-local function increase_hp(enemy_entity_id)
-  local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
-  local hp = ComponentGetValue2(damage_model_component_id, "hp")
-  ComponentSetValue2(damage_model_component_id, "hp", hp * HP_MULTIPLIER)
-end
-
-local function increase_fire_rate(enemy_entity_id)
-  -- 2倍
-end
-
-local function increase_power(enemy_entity_id)
-  -- 1.5倍
-end
-
-local function increase_explosion(enemy_entity_id)
-  -- 2倍
-end
-
-local function resurrection_myself(enemy_entity_id)
-  -- 通常個体として再度スポーン
-  -- お金はない
-end
-
-local function use_wand(enemy_entity_id)
-  -- 杖持ちとして現れる
-  -- 中身、杖はどうするか考え中
 end
 
 local function upgrade_enemy(enemy_entity_id, x, y)
@@ -116,13 +94,17 @@ local function upgrade_enemy(enemy_entity_id, x, y)
   local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
   ComponentSetValue2(damage_model_component_id, "blood_spray_material", "void_liquid")
 
-  add_homing(enemy_entity_id)
-  increase_hp(enemy_entity_id)
-  increase_fire_rate()
-  increase_power()
-  increase_explosion()
-  resurrection_myself()
-  use_wand()
+  SetRandomSeed(x + enemy_entity_id, y)
+  local how_many_add = Random(2, 4)
+
+  local indexes = random_unique_integers(1, #A13EliteSkills.skills, how_many_add)
+
+  -- NOTE
+  -- 現状適応できない場合は無意味に終わるので、resultがfalseであれば、再抽選する？
+  for _, index in ipairs(indexes) do
+    local func = A13EliteSkills.skills[index]
+    func(A13EliteSkills, enemy_entity_id)
+  end
 
   EntityAddTag(enemy_entity_id, ascension.tag_name)
   log:verbose("Upgrade enemy %d", enemy_entity_id)
