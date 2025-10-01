@@ -34,6 +34,10 @@ function ascension:on_activate()
 end
 
 function ascension:on_player_spawn(player_entity_id)
+  if EntityHasTag(player_entity_id, self.tag_name) then
+    log:debug("already executed")
+    return
+  end
   async(function()
     wait(DELAY_FRAME)
     start_fungal_shift(player_entity_id)
