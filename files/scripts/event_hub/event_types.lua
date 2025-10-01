@@ -13,6 +13,7 @@ local EventTypes = {
   BOOK_GENERATED = "book_generated",
   FUNGAL_SHIFTED = "fungal_shifted",
   FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released",
+  GOLD_SPAWN = "gold_spawn",
 }
 
 -- Event argument definitions (for handlers)
@@ -43,6 +44,12 @@ local EventArgs = {
   },
   [EventTypes.FUNGAL_SHIFTED] = {},
   [EventTypes.FUNGAL_SHIFT_CURSE_RELEASED] = {},
+  [EventTypes.GOLD_SPAWN] = {
+    { name = "entity_id", type = "number" },
+    { name = "x", type = "number" },
+    { name = "y", type = "number" },
+    { name = "must_remove_timer", type = "boolean" },
+  },
 }
 
 local AscensionTags = {

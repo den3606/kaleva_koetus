@@ -158,11 +158,6 @@ function AscensionManager:on_world_initialized()
 end
 
 function AscensionManager:on_enemy_spawn(payload)
-  if #payload == 0 then
-    log:error("No enemy entity in payload!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
       ascension:on_enemy_spawn(payload)
@@ -171,11 +166,6 @@ function AscensionManager:on_enemy_spawn(payload)
 end
 
 function AscensionManager:on_shop_card_spawn(event_args)
-  if #event_args == 0 then
-    log:error("No enemy entity in event_args!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_card_spawn then
       ascension:on_shop_card_spawn(event_args)
@@ -184,11 +174,6 @@ function AscensionManager:on_shop_card_spawn(event_args)
 end
 
 function AscensionManager:on_shop_wand_spawn(event_args)
-  if #event_args == 0 then
-    log:error("No enemy entity in event_args!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_wand_spawn then
       ascension:on_shop_wand_spawn(event_args)
@@ -197,11 +182,6 @@ function AscensionManager:on_shop_wand_spawn(event_args)
 end
 
 function AscensionManager:on_necromancer_spawn(event_args)
-  if #event_args == 0 then
-    log:error("No necromancer positions in event_args!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_necromancer_spawn then
       ascension:on_necromancer_spawn(event_args)
@@ -210,11 +190,6 @@ function AscensionManager:on_necromancer_spawn(event_args)
 end
 
 function AscensionManager:on_potion_generated(event_args)
-  if #event_args == 0 then
-    log:error("No potion entity in event_args!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_potion_generated then
       ascension:on_potion_generated(event_args)
@@ -223,11 +198,6 @@ function AscensionManager:on_potion_generated(event_args)
 end
 
 function AscensionManager:on_book_generated(event_args)
-  if #event_args == 0 then
-    log:error("No book entity in event_args!")
-    return
-  end
-
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_book_generated then
       ascension:on_book_generated(event_args)
@@ -247,6 +217,14 @@ function AscensionManager:on_fungal_shift_curse_released()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_fungal_shift_curse_released then
       ascension:on_fungal_shift_curse_released()
+    end
+  end
+end
+
+function AscensionManager:on_gold_spawn(event_args)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_gold_spawn then
+      ascension:on_gold_spawn(event_args)
     end
   end
 end

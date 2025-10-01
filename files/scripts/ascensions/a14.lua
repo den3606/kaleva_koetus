@@ -1,85 +1,41 @@
--- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
--- local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
--- dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
--- local ascension = setmetatable({}, { __index = AscensionBase })
+local ascension = setmetatable({}, { __index = AscensionBase })
 
--- local log = Logger:new("a14.lua")
+local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 
--- local EFFECT_POOL = {
---   { effect = "MOVEMENT_FASTER", label = "加速" },
---   { effect = "MOVEMENT_SLOWER", label = "鈍足" },
---   { effect = "PROTECTION_FIRE", label = "耐火" },
---   { effect = "PROTECTION_ELECTRICITY", label = "絶縁" },
---   { effect = "STAINLESS_ARMOR", label = "ステンレス装甲" },
---   { effect = "BERSERK", label = "狂乱" },
---   { effect = "CHARM", label = "魅了" },
--- }
+local log = Logger:new("a14.lua")
 
--- ascension.level = 14
--- ascension.name = "エリア効果矯正付与"
--- ascension.description = "各バイオームに必ず何らかの効果が付与される"
--- ascension.tag_name = "kaleva_a14_effect"
+local GOLD_LIFETIME_MULTIPLIER = 0.17
 
--- ascension._biome_effect_map = {}
--- ascension._current_biome = nil
+ascension.level = 14
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
+ascension.tag_name = AscensionTags.A14 .. EventTypes.ENEMY_SPAWN
 
--- local function clear_effects(player_entity_id)
---   local components = EntityGetComponentIncludingDisabled(player_entity_id, "GameEffectComponent")
---   if not components then
---     return
---   end
+function ascension:on_activate()
+  log:info("Gold lifetime will be half")
+end
 
---   for _, component_id in ipairs(components) do
---     if ComponentHasTag(component_id, ascension.tag_name) then
---       EntityRemoveComponent(player_entity_id, component_id)
---     end
---   end
--- end
+function ascension:on_gold_spawn(payload)
+  log:debug("on_gold_spawn")
+  local gold_entity_id = tonumber(payload[1])
+  local must_remove_timer = (payload[4] == "true")
 
--- local function apply_effect(player_entity_id, biome_name, effect_def)
---   clear_effects(player_entity_id)
+  if must_remove_timer then
+    return
+  end
 
---   EntityAddComponent2(player_entity_id, "GameEffectComponent", {
---     effect = effect_def.effect,
---     frames = 0,
---     tags = ascension.tag_name,
---   })
+  local component_id = EntityGetFirstComponent(gold_entity_id, "LifetimeComponent")
+  local lifetime = ComponentGetValue2(component_id, "lifetime")
+  EntityRemoveComponent(gold_entity_id, component_id)
+  local _ = EntityAddComponent2(gold_entity_id, "LifetimeComponent", {
+    _tags = "enabled_in_world",
+    lifetime = math.floor(lifetime * GOLD_LIFETIME_MULTIPLIER),
+  })
+end
 
---   GamePrintImportant("Biome Effect: " .. biome_name, string.format("%sの加護/災い", effect_def.label))
---   log:debug("Applied biome effect %s to %s", effect_def.effect, biome_name)
--- end
-
--- local function pick_effect_for_biome(biome_name)
---   local seed_base = GameGetFrameNum()
---   SetRandomSeed(seed_base + #biome_name, seed_base - #biome_name)
---   local index = Random(1, #EFFECT_POOL)
---   return EFFECT_POOL[index]
--- end
-
--- function ascension:on_activate()
---   log:info("Biome effects enforced")
--- end
-
--- function ascension:on_update()
---   local player_entity_id = GetPlayerEntity()
---   if not player_entity_id then
---     return
---   end
-
---   local x, y = EntityGetTransform(player_entity_id)
---   local biome_name = BiomeMapGetName(x, y) or "unknown"
-
---   if biome_name == self._current_biome then
---     return
---   end
-
---   self._current_biome = biome_name
---   if not self._biome_effect_map[biome_name] then
---     self._biome_effect_map[biome_name] = pick_effect_for_biome(biome_name)
---   end
-
---   apply_effect(player_entity_id, biome_name, self._biome_effect_map[biome_name])
--- end
-
--- return ascension
+return ascension

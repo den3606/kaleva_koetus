@@ -46,5 +46,7 @@ function ascension:on_potion_generated(_potion) end
 function ascension:on_book_generated(_book) end
 -- Optional
 function ascension:on_fungal_shifted() end
+-- Optional
+function ascension:on_gold_spawn() end
 
 return ascension
