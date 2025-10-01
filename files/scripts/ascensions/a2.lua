@@ -11,8 +11,8 @@ local log = Logger:new("a2.lua")
 
 local SALE_TAG = AscensionTags.A2 .. "sale_indicator"
 local SHOP_TAG = AscensionTags.A2 .. "shop_item"
-local SPELL_PRICE_MULTIPLIER = 2.0
-local WAND_PRICE_MULTIPLIER = 1.25
+local SPELL_PRICE_MULTIPLIER = 2.2
+local WAND_PRICE_MULTIPLIER = 1.5
 local MIN_PRICE_INCREASE = 50
 
 ascension.level = 2
