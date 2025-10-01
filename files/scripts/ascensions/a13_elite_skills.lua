@@ -121,7 +121,7 @@ function a13_elite_skills:use_wand(enemy_entity_id)
   if wand_level < 2 then
     wand_level = 2
   end
-  if wand_level > 5 and wand_level < 8 then
+  if 5 < wand_level and wand_level < 8 then
     wand_level = 5
   end
   if wand_level > 6 then
