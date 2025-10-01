@@ -6,7 +6,10 @@ local ELITE_PROJECTILE_SPEED = 1.5
 -- selene: allow(unused_variable)
 function shot(projectile_entity_id)
   log:debug("elite enemy shot")
-  local projectile_component_id = EntityGetComponent(projectile_entity_id, "ProjectileComponent")
+  local projectile_component_id = EntityGetFirstComponent(projectile_entity_id, "ProjectileComponent")
+  if not projectile_component_id then
+    return
+  end
   local speed_min = ComponentGetValue2(projectile_component_id, "speed_min")
   local speed_max = ComponentGetValue2(projectile_component_id, "speed_max")
 

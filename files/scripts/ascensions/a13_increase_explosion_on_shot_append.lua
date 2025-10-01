@@ -1,8 +1,8 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local log = Logger:new("a13_increase_explosion_on_shot_append.lua")
 
-local ELITE_EXPLOSION_RADIUS_MULTIPLIER = 2
-local ELITE_EXPLOSION_STAINS_RADIUS = 1.5
+local ELITE_EXPLOSION_RADIUS_MULTIPLIER = 1.5
+local ELITE_EXPLOSION_STAINS_RADIUS = 1.25
 
 -- selene: allow(unused_variable)
 function shot(projectile_entity_id)

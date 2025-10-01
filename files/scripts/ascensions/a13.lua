@@ -16,7 +16,7 @@ ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_SPAWN
 
-function random_unique_integers(min, max, count)
+local function random_unique_integers(min, max, count)
   local numbers = {}
   for i = min, max do
     table.insert(numbers, i)
@@ -34,6 +34,16 @@ function random_unique_integers(min, max, count)
   end
 
   return result
+end
+
+local function can_shot(enemy_entity_id)
+  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
+  if not component_id then
+    return
+  end
+
+  local range_attack = ComponentGetValue2(component_id, "attack_ranged_entity_file")
+  return range_attack ~= "" and range_attack ~= nil
 end
 
 local function add_elite_effect(enemy_entity_id)
@@ -92,18 +102,34 @@ local function upgrade_enemy(enemy_entity_id, x, y)
 
   -- 血をvoid waterに(must)
   local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
-  ComponentSetValue2(damage_model_component_id, "blood_spray_material", "void_liquid")
+  ComponentSetValue2(damage_model_component_id, "blood_spray_material", "material_darkness")
+  ComponentSetValue2(damage_model_component_id, "blood_material", "material_darkness")
 
   SetRandomSeed(x + enemy_entity_id, y)
-  local how_many_add = Random(2, 4)
+  if can_shot(enemy_entity_id) then
+    local how_many_add_projectile_skill = Random(2, 3)
+    local how_many_add_body_skill = Random(1, 3)
 
-  local indexes = random_unique_integers(1, #A13EliteSkills.skills, how_many_add)
+    local projectile_indexes = random_unique_integers(1, #A13EliteSkills.projectile_skills, how_many_add_projectile_skill)
+    local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
 
-  -- NOTE
-  -- 現状適応できない場合は無意味に終わるので、resultがfalseであれば、再抽選する？
-  for _, index in ipairs(indexes) do
-    local func = A13EliteSkills.skills[index]
-    func(A13EliteSkills, enemy_entity_id)
+    for _, index in ipairs(projectile_indexes) do
+      local func = A13EliteSkills.projectile_skills[index]
+      func(A13EliteSkills, enemy_entity_id)
+    end
+
+    for _, index in ipairs(body_indexes) do
+      local func = A13EliteSkills.body_skills[index]
+      func(A13EliteSkills, enemy_entity_id)
+    end
+  else
+    local how_many_add_body_skill = Random(3, 5)
+    local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
+
+    for _, index in ipairs(body_indexes) do
+      local func = A13EliteSkills.body_skills[index]
+      func(A13EliteSkills, enemy_entity_id)
+    end
   end
 
   EntityAddTag(enemy_entity_id, ascension.tag_name)
@@ -111,7 +137,7 @@ local function upgrade_enemy(enemy_entity_id, x, y)
 end
 
 function ascension:on_activate()
-  log:info("Increasing enemy spawns")
+  log:info("Elite enemy spawns")
 end
 
 function ascension:on_enemy_spawn(payload)

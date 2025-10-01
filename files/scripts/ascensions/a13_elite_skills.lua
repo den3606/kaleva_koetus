@@ -7,52 +7,15 @@ local a13_elite_skills = {}
 
 local ELITE_HP_MULTIPLIER = 2
 local ELITE_FIRE_LATE = 2
+local DAMAGE_MELEE_MULTIPLIER = 2
 
 function a13_elite_skills:add_homing(enemy_entity_id)
   log:debug("add_homing")
-  local existing_component = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "HomingComponent")
-  if existing_component then
-    return
-  end
 
-  local _ = EntityAddComponent2(enemy_entity_id, "HomingComponent", {
-    target_tag = "prey",
-    homing_targeting_coeff = 13,
-    detect_distance = 300,
-    homing_velocity_multiplier = 1.0,
+  local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
+    script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_add_homing_on_shot_append.lua",
+    execute_every_n_frame = -1,
   })
-end
-
-function a13_elite_skills:increase_hp(enemy_entity_id)
-  log:debug("increase_hp")
-  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
-  if not component_id then
-    return
-  end
-
-  local current_hp = ComponentGetValue2(component_id, "hp")
-  if not current_hp then
-    return
-  end
-
-  ComponentSetValue2(component_id, "hp", current_hp * a13_elite_skills.hp_multiplier)
-end
-
-function a13_elite_skills:increase_fire_rate(enemy_entity_id)
-  log:debug("increase_fire_rate")
-
-  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
-  if not component_id then
-    return
-  end
-
-  local frames_between = ComponentGetValue2(component_id, "attack_ranged_frames_between")
-  if not frames_between then
-    return
-  end
-
-  local updated_frames_between = math.max(1, math.floor(frames_between * ELITE_FIRE_LATE))
-  ComponentSetValue2(component_id, "attack_ranged_frames_between", updated_frames_between)
 end
 
 function a13_elite_skills:add_extra_projectile(enemy_entity_id)
@@ -75,8 +38,25 @@ function a13_elite_skills:add_extra_projectile(enemy_entity_id)
   ComponentSetValue2(component_id, "attack_ranged_entity_count_max", projectile_max * multiplier)
 end
 
-function a13_elite_skills:increase_damage(enemy_entity_id)
-  log:debug("increase_damage")
+function a13_elite_skills:increase_projectile_fire_rate(enemy_entity_id)
+  log:debug("increase_projectile_fire_rate")
+
+  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
+  if not component_id then
+    return
+  end
+
+  local frames_between = ComponentGetValue2(component_id, "attack_ranged_frames_between")
+  if not frames_between then
+    return
+  end
+
+  local updated_frames_between = math.max(1, math.floor(frames_between * ELITE_FIRE_LATE))
+  ComponentSetValue2(component_id, "attack_ranged_frames_between", updated_frames_between)
+end
+
+function a13_elite_skills:increase_projectile_damage(enemy_entity_id)
+  log:debug("increase_projectile_damage")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_damage_on_shot_append.lua",
@@ -84,8 +64,8 @@ function a13_elite_skills:increase_damage(enemy_entity_id)
   })
 end
 
-function a13_elite_skills:increase_explosion(enemy_entity_id)
-  log:debug("increase_explosion")
+function a13_elite_skills:increase_projectile_explosion(enemy_entity_id)
+  log:debug("increase_projectile_explosion")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_explosion_on_shot_append.lua",
@@ -93,13 +73,66 @@ function a13_elite_skills:increase_explosion(enemy_entity_id)
   })
 end
 
-function a13_elite_skills:increase_speed(enemy_entity_id)
-  log:debug("increase_speed")
+function a13_elite_skills:increase_projectile_speed(enemy_entity_id)
+  log:debug("increase_projectile_speed")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_speed_on_shot_append.lua",
     execute_every_n_frame = -1,
   })
+end
+
+function a13_elite_skills:increase_hp(enemy_entity_id)
+  log:debug("increase_hp")
+  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
+  if not component_id then
+    return
+  end
+
+  local current_hp = ComponentGetValue2(component_id, "hp")
+  if not current_hp then
+    return
+  end
+
+  ComponentSetValue2(component_id, "hp", current_hp * ELITE_HP_MULTIPLIER)
+end
+
+function a13_elite_skills:increase_character_speed(enemy_entity_id)
+  log:debug("increase_character_speed")
+  local game_effect_comp, game_effect_entity = GetGameEffectLoadTo(enemy_entity_id, "MOVEMENT_FASTER_2X", false)
+  if (game_effect_comp ~= nil) and (game_effect_entity ~= nil) then
+    ComponentSetValue(game_effect_comp, "frames", "-1")
+  end
+end
+
+function a13_elite_skills:increase_melee_damage(enemy_entity_id)
+  log:debug("increase_melee_damage")
+  local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
+  if not component_id then
+    return
+  end
+  local range_attack = ComponentGetValue2(component_id, "attack_ranged_entity_file")
+  if range_attack == "" or range_attack == nil then
+    local melee_damage_min = ComponentGetValue2(component_id, "attack_melee_damage_min")
+    local melee_damage_max = ComponentGetValue2(component_id, "attack_melee_damage_max")
+    ComponentSetValue2(component_id, "attack_melee_damage_min", melee_damage_min * DAMAGE_MELEE_MULTIPLIER)
+    ComponentSetValue2(component_id, "attack_melee_damage_max", melee_damage_max * DAMAGE_MELEE_MULTIPLIER)
+  end
+end
+
+function a13_elite_skills:add_shield(enemy_entity_id)
+  log:debug("add_shield")
+
+  local x, y = EntityGetTransform(enemy_entity_id)
+  local child_id = EntityLoad("data/entities/misc/perks/shield.xml", x, y)
+  EntityAddChild(enemy_entity_id, child_id)
+end
+
+function a13_elite_skills:add_area_damage(enemy_entity_id)
+  log:debug("add_area_damage")
+
+  local entity_id = EntityLoad("data/entities/misc/perks/contact_damage_enemy.xml")
+  EntityAddChild(enemy_entity_id, entity_id)
 end
 
 function a13_elite_skills:use_wand(enemy_entity_id)
@@ -141,13 +174,21 @@ function a13_elite_skills:use_wand(enemy_entity_id)
   local _ = EntityLoad(wand_file, x, y)
 end
 
-a13_elite_skills.skills = {
+a13_elite_skills.projectile_skills = {
   a13_elite_skills.add_homing,
-  a13_elite_skills.increase_hp,
-  a13_elite_skills.increase_fire_rate,
-  a13_elite_skills.increase_damage,
-  a13_elite_skills.increase_explosion,
   a13_elite_skills.add_extra_projectile,
+  a13_elite_skills.increase_projectile_fire_rate,
+  a13_elite_skills.increase_projectile_damage,
+  a13_elite_skills.increase_projectile_explosion,
+  a13_elite_skills.increase_projectile_speed,
+}
+
+a13_elite_skills.body_skills = {
+  a13_elite_skills.increase_hp,
+  a13_elite_skills.increase_character_speed,
+  a13_elite_skills.increase_melee_damage,
+  a13_elite_skills.add_shield,
+  a13_elite_skills.add_area_damage,
   a13_elite_skills.use_wand,
 }
 
