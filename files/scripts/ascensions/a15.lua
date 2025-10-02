@@ -1,92 +1,140 @@
--- local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
--- dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
--- local ascension = setmetatable({}, { __index = AscensionBase })
+local AscensionTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
+local log = Logger:new("a15.lua")
 
--- local MAX_WANDS = 3
+local ascension = setmetatable({}, { __index = AscensionBase })
 
--- ascension.level = 15
--- ascension.name = "杖枠減少"
--- ascension.description = "持てる杖の数が1つ減少する"
+ascension.level = 15
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
+ascension.tag_name = AscensionTags.A15 .. EventTypes.SPELL_GENERATED
 
--- local function get_quick_inventory(player_entity_id)
---   local children = EntityGetAllChildren(player_entity_id)
---   if not children then
---     return nil
---   end
+local RISK_OF_BREAK = 0.5
 
---   for _, child in ipairs(children) do
---     if EntityGetName(child) == "inventory_quick" then
---       return child
---     end
---   end
+local function random_unique_integers(min, max, count)
+  local numbers = {}
+  for i = min, max do
+    table.insert(numbers, i)
+  end
 
---   return nil
--- end
+  -- Fisher-Yates shuffle
+  for i = #numbers, 2, -1 do
+    local j = Random(1, i)
+    numbers[i], numbers[j] = numbers[j], numbers[i]
+  end
 
--- local function clamp_quick_inventory_slots(player_entity_id)
---   local inventory_component = EntityGetFirstComponentIncludingDisabled(player_entity_id, "Inventory2Component")
---   if not inventory_component then
---     return
---   end
+  local result = {}
+  for i = 1, count do
+    table.insert(result, numbers[i])
+  end
 
---   local current_slots = ComponentGetValue2(inventory_component, "full_inventory_slots_y") or 1
---   if current_slots > MAX_WANDS - 1 then
---     ComponentSetValue2(inventory_component, "full_inventory_slots_y", math.max(0, MAX_WANDS - 1))
---   end
--- end
+  return result
+end
 
--- local function enforce_wand_limit()
---   local player_entity_id = GetPlayerEntity()
---   if not player_entity_id then
---     return
---   end
+local function add_elite_effect(enemy_entity_id)
+  local _ = EntityAddComponent2(enemy_entity_id, "ParticleEmitterComponent", {
+    emitted_material_name = "spark_blue_dark",
+    lifetime_min = 0.3,
+    lifetime_max = 0.8,
+    count_min = 12,
+    count_max = 20,
+    render_on_grid = false,
+    fade_based_on_lifetime = true,
+    cosmetic_force_create = false,
+    airflow_force = 1.5,
+    airflow_time = 1.9,
+    airflow_scale = 0.15,
+    emission_interval_min_frames = 1,
+    emission_interval_max_frames = 1,
+    emit_cosmetic_particles = true,
+    draw_as_long = true,
+    x_vel_min = -2,
+    x_vel_max = 2,
+    y_vel_min = -2,
+    y_vel_max = 2,
+    is_emitting = true,
+  })
 
---   clamp_quick_inventory_slots(player_entity_id)
+  local _ = EntityAddComponent2(enemy_entity_id, "ParticleEmitterComponent", {
+    emitted_material_name = "spark_blue",
+    emit_real_particles = true,
+    emit_cosmetic_particles = true,
+    emission_interval_min_frames = 1,
+    emission_interval_max_frames = 10,
+    count_min = 10,
+    count_max = 20,
+    x_pos_offset_min = -3,
+    x_pos_offset_max = 3,
+    y_pos_offset_min = -5,
+    y_pos_offset_max = 1,
+    y_vel_min = 0,
+    y_vel_max = 0,
+    airflow_force = 1,
+    airflow_time = 1.9,
+    airflow_scale = 0.15,
+  })
 
---   local inventory_quick = get_quick_inventory(player_entity_id)
---   if not inventory_quick then
---     return
---   end
+  local _ = EntityAddComponent2(enemy_entity_id, "LightComponent", {
+    radius = 150,
+    r = 138,
+    g = 43,
+    b = 226,
+  })
+end
 
---   local items = EntityGetAllChildren(inventory_quick) or {}
---   local wand_ids = {}
---   for _, item_id in ipairs(items) do
---     if EntityHasTag(item_id, "wand") then
---       wand_ids[#wand_ids + 1] = item_id
---     end
---   end
+local function break_spell(enemy_entity_id, x, y)
+  add_elite_effect(enemy_entity_id)
+  -- if can_shot(enemy_entity_id) then
+  --   local how_many_add_projectile_skill = Random(2, 3)
+  --   local how_many_add_body_skill = Random(1, 3)
 
---   if #wand_ids <= MAX_WANDS then
---     return
---   end
+  --   local projectile_indexes = random_unique_integers(1, #A13EliteSkills.projectile_skills, how_many_add_projectile_skill)
+  --   local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
 
---   local px, py = EntityGetTransform(player_entity_id)
---   SetRandomSeed(px + GameGetFrameNum(), py)
+  --   for _, index in ipairs(projectile_indexes) do
+  --     local func = A13EliteSkills.projectile_skills[index]
+  --     func(A13EliteSkills, enemy_entity_id)
+  --   end
 
---   local dropped_any = false
---   for index = MAX_WANDS + 1, #wand_ids do
---     local wand_id = wand_ids[index]
---     EntityRemoveFromParent(wand_id)
---     EntitySetTransform(wand_id, px + Random(-12, 12), py - 4)
---     dropped_any = true
---   end
+  --   for _, index in ipairs(body_indexes) do
+  --     local func = A13EliteSkills.body_skills[index]
+  --     func(A13EliteSkills, enemy_entity_id)
+  --   end
+  -- else
+  --   local how_many_add_body_skill = Random(3, 5)
+  --   local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
 
---   if dropped_any then
---     GamePrint("You can only juggle three wands now!")
---   end
--- end
+  --   for _, index in ipairs(body_indexes) do
+  --     local func = A13EliteSkills.body_skills[index]
+  --     func(A13EliteSkills, enemy_entity_id)
+  --   end
+  -- end
 
--- function ascension:on_activate()
---   print("[Kaleva Koetus A15] Limiting wand slots to " .. MAX_WANDS)
--- end
+  EntityAddTag(enemy_entity_id, ascension.tag_name)
+  log:verbose("Upgrade enemy %d", enemy_entity_id)
+end
 
--- function ascension:on_player_spawn(_player_entity_id)
---   enforce_wand_limit()
--- end
+function ascension:on_activate()
+  log:info("Broken spells")
+end
 
--- function ascension:on_update()
---   enforce_wand_limit()
--- end
+function ascension:on_spell_generated(payload)
+  local spell_entity_id = tonumber(payload[1])
 
--- return ascension
+  if not spell_entity_id or spell_entity_id == 0 or EntityHasTag(spell_entity_id, ascension.tag_name) then
+    return
+  end
+
+  local x, y = EntityGetTransform(spell_entity_id)
+  SetRandomSeed(x, y + GameGetFrameNum())
+  local randf = Randomf()
+  if randf < RISK_OF_BREAK then
+    break_spell(spell_entity_id, x, y)
+  end
+end
+
+return ascension
