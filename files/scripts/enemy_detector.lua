@@ -68,7 +68,8 @@ local function is_active(entity_id)
   return true
 end
 
-function EnemyDetector:init()
+function EnemyDetector:init(called_from)
+  self.tag_name = "kk_enemy_detected" .. "_" .. called_from
   log:debug("initialized")
 end
 
@@ -85,10 +86,10 @@ function EnemyDetector:get_unprocessed_enemies()
 
   local unprocessed_enemies = {}
   for _, entity_id in ipairs(all_enemies) do
-    if not EntityHasTag(entity_id, "kk_enemy_detected") then
+    if not EntityHasTag(entity_id, self.tag_name) then
       local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
-        EntityAddTag(entity_id, "kk_enemy_detected")
+        EntityAddTag(entity_id, self.tag_name)
 
         unprocessed_enemies[#unprocessed_enemies + 1] = {
           id = entity_id,
