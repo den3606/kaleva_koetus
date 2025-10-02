@@ -9,6 +9,7 @@ AscensionManager.MAX_LEVEL = 20
 -- State
 AscensionManager.current_level = 0
 AscensionManager.highest_level = 0
+AscensionManager.single_ascension = false
 AscensionManager.active_ascensions = {}
 
 function AscensionManager:init()
@@ -49,8 +50,8 @@ function AscensionManager:activate_ascension()
 
   self.active_ascensions = {}
 
-  for i = 1, self.current_level do
-    local ascension = self:_load_ascension(i)
+  if self.single_ascension then
+    local ascension = self:_load_ascension(self.current_level)
     if ascension then
       table.insert(self.active_ascensions, ascension)
 
@@ -58,18 +59,32 @@ function AscensionManager:activate_ascension()
         ascension:on_activate()
       end
 
-      log:debug("Activated Ascension %d", i)
+      log:debug("Activated Ascension %d", self.current_level)
     end
-  end
+  else
+    for i = 1, self.current_level do
+      local ascension = self:_load_ascension(i)
+      if ascension then
+        table.insert(self.active_ascensions, ascension)
 
-  if self.current_level > 0 then
-    GamePrint("[Kaleva Koetus] Ascensions 1-" .. self.current_level .. " Active (" .. #self.active_ascensions .. " effects)")
+        if ascension.on_activate then
+          ascension:on_activate()
+        end
+
+        log:debug("Activated Ascension %d", i)
+      end
+    end
+
+    if self.current_level > 0 then
+      GamePrint("[Kaleva Koetus] Ascensions 1-" .. self.current_level .. " Active (" .. #self.active_ascensions .. " effects)")
+    end
   end
 end
 
 function AscensionManager:load_progress()
   self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
   self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "0") or 0
+  self.single_ascension = ModSettingGet("kaleva_koetus.single_ascension") or false
 
   log:debug("Loaded progress. Current: %d, Highest: %d", self.current_level, self.highest_level)
 end
@@ -97,7 +112,7 @@ end
 function AscensionManager:on_victory()
   log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
 
-  local current_ascension = self.active_ascensions[self.current_level]
+  local current_ascension = self.active_ascensions[#self.active_ascensions]
   if not current_ascension or not current_ascension.should_unlock_next then
     self:save_progress()
     return
@@ -135,10 +150,9 @@ function AscensionManager:on_player_spawn(player_entity_id)
     log:error("Invalid player entity id: %s", tostring(player_entity_id))
     return
   end
-
-  if self.current_level > 0 and self.active_ascensions[self.current_level] then
+  if self.current_level > 0 and self.active_ascensions[#self.active_ascensions].level == self.current_level then
     local translated_ascension = GameTextGetTranslatedOrNot("$kaleva_koetus_ascension")
-    local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[self.current_level].description)
+    local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[#self.active_ascensions].description)
     GamePrintImportant(translated_ascension .. " " .. self.current_level, translated_description)
   end
 

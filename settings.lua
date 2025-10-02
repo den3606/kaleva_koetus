@@ -125,6 +125,13 @@ mod_settings = {
             scope = MOD_SETTING_SCOPE_RUNTIME,
           },
           {
+            id = "single_ascension",
+            ui_name = "Single Ascension",
+            ui_description = "Activate only one ascension",
+            value_default = false,
+            scope = MOD_SETTING_SCOPE_NEW_GAME,
+          },
+          {
             id = "lock_all",
             ui_name = "Lock All Ascensions",
             ui_description = "Instantly lock all ascension levels (for testing)",
