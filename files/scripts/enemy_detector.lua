@@ -69,22 +69,26 @@ local function is_active(entity_id)
 end
 
 function EnemyDetector:init()
-  log:debug("Initialized (stateless mode)")
+  log:debug("initialized")
 end
 
 function EnemyDetector:get_unprocessed_enemies()
-  local all_enemies = EntityGetWithTag("enemy")
-  local unprocessed_enemies = {}
+  if self.latest_entity_id == EntitiesGetMaxID() then
+    return {}
+  end
+  self.latest_entity_id = EntitiesGetMaxID()
 
-  if not all_enemies then
-    return unprocessed_enemies
+  local all_enemies = EntityGetWithTag("enemy")
+  if #all_enemies == 0 then
+    return {}
   end
 
+  local unprocessed_enemies = {}
   for _, entity_id in ipairs(all_enemies) do
-    if not EntityHasTag(entity_id, "kaleva_enemy_detected") then
+    if not EntityHasTag(entity_id, "kk_enemy_detected") then
       local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
-        EntityAddTag(entity_id, "kaleva_enemy_detected")
+        EntityAddTag(entity_id, "kk_enemy_detected")
 
         unprocessed_enemies[#unprocessed_enemies + 1] = {
           id = entity_id,
