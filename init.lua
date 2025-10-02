@@ -13,6 +13,8 @@ local log = Logger:new("init.lua")
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
+local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
+
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 log:info("Kaleva Koetus mod loading...")
@@ -36,7 +38,8 @@ end
 
 function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
   eventBroker:init()
-  EnemyDetector:init()
+  EnemyDetector:init("from_init")
+  SpellDetector:init("from_init")
 
   -- 存在するイベントをすべて登録する
   for _, event_type in pairs(EventTypes) do
@@ -61,11 +64,16 @@ end
 
 function OnWorldPreUpdate()
   local unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
-
-  -- Publish events for unprocessed enemies
   if #unprocessed_enemies > 0 then
     for _, enemy_data in ipairs(unprocessed_enemies) do
       eventBroker:publish_event_sync("init", EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
+    end
+  end
+
+  local unprocessed_spells = SpellDetector:get_unprocessed_spells()
+  if #unprocessed_spells > 0 then
+    for _, spell_data in ipairs(unprocessed_spells) do
+      eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
     end
   end
 

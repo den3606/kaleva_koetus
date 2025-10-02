@@ -243,6 +243,14 @@ function AscensionManager:on_gold_spawn(event_args)
   end
 end
 
+function AscensionManager:on_spell_generated(payload)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_spell_generated then
+      ascension:on_spell_generated(payload)
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,

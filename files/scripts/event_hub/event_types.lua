@@ -14,6 +14,7 @@ local EventTypes = {
   FUNGAL_SHIFTED = "fungal_shifted",
   FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released",
   GOLD_SPAWN = "gold_spawn",
+  SPELL_GENERATED = "spell_generated",
 }
 
 -- Event argument definitions (for handlers)
@@ -49,6 +50,9 @@ local EventArgs = {
     { name = "x", type = "number" },
     { name = "y", type = "number" },
     { name = "must_remove_timer", type = "boolean" },
+  },
+  [EventTypes.SPELL_GENERATED] = {
+    { name = "entity_id", type = "number" },
   },
 }
 

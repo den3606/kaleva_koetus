@@ -48,5 +48,7 @@ function ascension:on_book_generated(_book) end
 function ascension:on_fungal_shifted() end
 -- Optional
 function ascension:on_gold_spawn() end
+-- Optional
+function ascension:on_spell_generated(_spell) end
 
 return ascension
