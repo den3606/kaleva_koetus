@@ -251,6 +251,14 @@ function AscensionManager:on_spell_generated(payload)
   end
 end
 
+function AscensionManager:on_mod_post_init(payload)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_mod_post_init then
+      ascension:on_mod_post_init(payload)
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,

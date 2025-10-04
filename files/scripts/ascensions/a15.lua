@@ -1,6 +1,7 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
@@ -13,7 +14,32 @@ ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A15 .. EventTypes.SPELL_GENERATED
 
-local RISK_OF_BREAK = 0.5
+local function addr_seed_from_table(t)
+  local s = tostring(t or {})
+  local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
+  local n = tonumber(hex, 16) or 0
+
+  -- 32bitに畳んで拡散（軽いミックス）
+  -- n >> 16 を算術演算で実装
+  local shift = math.floor(n / 65536)
+
+  -- n ^ (n >> 16) のXORを算術演算で実装
+  local xor_result = 0
+  local a, b = n, shift
+  for i = 0, 31 do
+    local bit_val = 2 ^ i
+    local bit_a = math.floor(a / bit_val) % 2
+    local bit_b = math.floor(b / bit_val) % 2
+    if bit_a ~= bit_b then
+      xor_result = xor_result + bit_val
+    end
+  end
+
+  -- 乗算して32bitマスク
+  n = (xor_result * 0x45d9f3b) % 4294967296
+
+  return n
+end
 
 local function random_unique_integers(min, max, count)
   local numbers = {}
@@ -23,7 +49,7 @@ local function random_unique_integers(min, max, count)
 
   -- Fisher-Yates shuffle
   for i = #numbers, 2, -1 do
-    local j = Random(1, i)
+    local j = math.random(1, i)
     numbers[i], numbers[j] = numbers[j], numbers[i]
   end
 
@@ -35,91 +61,54 @@ local function random_unique_integers(min, max, count)
   return result
 end
 
-local function add_elite_effect(enemy_entity_id)
-  local _ = EntityAddComponent2(enemy_entity_id, "ParticleEmitterComponent", {
-    emitted_material_name = "spark_blue_dark",
-    lifetime_min = 0.3,
-    lifetime_max = 0.8,
-    count_min = 12,
-    count_max = 20,
-    render_on_grid = false,
-    fade_based_on_lifetime = true,
-    cosmetic_force_create = false,
-    airflow_force = 1.5,
-    airflow_time = 1.9,
-    airflow_scale = 0.15,
-    emission_interval_min_frames = 1,
-    emission_interval_max_frames = 1,
-    emit_cosmetic_particles = true,
-    draw_as_long = true,
-    x_vel_min = -2,
-    x_vel_max = 2,
-    y_vel_min = -2,
-    y_vel_max = 2,
-    is_emitting = true,
-  })
-
-  local _ = EntityAddComponent2(enemy_entity_id, "ParticleEmitterComponent", {
-    emitted_material_name = "spark_blue",
-    emit_real_particles = true,
-    emit_cosmetic_particles = true,
-    emission_interval_min_frames = 1,
-    emission_interval_max_frames = 10,
-    count_min = 10,
-    count_max = 20,
-    x_pos_offset_min = -3,
-    x_pos_offset_max = 3,
-    y_pos_offset_min = -5,
-    y_pos_offset_max = 1,
-    y_vel_min = 0,
-    y_vel_max = 0,
-    airflow_force = 1,
-    airflow_time = 1.9,
-    airflow_scale = 0.15,
-  })
-
-  local _ = EntityAddComponent2(enemy_entity_id, "LightComponent", {
-    radius = 150,
-    r = 138,
-    g = 43,
-    b = 226,
-  })
-end
-
-local function break_spell(enemy_entity_id, x, y)
-  add_elite_effect(enemy_entity_id)
-  -- if can_shot(enemy_entity_id) then
-  --   local how_many_add_projectile_skill = Random(2, 3)
-  --   local how_many_add_body_skill = Random(1, 3)
-
-  --   local projectile_indexes = random_unique_integers(1, #A13EliteSkills.projectile_skills, how_many_add_projectile_skill)
-  --   local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
-
-  --   for _, index in ipairs(projectile_indexes) do
-  --     local func = A13EliteSkills.projectile_skills[index]
-  --     func(A13EliteSkills, enemy_entity_id)
-  --   end
-
-  --   for _, index in ipairs(body_indexes) do
-  --     local func = A13EliteSkills.body_skills[index]
-  --     func(A13EliteSkills, enemy_entity_id)
-  --   end
-  -- else
-  --   local how_many_add_body_skill = Random(3, 5)
-  --   local body_indexes = random_unique_integers(1, #A13EliteSkills.body_skills, how_many_add_body_skill)
-
-  --   for _, index in ipairs(body_indexes) do
-  --     local func = A13EliteSkills.body_skills[index]
-  --     func(A13EliteSkills, enemy_entity_id)
-  --   end
-  -- end
-
-  EntityAddTag(enemy_entity_id, ascension.tag_name)
-  log:verbose("Upgrade enemy %d", enemy_entity_id)
-end
-
 function ascension:on_activate()
   log:info("Broken spells")
+end
+
+function ascension:on_mod_post_init()
+  local _ = dofile_once("data/scripts/gun/gun_actions.lua")
+  -- selene: allow(undefined_variable)
+  local actions = actions
+  local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
+  math.randomseed(addr_seed_from_table() + minute + second)
+
+  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions))
+  -- local numbers = random_unique_integers(1, #actions, math.floor(#actions / 2))
+  for _, index in ipairs(target_indexes) do
+    local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
+    -- NOTE:
+    -- ダミーの画像参照を作って、gun_actions側で対象画像かを判別できるようにする
+    local _ = ModImageMakeEditable("kk/a15/" .. actions[index].sprite, 1, 1)
+
+    for i = 0, x, 1 do
+      for j = 0, y, 1 do
+        local color = ModImageGetPixel(id, i, j)
+        local inverted = ImageEditor:invert_hue_abgr(color)
+        ModImageSetPixel(id, i, j, inverted)
+      end
+    end
+  end
+
+  ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/kaleva_koetus/files/scripts/appends/gun_actions.lua")
+end
+
+local function rename_spell(spell_entity_id)
+  local _ = dofile_once("data/scripts/gun/gun_actions.lua")
+  -- selene: allow(undefined_variable)
+  local actions = actions
+  local item_action_component_id = EntityGetFirstComponentIncludingDisabled(spell_entity_id, "ItemActionComponent")
+  local action_id = ComponentGetValue2(item_action_component_id, "action_id")
+
+  local ability_component_id = EntityGetFirstComponentIncludingDisabled(spell_entity_id, "AbilityComponent")
+
+  if ability_component_id and action_id then
+    for _, action in ipairs(actions) do
+      if action.id == action_id then
+        local action_name = GameTextGetTranslatedOrNot("$kaleva_koetus_broken_spell") .. GameTextGetTranslatedOrNot(action.name)
+        ComponentSetValue2(ability_component_id, "ui_name", action_name)
+      end
+    end
+  end
 end
 
 function ascension:on_spell_generated(payload)
@@ -129,12 +118,7 @@ function ascension:on_spell_generated(payload)
     return
   end
 
-  local x, y = EntityGetTransform(spell_entity_id)
-  SetRandomSeed(x, y + GameGetFrameNum())
-  local randf = Randomf()
-  if randf < RISK_OF_BREAK then
-    break_spell(spell_entity_id, x, y)
-  end
+  rename_spell(spell_entity_id)
 end
 
 return ascension

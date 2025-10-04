@@ -14,7 +14,6 @@ local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
-
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 log:info("Kaleva Koetus mod loading...")
@@ -34,9 +33,11 @@ end
 
 function OnModPostInit()
   log:debug("Mod - OnModPostInit()")
+
+  ascensionManager:on_mod_post_init()
 end
 
-function OnWorldInitialized() -- This is called once the game world is initialized. Doesn't ensure any world chunks actually exist. Use OnPlayerSpawned to ensure the chunks around player have been loaded or created.
+function OnWorldInitialized()
   eventBroker:init()
   EnemyDetector:init("from_init")
   SpellDetector:init("from_init")

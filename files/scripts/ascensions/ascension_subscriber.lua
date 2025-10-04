@@ -37,6 +37,8 @@ function ascension:on_necromancer_spawn(_positions) end
 -- Optional
 function ascension:on_player_spawn() end
 -- Optional
+function ascension:on_mod_post_init() end
+-- Optional
 function ascension:on_world_initialized() end
 -- Optional
 function ascension:on_enemy_spawn(_enemy) end
