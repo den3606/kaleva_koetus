@@ -72,8 +72,7 @@ function ascension:on_mod_post_init()
   local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
   math.randomseed(addr_seed_from_table() + minute + second)
 
-  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions))
-  -- local numbers = random_unique_integers(1, #actions, math.floor(#actions / 2))
+  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions / 2))
   for _, index in ipairs(target_indexes) do
     local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
     -- NOTE:
