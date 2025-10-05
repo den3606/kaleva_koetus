@@ -1,4 +1,4 @@
-<Entity tags="glue_NOT" name="following_crow">
+<Entity tags="glue_NOT" name="following_friend">
 
   <LightComponent
     _enabled="1"
@@ -11,7 +11,7 @@
   </LightComponent>
 
   <SpriteComponent
-    image_file="data/entities/animals/lukki/lukki_feet/lukki_sprite_minion.xml"
+    image_file="mods/kaleva_koetus/files/enemies_gfx/ultimate_killer.xml"
     offset_x="0"
     offset_y="0"
   >
@@ -19,7 +19,7 @@
 
 
   <LuaComponent
-    script_source_file="mods/kaleva_koetus/files/scripts/ascensions/a17_crow_movement.lua"
+    script_source_file="mods/kaleva_koetus/files/scripts/ascensions/a17_friend_movement.lua"
     execute_every_n_frame="1"
   >
   </LuaComponent>

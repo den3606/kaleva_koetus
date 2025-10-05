@@ -8,8 +8,8 @@ local range = 1000
 local indicator_distance = 40
 
 -- ping nearby enemies
-for _, crow_id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, range, "kk_a17_crow")) do
-  local enemy_x, enemy_y = EntityGetFirstHitboxCenter(crow_id)
+for _, friend_id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, range, "kk_a17_friend")) do
+  local enemy_x, enemy_y = EntityGetFirstHitboxCenter(friend_id)
   local dir_x = enemy_x - pos_x
   local dir_y = enemy_y - pos_y
   local distance = get_magnitude(dir_x, dir_y)
