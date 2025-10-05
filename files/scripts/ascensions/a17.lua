@@ -34,23 +34,32 @@ function ascension:on_activate()
       end
     end
   end
-
-  -- NOTE:
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  local x, y = EntityGetTransform(player_entity_id)
-  EntityAddComponent(player_entity_id, "LuaComponent", {
-    _tags = "perk_component",
-    script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_crow_radar.lua",
-    execute_every_n_frame = "1",
-  })
-  local crow_entity_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/following_crow.xml", x, y)
-  EntityAddTag(crow_entity_id, "kk_a17_crow")
-  EntityAddComponent(crow_entity_id, "VariableStorageComponent", {
-    name = "owner_id",
-    value_int = tostring(player_entity_id),
-  })
+  local crow_not_spawned = GlobalsGetValue("kaleva_koetus.a17_crow_not_spawned", "true") == "true"
+  if crow_not_spawned then
+    local x, y = EntityGetTransform(player_entity_id)
+    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
+      script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_crow_radar.lua",
+      execute_every_n_frame = 1,
+    })
+    local crow_entity_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/following_crow.xml", x, y)
+    EntityAddTag(crow_entity_id, "kk_a17_crow")
+    local _ = EntityAddComponent2(crow_entity_id, "VariableStorageComponent", {
+      name = "owner_id",
+      value_int = player_entity_id,
+    })
+    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
+      script_portal_teleport_used = "mods/kaleva_koetus/files/scripts/ascensions/a17_player_portal_teleported.lua",
+      execute_every_n_frame = -1,
+    })
+    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
+      script_teleported = "mods/kaleva_koetus/files/scripts/ascensions/a17_player_portal_teleported.lua",
+      execute_every_n_frame = -1,
+    })
+    GlobalsSetValue("kaleva_koetus.a17_crow_not_spawned", "false")
+  end
 end
 
 return ascension

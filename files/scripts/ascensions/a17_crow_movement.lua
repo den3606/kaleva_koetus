@@ -58,7 +58,7 @@ if owner_id ~= 0 then
   local ox, oy = EntityGetTransform(owner_id)
   dist = math.abs(x - ox) + math.abs(y - oy)
 
-  if dist < 512 then
+  if dist < 400 then
     PhysicsApplyForce(entity_id, vel_x, vel_y)
     PhysicsSetStatic(entity_id, false)
   else
