@@ -123,7 +123,7 @@ function AscensionManager:_add_ascension_info_park(player_entity_id)
       description = description .. line
     end
 
-    EntityAddComponent2(entity_ui, "UIIconComponent", {
+    local _ = EntityAddComponent2(entity_ui, "UIIconComponent", {
       name = "$kaleva_koetus_ascension_info_name",
       description = description,
       icon_sprite_file = "mods/kaleva_koetus/files/ui_gfx/ascensions/a" .. self.current_level .. ".png",

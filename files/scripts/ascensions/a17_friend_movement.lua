@@ -10,7 +10,7 @@ local comps = EntityGetComponent(entity_id, "VariableStorageComponent")
 local swaying = true
 
 if comps ~= nil then
-  for i, v in ipairs(comps) do
+  for _, v in ipairs(comps) do
     local name = ComponentGetValue2(v, "name")
 
     if name == "owner_id" then
@@ -37,7 +37,9 @@ if swaying then
   py = py - math.sin(arc) * length - math.cos(0 - arc) * length
 end
 
+-- selene: allow(undefined_variable)
 local dir = get_direction(x, y, px, py)
+-- selene: allow(undefined_variable)
 local dist = math.min(get_distance(x, y, px, py), 32)
 
 local vel_x = 0 - (math.cos(dir) * dist)

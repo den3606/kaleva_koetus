@@ -1,6 +1,5 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("a17_player_portal_teleported.lua")
 
+-- selene: allow(unused_variable)
 function teleported(from_x, from_y, to_x, to_y, portal_teleport)
   if portal_teleport then
     local friend_entity_id = EntityGetWithTag("kk_a17_friend")[1]
