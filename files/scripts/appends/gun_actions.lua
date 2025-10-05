@@ -1,6 +1,3 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("gun_action.lua")
-
 local function addr_seed_from_table(t)
   local s = tostring(t or {})
   local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
