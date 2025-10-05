@@ -9,7 +9,7 @@ local EventTypes = EventDefs.Types
 
 local log = Logger:new("a14.lua")
 
-local GOLD_LIFETIME_MULTIPLIER = 0.2
+local GOLD_LIFETIME_MULTIPLIER = 0.25
 
 ascension.level = 14
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
