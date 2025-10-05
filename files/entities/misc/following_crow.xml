@@ -1,0 +1,82 @@
+<Entity tags="glue_NOT" name="following_crow">
+
+  <LightComponent
+    _enabled="1"
+    radius="32"
+    r="120"
+    g="60"
+    b="10"
+    offset_y="0"
+    fade_out_time="1.5">
+  </LightComponent>
+
+  <SpriteComponent
+    image_file="data/entities/animals/lukki/lukki_feet/lukki_sprite_minion.xml"
+    offset_x="0"
+    offset_y="0"
+  >
+  </SpriteComponent>
+
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/ascensions/a17_crow_movement.lua"
+    execute_every_n_frame="1"
+  >
+  </LuaComponent>
+
+  <PhysicsBodyComponent
+    force_add_update_areas="1"
+    allow_sleep="0"
+    angular_damping="0.02"
+    fixed_rotation="1"
+    is_bullet="0"
+    linear_damping="0"
+    gravity_scale_if_has_no_image_shapes="0"
+  >
+  </PhysicsBodyComponent>
+
+  <VelocityComponent />
+
+  <GenomeDataComponent
+    herd_id="player">
+  </GenomeDataComponent>
+
+
+  <SpriteAnimatorComponent
+    rotate_to_surface_normal="0"
+    target_sprite_comp_name="character">
+  </SpriteAnimatorComponent>
+
+  <ParticleEmitterComponent
+    emitted_material_name="spark_purple_bright"
+    offset.x="-1"
+    offset.y="0"
+    x_pos_offset_min="-8"
+    y_pos_offset_min="-8"
+    x_pos_offset_max="8"
+    y_pos_offset_max="8"
+    x_vel_min="-4"
+    x_vel_max="4"
+    y_vel_min="-10"
+    y_vel_max="5"
+    count_min="1"
+    count_max="5"
+    gravity.y="0"
+    lifetime_min="0.3"
+    lifetime_max="1.6"
+    render_on_grid="1"
+    create_real_particles="0"
+    cosmetic_force_create="1"
+    collide_with_grid="0"
+    emit_cosmetic_particles="1"
+    emission_interval_min_frames="7"
+    emission_interval_max_frames="20"
+    is_emitting="1">
+  </ParticleEmitterComponent>
+
+  <VariableStorageComponent
+    name="memory"
+    value_int="0"
+  >
+  </VariableStorageComponent>
+</Entity>
