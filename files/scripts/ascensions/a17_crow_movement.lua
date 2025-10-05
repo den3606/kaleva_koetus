@@ -1,9 +1,10 @@
-dofile_once("data/scripts/lib/utilities.lua")
+local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
+local _ = dofile_once("data/scripts/lib/utilities.lua")
 
 local entity_id = GetUpdatedEntityID()
 local x, y = EntityGetTransform(entity_id)
 local px, py = x, y
-local owner_id = 0
+local owner_id = GetPlayerEntity()
 
 local comps = EntityGetComponent(entity_id, "VariableStorageComponent")
 local swaying = true
@@ -13,7 +14,6 @@ if comps ~= nil then
     local name = ComponentGetValue2(v, "name")
 
     if name == "owner_id" then
-      owner_id = ComponentGetValue2(v, "value_int")
       px, py = EntityGetTransform(owner_id)
 
       if (px == nil) or (py == nil) then
@@ -58,6 +58,10 @@ if owner_id ~= 0 then
   local ox, oy = EntityGetTransform(owner_id)
   dist = math.abs(x - ox) + math.abs(y - oy)
 
-  if dist > 900 then
+  if dist < 512 then
+    PhysicsApplyForce(entity_id, vel_x, vel_y)
+    PhysicsSetStatic(entity_id, false)
+  else
+    PhysicsSetStatic(entity_id, true)
   end
 end
