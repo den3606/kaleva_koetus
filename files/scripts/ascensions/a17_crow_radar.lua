@@ -29,10 +29,10 @@ for _, crow_id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, range, "kk_a17_cr
 
   -- display sprite based on proximity
   if distance > range * 0.8 then
-    GameCreateSpriteForXFrames("kk/a17/data/particles/radar_enemy_faint.png", indicator_x, indicator_y, true, 0, 0, 1, true)
+    GameCreateSpriteForXFrames("mods/kaleva_koetus/tmp/a17/data/particles/radar_enemy_faint.png", indicator_x, indicator_y, true, 0, 0, 1, true)
   elseif distance > range * 0.5 then
-    GameCreateSpriteForXFrames("kk/a17/data/particles/radar_enemy_medium.png", indicator_x, indicator_y, true, 0, 0, 1, true)
+    GameCreateSpriteForXFrames("mods/kaleva_koetus/tmp/a17/data/particles/radar_enemy_medium.png", indicator_x, indicator_y, true, 0, 0, 1, true)
   else
-    GameCreateSpriteForXFrames("kk/a17/data/particles/radar_enemy_strong.png", indicator_x, indicator_y, true, 0, 0, 1, true)
+    GameCreateSpriteForXFrames("mods/kaleva_koetus/tmp/a17/data/particles/radar_enemy_strong.png", indicator_x, indicator_y, true, 0, 0, 1, true)
   end
 end

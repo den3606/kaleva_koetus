@@ -25,7 +25,7 @@ function ascension:on_activate()
 
   for index, image in ipairs(target_images) do
     local id, x, y = ModImageMakeEditable(image, 0, 0)
-    local a17_id = ModImageMakeEditable("kk/a17/" .. image, x, y)
+    local a17_id = ModImageMakeEditable("mods/kaleva_koetus/tmp/a17/" .. image, x, y)
     for i = 0, x, 1 do
       for j = 0, y, 1 do
         local color = ModImageGetPixel(id, i, j)
