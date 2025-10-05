@@ -105,7 +105,10 @@ ModLuaFileAppend("data/scripts/status_effects/status_list.lua", "mods/kaleva_koe
 ModLuaFileAppend("data/scripts/game_helpers.lua", "mods/kaleva_koetus/files/scripts/appends/game_helpers.lua")
 
 for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
-  content:create_child("LuaComponent", { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua" })
+  content:create_child(
+    "LuaComponent",
+    { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua", execute_on_added = true, execute_every_n_frame = "-1" }
+  )
 end
 
 for content in nxml.edit_file("data/entities/misc/sale_indicator.xml") do

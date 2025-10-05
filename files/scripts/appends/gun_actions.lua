@@ -1,3 +1,6 @@
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local log = Logger:new("gun_action.lua")
+
 local function addr_seed_from_table(t)
   local s = tostring(t or {})
   local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
@@ -45,8 +48,14 @@ local function random_unique_integers(min, max, count)
   return result
 end
 local function a15_action(action)
-  local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
-  math.randomseed(addr_seed_from_table() + minute + second)
+  local gun_action_seed = ModSettingGet("kaleva_koetus.gun_action_seed") or 0
+
+  if gun_action_seed == 0 then
+    local year, month, day, hour, minute, second = GameGetDateAndTimeUTC()
+    gun_action_seed = year + month + day + hour + minute + second + addr_seed_from_table()
+    ModSettingSet("kaleva_koetus.gun_action_seed", gun_action_seed)
+  end
+  math.randomseed(gun_action_seed)
 
   action.name = GameTextGetTranslatedOrNot("$kaleva_koetus_broken_spell") .. GameTextGetTranslatedOrNot(action.name)
 
@@ -57,35 +66,46 @@ local function a15_action(action)
     action.max_uses = action.price * 10
   else
     if action.mana then
-      action.mana = action.mana * math.random(1.2, 2.0)
+      action.mana = action.mana * math.random(1.2, 1.7)
     end
   end
+
+  -- NOTE:
+  -- action.actionは呪文が呼び出される度に実行される
+  -- そのため、gun_action読み込み時にrand値を保持しないと、呪文詠唱毎で実行されるデバフが変わってしまう。
+  local has_cool_time = 0.5 < math.random() or true
+  local has_fire_rate_debuff = 0.5 < math.random() or false
+  local selected_debuff = random_unique_integers(1, 5, 2)
+  local debuff_fire_rate_wait = math.random(10, 60)
+  local debuff_reload_time = math.random(10, 60)
+  local debuff_spread_degrees = math.random(5, 10)
+  local debuff_damage_critical_chance = math.random(-10, -1)
+  local debuff_speed_multiplier = math.random(5, 15) * 0.1
 
   local _func_action = action.action
   action.action = function(recursion_level, iteration)
     -- selene: allow(undefined_variable)
     local c = c
 
-    if 0.5 < math.random() then
-      if 0.5 < math.random() then
-        -- selene: allow(unscoped_variables,unused_variable)
-        current_reload_time = current_reload_time + math.random(10, 60)
+    if has_cool_time then
+      if has_fire_rate_debuff then
+        c.fire_rate_wait = c.fire_rate_wait + debuff_fire_rate_wait
       else
-        c.fire_rate_wait = c.fire_rate_wait + math.random(10, 60)
+        -- selene: allow(unscoped_variables,unused_variable)
+        current_reload_time = current_reload_time + debuff_reload_time
       end
     end
 
-    local selected = random_unique_integers(1, 5, 2)
     -- selene: allow(undefined_variable)
     local debuff_effects = {
       function()
-        c.spread_degrees = c.spread_degrees + math.random(5, 10)
+        c.spread_degrees = c.spread_degrees + debuff_spread_degrees
       end,
       function()
-        c.damage_critical_chance = c.damage_critical_chance + math.random(-10, -1)
+        c.damage_critical_chance = c.damage_critical_chance + debuff_damage_critical_chance
       end,
       function()
-        c.child_speed_multiplier = math.random(5, 15) * 0.1
+        c.child_speed_multiplier = c.child_speed_multiplier * debuff_speed_multiplier
       end,
       function()
         c.damage_projectile_add = c.damage_projectile_add * 0.5
@@ -97,7 +117,7 @@ local function a15_action(action)
       end,
     }
 
-    for _, index in ipairs(selected) do
+    for _, index in ipairs(selected_debuff) do
       debuff_effects[index]()
     end
 
