@@ -34,13 +34,20 @@ function ascension:on_activate()
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  if EntityHasTag(player_entity_id, self.tag_name) then
+  log:debug("================================")
+  if EntityHasTag(player_entity_id, self.tag_name) or GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false") == "true" then
     log:debug("already executed")
     return
   end
+  log:debug("------------------------------")
+
+  log:debug(GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false"))
+
   async(function()
+    log:debug(GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false"))
     wait(DELAY_FRAME)
     start_fungal_shift(player_entity_id)
+    GlobalsSetValue("kaleva_koetus_fungal_shift_applied", "true")
   end)
 end
 
@@ -64,6 +71,11 @@ function ascension:on_fungal_shifted()
 end
 
 function ascension:on_fungal_shift_curse_released()
+  if GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false") == "true" then
+    log:debug("already executed")
+    return
+  end
+
   local player_entity_id = GetPlayerEntity()
   if player_entity_id then
     EntityRemoveTag(player_entity_id, self.tag_name)
