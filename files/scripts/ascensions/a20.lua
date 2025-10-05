@@ -17,6 +17,10 @@ function ascension:on_activate()
   log:debug("new game plus")
   ModSettingSet("kaleva_koetus.a20_dead_boss", false)
   ModLuaFileAppend("data/entities/animals/boss_centipede/death_check.lua", "mods/kaleva_koetus/files/scripts/appends/death_check.lua")
+  ModLuaFileAppend(
+    "data/scripts/biomes/mountain/mountain_floating_island.lua",
+    "mods/kaleva_koetus/files/scripts/appends/mountain_floating_island.lua"
+  )
 end
 
 function ascension:on_boss_died()
