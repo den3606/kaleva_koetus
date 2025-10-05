@@ -182,7 +182,9 @@ function AscensionManager:on_player_spawn(player_entity_id)
     GamePrintImportant(translated_ascension .. " " .. self.current_level, translated_description)
   end
 
-  AscensionManager:_add_ascension_info_park(player_entity_id)
+  if ModSettingGet("kaleva_koetus.show_ascension_info") then
+    AscensionManager:_add_ascension_info_park(player_entity_id)
+  end
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_player_spawn then

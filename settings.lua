@@ -101,7 +101,7 @@ mod_settings = {
         ui_name = "Show Ascension Info",
         ui_description = "Display current ascension level and effects during gameplay",
         value_default = true,
-        scope = MOD_SETTING_SCOPE_RUNTIME,
+        scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
       {
         category_id = "debug_settings",
