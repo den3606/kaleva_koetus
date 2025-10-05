@@ -1,4 +1,6 @@
-dofile("data/scripts/game_helpers.lua")
+local _ = dofile("data/scripts/game_helpers.lua")
+
+-- selene: allow(unused_variable)
 
 function item_pickup(entity_item, entity_who_picked, name)
   local max_hp = 0
@@ -31,8 +33,8 @@ function item_pickup(entity_item, entity_who_picked, name)
     end
   end
 
-  EntityLoad("data/entities/particles/image_emitters/heart_fullhp_effect.xml", x, y - 12)
-  EntityLoad("data/entities/particles/heart_out.xml", x, y - 8)
+  local _ = EntityLoad("data/entities/particles/image_emitters/heart_fullhp_effect.xml", x, y - 12)
+  local _ = EntityLoad("data/entities/particles/heart_out.xml", x, y - 8)
   GamePrintImportant(
     "$log_heart_fullhp_temple",
     GameTextGet(
