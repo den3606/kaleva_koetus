@@ -11,7 +11,7 @@ local log = Logger:new("a18.lua")
 ascension.level = 18
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A15
+ascension.tag_name = AscensionTags.A18
 
 function ascension:on_activate()
   log:debug("Decrease hp")
