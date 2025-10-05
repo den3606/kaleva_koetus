@@ -36,7 +36,6 @@ function ascension:on_boss_died()
   -- selene: allow(undefined_variable)
   do_newgame_plus()
   ModSettingSet("kaleva_koetus.a20_dead_boss", true)
-  -- 手持ちからサンポを抜いてフラグを入れる
 end
 
 return ascension
