@@ -73,10 +73,10 @@ local function a15_action(action)
   local has_cool_time = 0.5 < math.random() or true
   local has_fire_rate_debuff = 0.5 < math.random() or false
   local selected_debuff = random_unique_integers(1, 5, 2)
-  local debuff_fire_rate_wait = math.random(10, 60)
-  local debuff_reload_time = math.random(10, 60)
-  local debuff_spread_degrees = math.random(5, 10)
-  local debuff_damage_critical_chance = math.random(-10, -1)
+  local debuff_fire_rate_wait = math.random(5, 15)
+  local debuff_reload_time = math.random(5, 15)
+  local debuff_spread_degrees = math.random(3, 7)
+  local debuff_damage_critical_chance = math.random(-7, -1)
   local debuff_speed_multiplier = math.random(5, 15) * 0.1
 
   local _func_action = action.action
