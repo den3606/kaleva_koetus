@@ -23,8 +23,9 @@ function item_pickup(entity_item, entity_who_picked, name)
         max_hp_cap = math.max(max_hp, max_hp_cap)
       end
 
-      hp = hp + max_hp * a18_decreased_hp_multiplier
-      healing = max_hp - hp
+      local old_hp = hp
+      hp = math.min(hp + max_hp * a18_decreased_hp_multiplier, max_hp)
+      healing = hp - old_hp
 
       -- if( hp > max_hp ) then hp = max_hp end
       ComponentSetValue(damagemodel, "max_hp_cap", max_hp_cap)
