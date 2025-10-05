@@ -52,5 +52,7 @@ function ascension:on_fungal_shifted() end
 function ascension:on_gold_spawn() end
 -- Optional
 function ascension:on_spell_generated(_spell) end
+-- Optional
+function ascension:on_boss_died() end
 
 return ascension

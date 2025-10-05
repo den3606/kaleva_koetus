@@ -259,6 +259,14 @@ function AscensionManager:on_mod_post_init(payload)
   end
 end
 
+function AscensionManager:on_boss_died()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_boss_died then
+      ascension:on_boss_died()
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,

@@ -15,6 +15,7 @@ local EventTypes = {
   FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released",
   GOLD_SPAWN = "gold_spawn",
   SPELL_GENERATED = "spell_generated",
+  BOSS_DIED = "boss_died",
 }
 
 -- Event argument definitions (for handlers)
@@ -54,6 +55,7 @@ local EventArgs = {
   [EventTypes.SPELL_GENERATED] = {
     { name = "entity_id", type = "number" },
   },
+  [EventTypes.BOSS_DIED] = {},
 }
 
 local AscensionTags = {
