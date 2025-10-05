@@ -18,7 +18,7 @@ ascension.tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
 function ascension:on_activate()
   log:info("Enemy HP increase active (x%d)", self.hp_multiplier)
   local boss_centipede_lua_file = ModTextFileGetContent("data/entities/animals/boss_centipede/boss_centipede_update.lua")
-  local before_boss_centipede_lua_file = ModTextFileGetContent("mods/kaleva_koetus/files/scripts/appends/boss_centipede_update.lua")
+  local before_boss_centipede_lua_file = ModTextFileGetContent("mods/kaleva_koetus/files/scripts/appends/boss_centipede_update_a1.lua")
   ModTextFileSetContent(
     "data/entities/animals/boss_centipede/boss_centipede_update.lua",
     before_boss_centipede_lua_file .. "\n" .. boss_centipede_lua_file
