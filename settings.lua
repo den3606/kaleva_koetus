@@ -57,6 +57,7 @@ local function update_ascension_setting_values()
   end
 end
 
+-- selene: allow(unused_variable)
 local function reset_ascension_level()
   ascension_setting = nil
   update_ascension_setting_values()

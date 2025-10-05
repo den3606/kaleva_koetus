@@ -1,4 +1,3 @@
-
 -- selene: allow(unused_variable)
 function teleported(from_x, from_y, to_x, to_y, portal_teleport)
   if portal_teleport then
