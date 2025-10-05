@@ -109,6 +109,32 @@ function AscensionManager:_can_unlock_next_level()
   return false
 end
 
+-- TODO:
+function AscensionManager:_add_ascension_info_park(player_entity_id)
+  local ascension_perk_added = GlobalsGetValue("kaleva_koetus_ascension_perk_added", "false") == "true"
+  if not ascension_perk_added then
+    -- 処理
+    local entity_ui = EntityCreateNew("")
+    EntityAddTag(entity_ui, "perk_entity")
+
+    local description = ""
+    for i = 1, self.current_level, 1 do
+      local line = GameTextGetTranslatedOrNot("$kaleva_koetus_specification_a" .. i) .. " [A" .. i .. "]" .. "\n"
+      description = description .. line
+    end
+
+    EntityAddComponent2(entity_ui, "UIIconComponent", {
+      name = "$kaleva_koetus_ascension_info_name",
+      description = description,
+      icon_sprite_file = "mods/kaleva_koetus/files/ui_gfx/ascensions/a" .. self.current_level .. ".png",
+    })
+
+    EntityAddChild(player_entity_id, entity_ui)
+
+    GlobalsSetValue("kaleva_koetus_ascension_perk_added", "true")
+  end
+end
+
 function AscensionManager:on_victory()
   log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
 
@@ -155,6 +181,8 @@ function AscensionManager:on_player_spawn(player_entity_id)
     local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[#self.active_ascensions].description)
     GamePrintImportant(translated_ascension .. " " .. self.current_level, translated_description)
   end
+
+  AscensionManager:_add_ascension_info_park(player_entity_id)
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_player_spawn then
