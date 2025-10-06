@@ -1,7 +1,7 @@
 # Kaleva Koetus (Kalevaの試練)
 
 Noita Ascension Mod
-![サムネイル](./docs/thumbnail.png)
+![サムネイル](./workshop_preview_image.png)
 
 ## 概要
 
@@ -11,7 +11,7 @@ Kaleva Koetusは、Noitaに段階的な難易度上昇システム（アセン�
 
 ## アセンション一覧
 
-Ascensionのリストは [acsension.csv](docs/acsension.csv) で管理しています。
+[common.csv](files/translations/common.csv)のテキストメッセージから把握してください。ゲーム内のアセンションアイコンからでも確認可能です。
 
 ## 使用方法
 
