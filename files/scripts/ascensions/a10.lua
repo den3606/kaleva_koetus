@@ -1,4 +1,3 @@
-local _ = dofile_once("data/scripts/lib/coroutines.lua")
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
@@ -12,7 +11,6 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local log = Logger:new("a10.lua")
 
 local WAIT_FRAME = 60 * 60 * 15
-local DELAY_FRAME = 60 * 2
 
 ascension.level = 10
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -34,21 +32,16 @@ function ascension:on_activate()
 end
 
 function ascension:on_player_spawn(player_entity_id)
-  log:debug("================================")
   if EntityHasTag(player_entity_id, self.tag_name) or GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false") == "true" then
     log:debug("already executed")
     return
   end
-  log:debug("------------------------------")
 
-  log:debug(GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false"))
-
-  async(function()
-    log:debug(GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false"))
-    wait(DELAY_FRAME)
+  local effect_ids = EntityGetAllChildren(player_entity_id, "kaleva_koetus_a10_fungal_shift_curse")
+  if #effect_ids == 0 then
     start_fungal_shift(player_entity_id)
     GlobalsSetValue("kaleva_koetus_fungal_shift_applied", "true")
-  end)
+  end
 end
 
 function ascension:on_fungal_shifted()
@@ -65,19 +58,18 @@ function ascension:on_fungal_shifted()
   local _ = EntityAddComponent2(effect_id, "LifetimeComponent", {
     lifetime = WAIT_FRAME,
   })
+  EntityAddTag(effect_id, "kaleva_koetus_a10_fungal_shift_curse")
   EntityAddChild(player_entity_id, effect_id)
   GamePrintImportant("$kaleva_koetus_fungal_shift_curse_again", "$kaleva_koetus_fungal_shift_curse_again_description")
   EntityAddTag(player_entity_id, self.tag_name)
 end
 
 function ascension:on_fungal_shift_curse_released()
-  if GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false") == "true" then
-    log:debug("already executed")
-    return
-  end
-
   local player_entity_id = GetPlayerEntity()
-  if player_entity_id then
+
+  local effect_ids = EntityGetAllChildren(player_entity_id, "kaleva_koetus_a10_fungal_shift_curse")
+
+  if player_entity_id and #effect_ids == 0 then
     EntityRemoveTag(player_entity_id, self.tag_name)
     start_fungal_shift(player_entity_id)
   end
