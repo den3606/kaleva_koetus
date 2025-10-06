@@ -8,6 +8,7 @@ local EventTypes = EventDefs.Types
 local log = Logger:new("a15.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
+local UNCOMPLETED_MULTIPLIER = 0.3
 
 ascension.level = 15
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -72,7 +73,7 @@ function ascension:on_mod_post_init()
   local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
   math.randomseed(addr_seed_from_table() + minute + second)
 
-  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions / 2))
+  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions * UNCOMPLETED_MULTIPLIER))
   for _, index in ipairs(target_indexes) do
     local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
     -- NOTE:
