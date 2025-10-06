@@ -14,7 +14,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A19
 
 function ascension:on_activate()
-  log:info("Enemy HP increase active (x%d)", self.hp_multiplier)
+  log:info("Boss HP increase active (x%d)", self.hp_multiplier)
   local boss_centipede_lua_file = ModTextFileGetContent("data/entities/animals/boss_centipede/boss_centipede_update.lua")
   local before_boss_centipede_lua_file = ModTextFileGetContent("mods/kaleva_koetus/files/scripts/appends/boss_centipede_update_a19.lua")
   ModTextFileSetContent(
