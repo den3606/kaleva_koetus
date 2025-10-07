@@ -35,7 +35,9 @@ function ascension:on_player_spawn(player_entity_id)
     error("[Kaleva Koetus A3] Player DamageModelComponent not found")
   end
 
+  -- selene: allow(unused_variable)
   local current_hp = ComponentGetValue2(damage_model, "hp")
+  -- selene: allow(unused_variable)
   local current_max_hp = ComponentGetValue2(damage_model, "max_hp")
   local target_health = to_entity_health(TARGET_HP)
 
