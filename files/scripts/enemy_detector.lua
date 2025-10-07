@@ -57,11 +57,7 @@ local function is_active(entity_id)
 
   for _, config in ipairs(boss_configs) do
     if EntityHasTag(entity_id, config.tag) then
-      local ready = config.is_active(entity_id)
-      if ready then
-        -- log:debug("Boss ready for processing: %s", config.tag)
-      end
-      return ready
+      return config.is_active(entity_id)
     end
   end
 
