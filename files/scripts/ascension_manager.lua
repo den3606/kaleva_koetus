@@ -19,7 +19,8 @@ function AscensionManager:init()
   self:load_progress()
 
   -- Activate ascension if current_level is set
-  if self.current_level > 0 and self.current_level <= self.highest_level then
+  local newgame = self.current_level == 1 and self.highest_level == 0
+  if newgame or (self.current_level > 0 and self.current_level <= self.highest_level) then
     self:activate_ascension(self.current_level)
     log:info("Start Ascension %d", self.current_level)
   else
