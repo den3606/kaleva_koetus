@@ -8,7 +8,7 @@ local EventTypes = EventDefs.Types
 local log = Logger:new("a15.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
-local UNCOMPLETED_MULTIPLIER = 0.3
+local UNCOMPLETED_MULTIPLIER = 1
 
 ascension.level = 15
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -75,16 +75,18 @@ function ascension:on_mod_post_init()
 
   local target_indexes = random_unique_integers(1, #actions, math.floor(#actions * UNCOMPLETED_MULTIPLIER))
   for _, index in ipairs(target_indexes) do
-    local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
-    -- NOTE:
-    -- ダミーの画像参照を作って、gun_actions側で対象画像かを判別できるようにする
-    local _ = ModImageMakeEditable("kk/a15/" .. actions[index].sprite, 1, 1)
+    if actions[index].id ~= "MANA_REDUCE" then
+      local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
+      -- NOTE:
+      -- ダミーの画像参照を作って、gun_actions側で対象画像かを判別できるようにする
+      local _ = ModImageMakeEditable("kk/a15/" .. actions[index].sprite, 1, 1)
 
-    for i = 0, x, 1 do
-      for j = 0, y, 1 do
-        local color = ModImageGetPixel(id, i, j)
-        local inverted = ImageEditor:invert_hue_abgr(color)
-        ModImageSetPixel(id, i, j, inverted)
+      for i = 0, x, 1 do
+        for j = 0, y, 1 do
+          local color = ModImageGetPixel(id, i, j)
+          local inverted = ImageEditor:invert_hue_abgr(color)
+          ModImageSetPixel(id, i, j, inverted)
+        end
       end
     end
   end
