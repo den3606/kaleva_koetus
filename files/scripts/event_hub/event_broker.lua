@@ -42,6 +42,18 @@ function EventBroker:subscribe_event(event_type, subscriber)
   })
 end
 
+function EventBroker:direct_dispatch(event_type, ...)
+  local event_args = { ... }
+  for _, subscription in ipairs(EventBroker.subscriptions) do
+    if subscription.event_type == event_type then
+      -- log:verbose("Event called from %s / type: %s", source, event_type)
+      async(function()
+        EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
+      end)
+    end
+  end
+end
+
 function EventBroker:flush_event_queue()
   local last_processed = tonumber(GlobalsGetValue("kaleva_last_processed", "0"))
   local current_counter = tonumber(GlobalsGetValue("kaleva_queue_counter", "0"))

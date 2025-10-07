@@ -22,7 +22,7 @@ function AscensionManager:init()
     self:activate_ascension(self.current_level)
     -- log:info("Start Ascension %d", self.current_level)
   else
-    -- log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
+    log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
   end
 end
 
@@ -145,7 +145,7 @@ function AscensionManager:on_victory()
 
   if current_ascension:should_unlock_next() then
     if self.current_level == 0 then
-      -- log:warn("Victory with no ascension active (current level 0)")
+      log:warn("Victory with no ascension active (current level 0)")
       GamePrintImportant("Victory! (No ascension active)")
     elseif self:_can_unlock_next_level() then
       self.highest_level = self.highest_level + 1
