@@ -81,8 +81,8 @@ function AscensionManager:activate_ascension()
 end
 
 function AscensionManager:load_progress()
-  self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "0") or 0
-  self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "0") or 0
+  self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "1")
+  self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "1")
   self.single_ascension = ModSettingGet("kaleva_koetus.single_ascension") or false
 
   -- log:debug("Loaded progress. Current: %d, Highest: %d", self.current_level, self.highest_level)
@@ -175,6 +175,9 @@ function AscensionManager:on_player_spawn(player_entity_id)
     log:error("Invalid player entity id: %s", tostring(player_entity_id))
     return
   end
+
+  log:info(#self.active_ascensions)
+  log:info(self.active_ascensions[#self.active_ascensions])
   if self.current_level > 0 and self.active_ascensions[#self.active_ascensions].level == self.current_level then
     local translated_ascension = GameTextGetTranslatedOrNot("$kaleva_koetus_ascension")
     local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[#self.active_ascensions].description)
