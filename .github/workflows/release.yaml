@@ -7,7 +7,12 @@ permissions:
   contents: write
 
 jobs:
+  run_ci_checks:
+    uses: ./.github/workflows/push-main.yaml
+    secrets: inherit
+
   build_and_release:
+    needs: run_ci_checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
