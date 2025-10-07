@@ -1,4 +1,4 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("a20.lua")
+-- local log = Logger:new("a20.lua")
 
 ascension.level = 20
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -14,7 +14,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A20
 
 function ascension:on_activate()
-  log:debug("new game plus")
+  -- log:debug("new game plus")
   ModSettingSet("kaleva_koetus.a20_dead_boss", false)
   ModLuaFileAppend("data/entities/animals/boss_centipede/death_check.lua", "mods/kaleva_koetus/files/scripts/appends/death_check.lua")
   ModLuaFileAppend(
@@ -24,7 +24,7 @@ function ascension:on_activate()
 end
 
 function ascension:on_boss_died()
-  log:debug("a20 on_boss_died")
+  -- log:debug("a20 on_boss_died")
   if ModSettingGet("kaleva_koetus.a20_dead_boss") then
     return
   end

@@ -1,11 +1,11 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
-local log = Logger:new("a15.lua")
+-- local log = Logger:new("a15.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 local UNCOMPLETED_MULTIPLIER = 1
@@ -63,7 +63,7 @@ local function random_unique_integers(min, max, count)
 end
 
 function ascension:on_activate()
-  log:info("Broken spells")
+  -- log:info("Broken spells")
 end
 
 function ascension:on_mod_post_init()

@@ -1,4 +1,4 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -7,7 +7,7 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
-local log = Logger:new("a14.lua")
+-- local log = Logger:new("a14.lua")
 
 local GOLD_LIFETIME_MULTIPLIER = 0.25
 
@@ -17,11 +17,11 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A14 .. EventTypes.ENEMY_SPAWN
 
 function ascension:on_activate()
-  log:info("Gold lifetime will be half")
+  -- log:info("Gold lifetime will be half")
 end
 
 function ascension:on_gold_spawn(payload)
-  log:debug("on_gold_spawn")
+  -- log:debug("on_gold_spawn")
   local gold_entity_id = tonumber(payload[1])
   local must_remove_timer = (payload[4] == "true")
 

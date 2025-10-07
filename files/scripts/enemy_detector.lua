@@ -1,8 +1,8 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local EnemyDetector = {}
 
-local log = Logger:new("enemy_detector.lua")
+-- local log = Logger:new("enemy_detector.lua")
 
 -- Private boss activation check functions
 local function is_active_boss_centipede(entity_id)
@@ -59,7 +59,7 @@ local function is_active(entity_id)
     if EntityHasTag(entity_id, config.tag) then
       local ready = config.is_active(entity_id)
       if ready then
-        log:debug("Boss ready for processing: %s", config.tag)
+        -- log:debug("Boss ready for processing: %s", config.tag)
       end
       return ready
     end
@@ -70,7 +70,7 @@ end
 
 function EnemyDetector:init(called_from)
   self.tag_name = "kk_enemy_detected" .. "_" .. called_from
-  log:debug("initialized")
+  -- log:debug("initialized")
 end
 
 function EnemyDetector:get_unprocessed_enemies()

@@ -1,12 +1,12 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local SpellDetector = {}
 
-local log = Logger:new("spell_detector.lua")
+-- local log = Logger:new("spell_detector.lua")
 
 function SpellDetector:init(called_from)
   self.tag_name = "kk_card_detected" .. "_" .. called_from
-  log:debug("Initialized")
+  -- log:debug("Initialized")
 end
 
 function SpellDetector:get_unprocessed_spells()

@@ -14,7 +14,7 @@ EventBroker.subscriptions = {}
 
 function EventBroker:init()
   if GlobalsGetValue("kaleva_event_broker_initialized", "0") == "1" then
-    log:debug("Already initialized, skipping")
+    -- log:debug("Already initialized, skipping")
     return
   end
 
@@ -68,7 +68,7 @@ function EventBroker:flush_event_queue()
 
     for _, subscription in ipairs(EventBroker.subscriptions) do
       if subscription.event_type == event_type then
-        log:verbose("Event called from %s / type: %s", source, event_type)
+        -- log:verbose("Event called from %s / type: %s", source, event_type)
         async(function()
           EventDispatcher:dispatch(subscription.event_type, subscription.subscriber, event_args)
         end)

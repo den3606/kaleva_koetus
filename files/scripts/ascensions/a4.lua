@@ -15,7 +15,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A4 .. EventTypes.NECROMANCER_SPAWN
 
 function ascension:on_activate()
-  log:info("Divine retribution enabled")
+  -- log:info("Divine retribution enabled")
 end
 
 function ascension:on_player_spawn()
@@ -31,7 +31,7 @@ function ascension:on_necromancer_spawn(payload)
     return
   end
 
-  log:debug("Summoning guardians at %d,%d", x, y)
+  -- log:debug("Summoning guardians at %d,%d", x, y)
 
   local thunder_skull_id = EntityLoad("data/entities/animals/thunderskull.xml", x - 20, y)
   if thunder_skull_id then

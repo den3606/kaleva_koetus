@@ -1,4 +1,4 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -7,7 +7,7 @@ local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("a11.lua")
+-- local log = Logger:new("a11.lua")
 
 local SPAWN_CHANCE_1 = 0.30
 local SPAWN_CHANCE_2 = 0.10
@@ -50,13 +50,13 @@ local function duplicate_enemy(enemy_entity_id, x, y, how_many)
     local duplicate_id = EntityLoad(entity_filename, x + offset_x, y + offset_y)
     if duplicate_id then
       EntityAddTag(duplicate_id, ascension.tag_name)
-      log:verbose("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
+      -- log:verbose("Spawned extra enemy %d from %d", duplicate_id, enemy_entity_id)
     end
   end
 end
 
 function ascension:on_activate()
-  log:info("Increasing enemy spawns")
+  -- log:info("Increasing enemy spawns")
 end
 
 function ascension:on_enemy_spawn(payload)
@@ -73,7 +73,7 @@ function ascension:on_enemy_spawn(payload)
   end
 
   if is_boss_entity(enemy_entity_id) then
-    log:debug("Skipping boss entity %d for duplication", enemy_entity_id)
+    -- log:debug("Skipping boss entity %d for duplication", enemy_entity_id)
     return
   end
 
@@ -82,13 +82,13 @@ function ascension:on_enemy_spawn(payload)
   SetRandomSeed(seed_x, seed_y)
   local randf = Randomf()
   if randf <= SPAWN_CHANCE_3 then
-    log:verbose("4 enemy")
+    -- log:verbose("4 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 3)
   elseif randf <= SPAWN_CHANCE_2 then
-    log:verbose("3 enemy")
+    -- log:verbose("3 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 2)
   elseif randf <= SPAWN_CHANCE_1 then
-    log:verbose("2 enemy")
+    -- log:verbose("2 enemy")
     duplicate_enemy(enemy_entity_id, x, y, 1)
   end
 end

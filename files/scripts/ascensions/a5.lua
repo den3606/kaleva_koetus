@@ -37,7 +37,7 @@ function ascension:on_player_spawn(player_entity_id)
 
   local inventory_component = EntityGetFirstComponent(player_entity_id, "Inventory2Component")
   if not inventory_component then
-    log:warn("Player inventory component missing on spawn")
+    -- log:warn("Player inventory component missing on spawn")
     return
   end
 
@@ -52,7 +52,7 @@ function ascension:on_player_spawn(player_entity_id)
   ComponentSetValue2(inventory_component, "full_inventory_slots_x", target_slots)
   EntityAddTag(player_entity_id, ascension.tag_name)
 
-  log:debug("Full inventory slots reduced %d -> %d", current_slots, target_slots)
+  -- log:debug("Full inventory slots reduced %d -> %d", current_slots, target_slots)
 end
 
 return ascension

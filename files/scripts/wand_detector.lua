@@ -1,12 +1,12 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local WandDetector = {}
 
-local log = Logger:new("wand_detector.lua")
+-- local log = Logger:new("wand_detector.lua")
 
 function WandDetector:init(called_from)
   self.tag_name = "kk_wand_detected" .. "_" .. called_from
-  log:debug("Initialized")
+  -- log:debug("Initialized")
 end
 
 function WandDetector:get_unprocessed_wands()

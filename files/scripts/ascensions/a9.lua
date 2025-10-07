@@ -1,4 +1,4 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -6,7 +6,7 @@ local AscensionTags = EventDefs.Tags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("a9.lua")
+-- local log = Logger:new("a9.lua")
 
 local MIN_PERK_COUNT = 1
 
@@ -27,17 +27,17 @@ local function enforce_perk_count(target)
 
   if current ~= target then
     GlobalsSetValue("TEMPLE_PERK_COUNT", tostring(target))
-    log:debug("Updated temple perk count %d -> %d", current, target)
+    -- log:debug("Updated temple perk count %d -> %d", current, target)
   end
 end
 
 function ascension:on_activate()
-  log:info("Activate Temple perks limit")
+  -- log:info("Activate Temple perks limit")
 end
 
 function ascension:on_world_initialized()
   self._target_perk_count = determine_target_perk_count()
-  log:debug("Temple perks limited to %d", self._target_perk_count)
+  -- log:debug("Temple perks limited to %d", self._target_perk_count)
 
   enforce_perk_count(self._target_perk_count)
 end

@@ -7,8 +7,8 @@ local EventTypes = EventDefs.Types
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 local _ = dofile_once("data/scripts/lib/coroutines.lua")
 
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("init.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local log = Logger:new("init.lua")
 
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
@@ -16,14 +16,14 @@ local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detect
 local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
-log:info("Kaleva Koetus mod loading...")
+-- log:info("Kaleva Koetus mod loading...")
 
 function OnModPreInit()
-  log:debug("Mod - OnModPreInit()")
+  -- log:debug("Mod - OnModPreInit()")
 end
 
 function OnModInit()
-  log:debug("Mod - OnModInit()")
+  -- log:debug("Mod - OnModInit()")
   -- Initialize Ascension System
   ascensionManager:init()
   if ascensionManager.current_level >= 5 then
@@ -32,7 +32,7 @@ function OnModInit()
 end
 
 function OnModPostInit()
-  log:debug("Mod - OnModPostInit()")
+  -- log:debug("Mod - OnModPostInit()")
 
   ascensionManager:on_mod_post_init()
 end

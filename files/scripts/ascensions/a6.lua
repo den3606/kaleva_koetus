@@ -1,4 +1,5 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -38,11 +39,11 @@ local function scale_levitation(player_entity_id)
 
   EntityAddTag(player_entity_id, ascension.tag_name)
 
-  log:debug("Levitation capacity scaled %.2f -> %.2f", current_max, new_max)
+  -- log:debug("Levitation capacity scaled %.2f -> %.2f", current_max, new_max)
 end
 
 function ascension:on_activate()
-  log:info("Levitation reduced to %.0f%%", LEVITATION_SCALE * 100)
+  -- log:info("Levitation reduced to %.0f%%", LEVITATION_SCALE * 100)
 end
 
 function ascension:on_player_spawn(player_entity_id)

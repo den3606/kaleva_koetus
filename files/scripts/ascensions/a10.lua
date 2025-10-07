@@ -1,5 +1,5 @@
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
@@ -8,7 +8,7 @@ local EventTypes = EventDefs.Types
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
-local log = Logger:new("a10.lua")
+-- local log = Logger:new("a10.lua")
 
 local WAIT_FRAME = 60 * 60 * 15
 
@@ -28,12 +28,12 @@ local function start_fungal_shift(player_entity_id)
 end
 
 function ascension:on_activate()
-  log:info("fungal shift enabled")
+  -- log:info("fungal shift enabled")
 end
 
 function ascension:on_player_spawn(player_entity_id)
   if EntityHasTag(player_entity_id, self.tag_name) or GlobalsGetValue("kaleva_koetus_fungal_shift_applied", "false") == "true" then
-    log:debug("already executed")
+    -- log:debug("already executed")
     return
   end
 

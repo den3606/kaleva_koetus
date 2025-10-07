@@ -1,5 +1,5 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("a13_elite_skills.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local log = Logger:new("a13_elite_skills.lua")
 
 local _ = dofile_once("data/scripts/gun/procedural/gun_procedural.lua")
 
@@ -10,7 +10,7 @@ local ELITE_FIRE_LATE = 2
 local DAMAGE_MELEE_MULTIPLIER = 2
 
 function a13_elite_skills:add_homing(enemy_entity_id)
-  log:debug("add_homing")
+  -- log:debug("add_homing")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_add_homing_on_shot_append.lua",
@@ -19,7 +19,7 @@ function a13_elite_skills:add_homing(enemy_entity_id)
 end
 
 function a13_elite_skills:add_extra_projectile(enemy_entity_id)
-  log:debug("add_extra_projectile")
+  -- log:debug("add_extra_projectile")
 
   local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
   if not component_id then
@@ -39,7 +39,7 @@ function a13_elite_skills:add_extra_projectile(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_projectile_fire_rate(enemy_entity_id)
-  log:debug("increase_projectile_fire_rate")
+  -- log:debug("increase_projectile_fire_rate")
 
   local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
   if not component_id then
@@ -56,7 +56,7 @@ function a13_elite_skills:increase_projectile_fire_rate(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_projectile_damage(enemy_entity_id)
-  log:debug("increase_projectile_damage")
+  -- log:debug("increase_projectile_damage")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_damage_on_shot_append.lua",
@@ -65,7 +65,7 @@ function a13_elite_skills:increase_projectile_damage(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_projectile_explosion(enemy_entity_id)
-  log:debug("increase_projectile_explosion")
+  -- log:debug("increase_projectile_explosion")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_explosion_on_shot_append.lua",
@@ -74,7 +74,7 @@ function a13_elite_skills:increase_projectile_explosion(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_projectile_speed(enemy_entity_id)
-  log:debug("increase_projectile_speed")
+  -- log:debug("increase_projectile_speed")
 
   local _ = EntityAddComponent2(enemy_entity_id, "LuaComponent", {
     script_shot = "mods/kaleva_koetus/files/scripts/ascensions/a13_increase_speed_on_shot_append.lua",
@@ -83,7 +83,7 @@ function a13_elite_skills:increase_projectile_speed(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_hp(enemy_entity_id)
-  log:debug("increase_hp")
+  -- log:debug("increase_hp")
   local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
   if not component_id then
     return
@@ -98,7 +98,7 @@ function a13_elite_skills:increase_hp(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_character_speed(enemy_entity_id)
-  log:debug("increase_character_speed")
+  -- log:debug("increase_character_speed")
   local game_effect_comp, game_effect_entity = GetGameEffectLoadTo(enemy_entity_id, "MOVEMENT_FASTER_2X", false)
   if (game_effect_comp ~= nil) and (game_effect_entity ~= nil) then
     ComponentSetValue(game_effect_comp, "frames", "-1")
@@ -106,7 +106,7 @@ function a13_elite_skills:increase_character_speed(enemy_entity_id)
 end
 
 function a13_elite_skills:increase_melee_damage(enemy_entity_id)
-  log:debug("increase_melee_damage")
+  -- log:debug("increase_melee_damage")
   local component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "AnimalAIComponent")
   if not component_id then
     return
@@ -121,7 +121,7 @@ function a13_elite_skills:increase_melee_damage(enemy_entity_id)
 end
 
 function a13_elite_skills:add_shield(enemy_entity_id)
-  log:debug("add_shield")
+  -- log:debug("add_shield")
 
   local x, y = EntityGetTransform(enemy_entity_id)
   local child_id = EntityLoad("data/entities/misc/perks/shield.xml", x, y)
@@ -129,7 +129,7 @@ function a13_elite_skills:add_shield(enemy_entity_id)
 end
 
 function a13_elite_skills:add_area_damage(enemy_entity_id)
-  log:debug("add_area_damage")
+  -- log:debug("add_area_damage")
 
   local entity_id = EntityLoad("data/entities/misc/perks/contact_damage_enemy.xml")
   EntityAddChild(enemy_entity_id, entity_id)
@@ -141,7 +141,7 @@ function a13_elite_skills:use_wand(enemy_entity_id)
   -- I could probably delete free wands, generate InventoryQuick in the Enemy Entity, and inject wand data directly.
   -- But I like the whimsical nature of Noita's scripts, so I won't rewrite this.
   -- This method refers to noita's nightmare mode
-  log:debug("use_wand")
+  -- log:debug("use_wand")
 
   local component_id = EntityGetFirstComponent(enemy_entity_id, "ItemPickUpperComponent")
   if not component_id then

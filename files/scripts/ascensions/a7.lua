@@ -1,8 +1,8 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local log = Logger:new("a7.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local log = Logger:new("a7.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
@@ -16,18 +16,18 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A7 .. EventTypes.POTION_GENERATED
 
 function ascension:on_activate()
-  log:info("Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100)
+  -- log:info("Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100)
 end
 
 function ascension:on_potion_generated(payload)
-  log:info("on_potion_generated")
+  -- log:info("on_potion_generated")
   local potion_entity_id = tonumber(payload[1])
-  log:debug("potion_entity: " .. potion_entity_id)
+  -- log:debug("potion_entity: " .. potion_entity_id)
   local component_id = EntityGetFirstComponentIncludingDisabled(potion_entity_id, "MaterialSuckerComponent")
 
   local original_barrel_size = ComponentGetValue2(component_id, "barrel_size")
   local resized_barrel_size = original_barrel_size * MATERIAL_SCALE
-  log:debug("resized_barrel_size: " .. resized_barrel_size)
+  -- log:debug("resized_barrel_size: " .. resized_barrel_size)
 
   ComponentSetValue2(component_id, "barrel_size", resized_barrel_size)
 
@@ -35,7 +35,7 @@ function ascension:on_potion_generated(payload)
   RemoveMaterialInventoryMaterial(potion_entity_id)
   AddMaterialInventoryMaterial(potion_entity_id, CellFactory_GetName(material_id), resized_barrel_size)
 
-  log:debug("Scaled potion %d contents to %.0f%%", potion_entity_id, resized_barrel_size)
+  -- log:debug("Scaled potion %d contents to %.0f%%", potion_entity_id, resized_barrel_size)
 
   EntityAddTag(potion_entity_id, ascension.tag_name)
 end
