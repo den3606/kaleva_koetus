@@ -104,66 +104,66 @@ mod_settings = {
         value_default = true,
         scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
-      {
-        category_id = "debug_settings",
-        ui_name = "Debug Settings",
-        ui_description = "Debug options for testing",
-        foldable = true,
-        _folded = true,
-        settings = {
-          {
-            id = "log_level",
-            ui_name = "Log Level",
-            ui_description = "Select verbosity for Kaleva Koetus logs",
-            value_default = "INFO",
-            values = {
-              { "ERROR", "Error" },
-              { "WARN", "Warn" },
-              { "INFO", "Info" },
-              { "DEBUG", "Debug" },
-              { "VERBOSE", "Verbose" },
-            },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-          },
-          {
-            id = "single_ascension",
-            ui_name = "Single Ascension",
-            ui_description = "Activate only one ascension",
-            value_default = false,
-            scope = MOD_SETTING_SCOPE_NEW_GAME,
-          },
-          {
-            id = "lock_all",
-            ui_name = "Lock All Ascensions",
-            ui_description = "Instantly lock all ascension levels (for testing)",
-            value_default = "Click to lock ascension",
-            values = { { "ok", "OK" } },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-              -- Unlock all levels
-              ModSettingSet("kaleva_koetus.ascension_highest", "1")
-              reset_ascension_level()
+      -- {
+      --   category_id = "debug_settings",
+      --   ui_name = "Debug Settings",
+      --   ui_description = "Debug options for testing",
+      --   foldable = true,
+      --   _folded = true,
+      --   settings = {
+      --     {
+      --       id = "log_level",
+      --       ui_name = "Log Level",
+      --       ui_description = "Select verbosity for Kaleva Koetus logs",
+      --       value_default = "INFO",
+      --       values = {
+      --         { "ERROR", "Error" },
+      --         { "WARN", "Warn" },
+      --         { "INFO", "Info" },
+      --         { "DEBUG", "Debug" },
+      --         { "VERBOSE", "Verbose" },
+      --       },
+      --       scope = MOD_SETTING_SCOPE_RUNTIME,
+      --     },
+      --     {
+      --       id = "single_ascension",
+      --       ui_name = "Single Ascension",
+      --       ui_description = "Activate only one ascension",
+      --       value_default = false,
+      --       scope = MOD_SETTING_SCOPE_NEW_GAME,
+      --     },
+      --     {
+      --       id = "lock_all",
+      --       ui_name = "Lock All Ascensions",
+      --       ui_description = "Instantly lock all ascension levels (for testing)",
+      --       value_default = "Click to lock ascension",
+      --       values = { { "ok", "OK" } },
+      --       scope = MOD_SETTING_SCOPE_RUNTIME,
+      --       change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+      --         -- Unlock all levels
+      --         ModSettingSet("kaleva_koetus.ascension_highest", "1")
+      --         reset_ascension_level()
 
-              print("[Kaleva Koetus] All ascensions locked!")
-            end,
-          },
-          {
-            id = "unlock_all",
-            ui_name = "Unlock All Ascensions",
-            ui_description = "Instantly unlock all ascension levels (for testing)",
-            value_default = "Click to unlock ascension",
-            values = { { "ok", "OK" } },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-              -- Unlock all levels
-              ModSettingSet("kaleva_koetus.ascension_highest", "20")
-              reset_ascension_level()
+      --         print("[Kaleva Koetus] All ascensions locked!")
+      --       end,
+      --     },
+      --     {
+      --       id = "unlock_all",
+      --       ui_name = "Unlock All Ascensions",
+      --       ui_description = "Instantly unlock all ascension levels (for testing)",
+      --       value_default = "Click to unlock ascension",
+      --       values = { { "ok", "OK" } },
+      --       scope = MOD_SETTING_SCOPE_RUNTIME,
+      --       change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+      --         -- Unlock all levels
+      --         ModSettingSet("kaleva_koetus.ascension_highest", "20")
+      --         reset_ascension_level()
 
-              print("[Kaleva Koetus] All ascensions unlocked!")
-            end,
-          },
-        },
-      },
+      --         print("[Kaleva Koetus] All ascensions unlocked!")
+      --       end,
+      --     },
+      --   },
+      -- },
     },
   },
 }
