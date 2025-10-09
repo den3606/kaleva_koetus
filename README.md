@@ -1,44 +1,52 @@
-# Kaleva Koetus (Kalevaの試練)
+# Kaleva Koetus (Trial of Kaleva)
 
 Noita Ascension Mod
-![サムネイル](./workshop_preview_image.png)
 
-## 概要
+![Thumbnail](./workshop_preview_image.png)
 
-Kaleva Koetusは、Noitaに段階的な難易度上昇システム（アセンション）を追加するModです。
+[Japanese](./docs/README.ja.md)
 
-各アセンションレベルをクリアすることで次のレベルがアンロックされ、より困難な挑戦が待ち受けています。
+## Overview
 
-## アセンション一覧
+Kaleva Koetus is a mod that adds a progressive difficulty system (Ascension) to Noita.
 
-[common.csv](files/translations/common.csv)のテキストメッセージから把握してください。ゲーム内のアセンションアイコンからでも確認可能です。
+By clearing an Ascension level, the next one will unlock with greater challenges.
 
-## 使用方法
+Please see the Steam Workshop page for a detailed description:
 
-### インストール
+<https://steamcommunity.com/workshop/filedetails/?id=3581809694>
 
-1. `kaleva_koetus` フォルダをNoitaのmodsディレクトリに配置
-2. ゲーム内でModを有効化
+## Ascension List
 
-### 設定
+You can check the text messages in [common.csv](files/translations/common.csv).  
+They can also be viewed in-game from the Ascension icon.
 
-- **Mod Settings** > **Kaleva Koetus** でアセンションレベルを選択
-- 選択可能レベルは最高到達レベルまで
-- デバッグ機能を使えば全アセンションアンロックはできるようにしています
-- クリア（勝利）すると次のレベルがアンロック
+## How to Use
 
-## 開発情報
+### Installation
 
-### 開発ツール
+1. Place the `kaleva_koetus` folder in Noita’s `mods` directory.  
+2. Enable the mod from the in-game Mods menu.
 
-- **Selene**: Luaリンター (設定: `selene-noita.yaml`)
-- **stylua**: コードフォーマッター (設定: `stylua.toml`)
+### Settings
+
+- In **Mod Settings** > **Kaleva Koetus**, select an Ascension level.  
+- The selectable levels are limited to the highest level you have cleared.  
+- A debug option is available to unlock all Ascensions.  
+- Clearing (winning) a run unlocks the next level.
+
+## Development Info
+
+### Development Tools
+
+- **Selene**: Lua linter (`selene-noita.yaml` configuration)  
+- **stylua**: Code formatter (`stylua.toml` configuration)
 
 ## LICENSE
 
-- [Noita MOD Rules](docs/NOITA_MOD_RULES.md)
+- [Noita MOD Rules](docs/NOITA_MOD_RULES.md)  
 - [This Project License](docs/LICENSE.md)
 
-## 貢献
+## Contribution
 
-プルリクエストや Issues の報告を歓迎します。
+Pull requests and issue reports are welcome.
