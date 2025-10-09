@@ -83,6 +83,13 @@ end
 function AscensionManager:load_progress()
   self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "1")
   self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "1")
+
+  -- v1.0.00以前のセーブデータ対応
+  if self.current_level == 0 or self.highest_level == 0 then
+    self.highest_level = 1
+    self.current_level = 1
+  end
+
   self.single_ascension = ModSettingGet("kaleva_koetus.single_ascension") or false
 
   -- log:debug("Loaded progress. Current: %d, Highest: %d", self.current_level, self.highest_level)
