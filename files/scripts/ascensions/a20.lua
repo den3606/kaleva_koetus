@@ -42,4 +42,8 @@ function ascension:on_boss_died()
   ModSettingSet("kaleva_koetus.a20_dead_boss", true)
 end
 
+function ascension:should_unlock_next()
+  return false
+end
+
 return ascension
