@@ -41,53 +41,20 @@ function GetPlayerMaxHealth()
 end
 
 function FindPolymorphedPlayer()
-  local nearby_polymorph = EntityGetWithTag("polymorphed") or {}
-  local polymorphed_players = {}
-  for _, entity in pairs(nearby_polymorph) do
-    local game_stats = EntityGetFirstComponent(entity, "GameStatsComponent")
-    if game_stats ~= nil then
-      if ComponentGetValue2(game_stats, "is_player") == true then
-        table.insert(polymorphed_players, entity)
-      end
-    end
+  local polymorphed_player = EntityGetWithTag("polymorphed_player")[1]
+  if polymorphed_player then
+    return polymorphed_player
   end
 
-  for _, player_id in ipairs(polymorphed_players) do
-    if
-      EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "WormAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil
-    then
-      return player_id
-    end
-  end
-  return nil
+  return EntityGetWithTag("polymorphed_cessation")[1]
 end
 
 function FindSheepPlayer()
-  local nearby_polymorph = EntityGetWithTag("polymorphed") or {}
-  local polymorphed_players = {}
-  for _, entity in pairs(nearby_polymorph) do
-    local game_stats = EntityGetFirstComponent(entity, "GameStatsComponent")
-    if game_stats ~= nil then
-      if ComponentGetValue2(game_stats, "is_player") == true then
-        table.insert(polymorphed_players, entity)
-      end
-    end
-  end
-
-  for _, player_id in ipairs(polymorphed_players) do
-    if
-      EntityGetFirstComponent(player_id, "AnimalAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "PhysicsAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "WormAIComponent") == nil
-      and EntityGetFirstComponent(player_id, "AdvancedFishAIComponent") == nil
-    then
-      local entity_name = EntityGetName(player_id)
-      if entity_name == "$animal_sheep_fly" or entity_name == "$animal_sheep_bat" or entity_name == "$animal_sheep" then
-        return player_id
-      end
+  local polymorphed_player = EntityGetWithTag("polymorphed_player")[1]
+  if polymorphed_player then
+    local entity_name = EntityGetName(polymorphed_player)
+    if entity_name == "$animal_sheep_fly" or entity_name == "$animal_sheep_bat" or entity_name == "$animal_sheep" then
+      return polymorphed_player
     end
   end
   return nil
