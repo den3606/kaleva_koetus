@@ -1,5 +1,7 @@
 # Kaleva Koetus (Trial of Kaleva)
 
+[![CI on Push to Main](https://github.com/den3606/kaleva_koetus/actions/workflows/push-main.yaml/badge.svg?branch=main)](https://github.com/den3606/kaleva_koetus/actions/workflows/push-main.yaml)
+
 Noita Ascension Mod
 
 ![Thumbnail](./workshop_preview_image.png)
