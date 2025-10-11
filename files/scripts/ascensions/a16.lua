@@ -18,4 +18,9 @@ function ascension:on_activate()
   ModLuaFileAppend("data/scripts/biome_modifiers.lua", "mods/kaleva_koetus/files/scripts/appends/biome_modifiers.lua")
 end
 
+function ascension:on_biome_config_loaded()
+  local init_biome_modifiers = dofile_once("data/scripts/biome_modifiers.lua")
+  init_biome_modifiers()
+end
+
 return ascension
