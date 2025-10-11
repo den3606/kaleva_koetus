@@ -210,6 +210,14 @@ function AscensionManager:on_world_initialized()
   end
 end
 
+function AscensionManager:on_biome_config_loaded()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_biome_config_loaded then
+      ascension:on_biome_config_loaded()
+    end
+  end
+end
+
 function AscensionManager:on_enemy_spawn(payload)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
