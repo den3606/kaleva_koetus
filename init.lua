@@ -59,6 +59,10 @@ function OnWorldInitialized()
   end
 end
 
+function OnBiomeConfigLoaded()
+  ascensionManager:on_biome_config_loaded()
+end
+
 function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
   ascensionManager:on_player_spawn(player_entity_id)
 end
