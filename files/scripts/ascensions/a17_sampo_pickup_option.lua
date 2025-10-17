@@ -8,7 +8,7 @@ local friend_entity_id = EntityGetInRadiusWithTag(x, y, 200, "kk_a17_friend")[1]
 local exist_friend = friend_entity_id and friend_entity_id ~= 0
 
 local item_component_id = EntityGetFirstComponentIncludingDisabled(sampo_entity_id, "ItemComponent")
-if exist_friend or ModSettingGet("kaleva_koetus.a20_dead_boss") then
+if exist_friend or ModSettingGet("kaleva_koetus.a20_dead_boss") or tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0 > 0 then
   ComponentSetValue2(item_component_id, "is_pickable", true)
 else
   local announced = GlobalsGetValue("kaleva_koetus_a17_boss_announced", "false") == "true"
