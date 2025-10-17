@@ -73,6 +73,9 @@ function ascension:on_mod_post_init()
   local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
   math.randomseed(addr_seed_from_table() + minute + second)
 
+  -- NOTE:
+  -- 再起動すると、Noitaのワールドシード依存でないため、対象の呪文が変わってしまう
+  -- しかしゲーム開始前だとNoitaのRandom関数が使えない（GameSeed依存にならない）ため、再起動時に変わることを許容する
   local target_indexes = random_unique_integers(1, #actions, math.floor(#actions * UNCOMPLETED_MULTIPLIER))
   for _, index in ipairs(target_indexes) do
     if actions[index].id ~= "MANA_REDUCE" then
