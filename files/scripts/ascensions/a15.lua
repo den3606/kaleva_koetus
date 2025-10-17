@@ -8,7 +8,7 @@ local EventTypes = EventDefs.Types
 -- local log = Logger:new("a15.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
-local UNCOMPLETED_MULTIPLIER = 0.2
+local UNCOMPLETED_MULTIPLIER = 0.3
 
 ascension.level = 15
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
