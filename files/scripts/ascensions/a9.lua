@@ -8,12 +8,12 @@ local ascension = setmetatable({}, { __index = AscensionBase })
 
 -- local log = Logger:new("a9.lua")
 
-local MIN_PERK_COUNT = 1
+local MIN_PERK_COUNT = 2
 
 ascension.level = 9
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A9 .. "_temple"
+ascension.tag_name = AscensionTags.A9 .. "on_world_initialized"
 
 ascension._target_perk_count = nil
 
@@ -36,10 +36,16 @@ function ascension:on_activate()
 end
 
 function ascension:on_world_initialized()
+  if GlobalsGetValue(ascension.tag_name, "0") == "1" then
+    return
+  end
+
   self._target_perk_count = determine_target_perk_count()
   -- log:debug("Temple perks limited to %d", self._target_perk_count)
 
   enforce_perk_count(self._target_perk_count)
+
+  GlobalsSetValue(ascension.tag_name, "1")
 end
 
 return ascension
