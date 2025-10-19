@@ -29,10 +29,6 @@ function a13_elite_skills:add_extra_projectile(enemy_entity_id)
   local projectile_min = ComponentGetValue2(component_id, "attack_ranged_entity_count_min")
   local projectile_max = ComponentGetValue2(component_id, "attack_ranged_entity_count_max")
 
-  if not projectile_min or not projectile_max then
-    return
-  end
-
   local multiplier = a13_elite_skills.projectile_multiplier
   ComponentSetValue2(component_id, "attack_ranged_entity_count_min", projectile_min * multiplier)
   ComponentSetValue2(component_id, "attack_ranged_entity_count_max", projectile_max * multiplier)
@@ -89,11 +85,10 @@ function a13_elite_skills:increase_hp(enemy_entity_id)
     return
   end
 
+  local max_hp = ComponentGetValue2(component_id, "max_hp")
   local current_hp = ComponentGetValue2(component_id, "hp")
-  if not current_hp then
-    return
-  end
 
+  ComponentSetValue2(component_id, "max_hp", max_hp * ELITE_HP_MULTIPLIER)
   ComponentSetValue2(component_id, "hp", current_hp * ELITE_HP_MULTIPLIER)
 end
 
@@ -102,6 +97,10 @@ function a13_elite_skills:increase_character_speed(enemy_entity_id)
   local game_effect_comp, game_effect_entity = GetGameEffectLoadTo(enemy_entity_id, "MOVEMENT_FASTER_2X", false)
   if (game_effect_comp ~= nil) and (game_effect_entity ~= nil) then
     ComponentSetValue(game_effect_comp, "frames", "-1")
+    local _ = EntityAddComponent2(game_effect_entity, "LuaComponent", {
+      script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a13_cleanup_orphan_entity.lua",
+      remove_after_executed = true,
+    })
   end
 end
 
@@ -111,12 +110,17 @@ function a13_elite_skills:increase_melee_damage(enemy_entity_id)
   if not component_id then
     return
   end
-  local range_attack = ComponentGetValue2(component_id, "attack_ranged_entity_file")
-  if range_attack == "" or range_attack == nil then
+  local melee_enabled = ComponentGetValue2(component_id, "attack_melee_enabled")
+  if melee_enabled == true then
     local melee_damage_min = ComponentGetValue2(component_id, "attack_melee_damage_min")
     local melee_damage_max = ComponentGetValue2(component_id, "attack_melee_damage_max")
     ComponentSetValue2(component_id, "attack_melee_damage_min", melee_damage_min * DAMAGE_MELEE_MULTIPLIER)
     ComponentSetValue2(component_id, "attack_melee_damage_max", melee_damage_max * DAMAGE_MELEE_MULTIPLIER)
+  end
+  local dash_enabled = ComponentGetValue2(component_id, "dash_enabled")
+  if dash_enabled == true then
+    local dash_damage = ComponentGetValue2(component_id, "attack_dash_damage")
+    ComponentSetValue2(component_id, "attack_dash_damage", dash_damage * DAMAGE_MELEE_MULTIPLIER)
   end
 end
 
@@ -126,13 +130,22 @@ function a13_elite_skills:add_shield(enemy_entity_id)
   local x, y = EntityGetTransform(enemy_entity_id)
   local child_id = EntityLoad("data/entities/misc/perks/shield.xml", x, y)
   EntityAddChild(enemy_entity_id, child_id)
+  local _ = EntityAddComponent2(child_id, "LuaComponent", {
+    script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a13_cleanup_orphan_entity.lua",
+    remove_after_executed = true,
+  })
 end
 
 function a13_elite_skills:add_area_damage(enemy_entity_id)
   -- log:debug("add_area_damage")
 
-  local entity_id = EntityLoad("data/entities/misc/perks/contact_damage_enemy.xml")
-  EntityAddChild(enemy_entity_id, entity_id)
+  local x, y = EntityGetTransform(enemy_entity_id)
+  local child_id = EntityLoad("data/entities/misc/perks/contact_damage_enemy.xml", x, y)
+  EntityAddChild(enemy_entity_id, child_id)
+  local _ = EntityAddComponent2(child_id, "LuaComponent", {
+    script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a13_cleanup_orphan_entity.lua",
+    remove_after_executed = true,
+  })
 end
 
 function a13_elite_skills:use_wand(enemy_entity_id)

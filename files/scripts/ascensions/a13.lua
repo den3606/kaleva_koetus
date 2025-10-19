@@ -14,7 +14,7 @@ local UPGRADE_CHANCE = 0.20
 ascension.level = 13
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_SPAWN
+ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_POST_SPAWN
 
 local function random_unique_integers(min, max, count)
   local numbers = {}
@@ -140,8 +140,8 @@ function ascension:on_activate()
   -- log:info("Elite enemy spawns")
 end
 
-function ascension:on_enemy_spawn(payload)
-  -- log:verbose("on_enemy_spawn")
+function ascension:on_enemy_post_spawn(payload)
+  -- log:verbose("on_enemy_post_spawn")
 
   local enemy_entity_id = tonumber(payload[1])
   local x = tonumber(payload[2]) or 0

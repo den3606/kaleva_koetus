@@ -14,7 +14,7 @@ local GOLD_LIFETIME_MULTIPLIER = 0.25
 ascension.level = 14
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A14 .. EventTypes.ENEMY_SPAWN
+ascension.tag_name = AscensionTags.A14 .. EventTypes.GOLD_SPAWN
 
 function ascension:on_activate()
   -- log:info("Gold lifetime will be half")
