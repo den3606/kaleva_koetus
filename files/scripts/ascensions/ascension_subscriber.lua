@@ -55,4 +55,6 @@ function ascension:on_spell_generated(_spell) end
 -- Optional
 function ascension:on_boss_died() end
 
+function ascension:on_new_game_plus_started() end
+
 return ascension

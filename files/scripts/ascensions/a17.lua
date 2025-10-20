@@ -71,4 +71,9 @@ function ascension:on_player_spawn(player_entity_id)
   end
 end
 
+function ascension:on_new_game_plus_started()
+  GamePrintImportant("$kaleva_koetus_new_game_plus_friend_gone", "$kaleva_koetus_new_game_plus_friend_gone_description")
+  GamePrint("$kaleva_koetus_new_game_plus_friend_gone_description")
+end
+
 return ascension

@@ -16,6 +16,7 @@ local EventTypes = {
   GOLD_SPAWN = "gold_spawn",
   SPELL_GENERATED = "spell_generated",
   BOSS_DIED = "boss_died",
+  NEW_GAME_PLUS_STARTED = "new_game_plus_started",
 }
 
 -- Event argument definitions (for handlers)
@@ -56,6 +57,7 @@ local EventArgs = {
     { name = "entity_id", type = "number" },
   },
   [EventTypes.BOSS_DIED] = {},
+  [EventTypes.NEW_GAME_PLUS_STARTED] = {},
 }
 
 local AscensionTags = {

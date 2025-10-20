@@ -306,6 +306,14 @@ function AscensionManager:on_boss_died()
   end
 end
 
+function AscensionManager:on_new_game_plus_started()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_new_game_plus_started then
+      ascension:on_new_game_plus_started()
+    end
+  end
+end
+
 function AscensionManager:get_ascension_info()
   return {
     current = self.current_level,
