@@ -1,7 +1,7 @@
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
 local sampo_entity_id = GetUpdatedEntityID()
--- プレイヤーの座標を取って、そこから200以内にfrinedがいなければ、無効化してテキストを出す
+-- プレイヤーの座標を取って、そこから200以内にfriendがいなければ、無効化してテキストを出す
 local plyer_entity_id = GetPlayerEntity()
 local x, y = EntityGetTransform(plyer_entity_id)
 local friend_entity_id = EntityGetInRadiusWithTag(x, y, 200, "kk_a17_friend")[1]
