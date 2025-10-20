@@ -1,3 +1,24 @@
+-- Localise
+local function kaleva_koetus_broken_spell_text()
+  local current_language = GameTextGet("$current_language")
+
+  local translations = {
+    ["English"] = "Incomplete ",
+    ["русский"] = "Неполное ",
+    ["Português (Brasil)"] = "Incompleto ",
+    ["Español"] = "Incompleto ",
+    ["Deutsch"] = "Unvollständig ",
+    ["Français"] = "Incomplet ",
+    ["Italiano"] = "Incompleto ",
+    ["Polska"] = "Niekompletne ",
+    ["简体中文"] = "未完成的",
+    ["日本語"] = "未完成の",
+    ["한국어"] = "불완전한",
+  }
+
+  return translations[current_language] or translations["English"]
+end
+
 local function addr_seed_from_table(t)
   local s = tostring(t or {})
   local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
@@ -54,7 +75,7 @@ local function a15_action(action)
   end
   math.randomseed(gun_action_seed)
 
-  action.name = GameTextGetTranslatedOrNot("$kaleva_koetus_broken_spell") .. GameTextGetTranslatedOrNot(action.name)
+  action.name = kaleva_koetus_broken_spell_text() .. GameTextGetTranslatedOrNot(action.name)
 
   local rnd = math.random()
 
