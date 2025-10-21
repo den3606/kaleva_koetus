@@ -41,6 +41,8 @@ function ascension:on_mod_post_init() end
 -- Optional
 function ascension:on_world_initialized() end
 -- Optional
+function ascension:on_biome_config_loaded() end
+-- Optional
 function ascension:on_enemy_spawn(_enemy) end
 -- Optional
 function ascension:on_potion_generated(_potion) end
