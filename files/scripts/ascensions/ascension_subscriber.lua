@@ -45,6 +45,8 @@ function ascension:on_biome_config_loaded() end
 -- Optional
 function ascension:on_enemy_spawn(_enemy) end
 -- Optional
+function ascension:on_enemy_post_spawn(_enemy) end
+-- Optional
 function ascension:on_potion_generated(_potion) end
 -- Optional
 function ascension:on_book_generated(_book) end

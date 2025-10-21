@@ -69,6 +69,35 @@ function EnemyDetector:init(called_from)
   -- log:debug("initialized")
 end
 
+function EnemyDetector:get_processed_marker()
+  return function(entity_id)
+    EntityAddTag(entity_id, self.tag_name)
+  end
+end
+
+function EnemyDetector:check_unprocessed_enemies()
+  local all_enemies = EntityGetWithTag("enemy")
+  if #all_enemies == 0 then
+    return {}
+  end
+
+  local unprocessed_enemies = {}
+  for _, entity_id in ipairs(all_enemies) do
+    if not EntityHasTag(entity_id, self.tag_name) then
+      local x, y = EntityGetTransform(entity_id)
+      if is_active(entity_id) then
+        unprocessed_enemies[#unprocessed_enemies + 1] = {
+          id = entity_id,
+          x = x,
+          y = y,
+        }
+      end
+    end
+  end
+
+  return unprocessed_enemies
+end
+
 function EnemyDetector:get_unprocessed_enemies()
   if self.latest_entity_id == EntitiesGetMaxID() then
     return {}

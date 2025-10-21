@@ -16,6 +16,7 @@ local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detect
 local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
+local mark_enemy_as_processed
 -- log:info("Kaleva Koetus mod loading...")
 
 function OnModPreInit()
@@ -41,6 +42,8 @@ function OnWorldInitialized()
   eventBroker:init()
   EnemyDetector:init("from_init")
   SpellDetector:init("from_init")
+
+  mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
   -- 存在するイベントをすべて登録する
   for _, event_type in pairs(EventTypes) do
@@ -68,18 +71,19 @@ function OnPlayerSpawned(player_entity_id) -- This runs when player entity has b
 end
 
 function OnWorldPreUpdate()
-  local unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
-  if #unprocessed_enemies > 0 then
-    for _, enemy_data in ipairs(unprocessed_enemies) do
-      eventBroker:direct_dispatch(EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
-    end
+  local unprocessed_enemies = EnemyDetector:check_unprocessed_enemies()
+  for _, enemy_data in ipairs(unprocessed_enemies) do
+    eventBroker:direct_dispatch(EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
+  end
+
+  unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
+  for _, enemy_data in ipairs(unprocessed_enemies) do
+    eventBroker:direct_dispatch(EventTypes.ENEMY_POST_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
   end
 
   local unprocessed_spells = SpellDetector:get_unprocessed_spells()
-  if #unprocessed_spells > 0 then
-    for _, spell_data in ipairs(unprocessed_spells) do
-      eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
-    end
+  for _, spell_data in ipairs(unprocessed_spells) do
+    eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
   end
 
   eventBroker:flush_event_queue()

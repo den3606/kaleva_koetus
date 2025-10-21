@@ -8,6 +8,10 @@ local DAMAGE_PROJECTILE_MULTIPLIER = 2
 function shot(projectile_entity_id)
   -- log:debug("elite enemy shot")
   local projectile_component_id = EntityGetFirstComponent(projectile_entity_id, "ProjectileComponent")
+  if projectile_component_id ~= nil then
+    return
+  end
+
   local damage = ComponentGetValue2(projectile_component_id, "damage")
   ComponentSetValue2(projectile_component_id, "damage", damage * DAMAGE_PROJECTILE_MULTIPLIER)
 

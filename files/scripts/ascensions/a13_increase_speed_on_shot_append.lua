@@ -7,7 +7,7 @@ local ELITE_PROJECTILE_SPEED = 1.5
 function shot(projectile_entity_id)
   -- log:debug("elite enemy shot")
   local velocity_component_id = EntityGetFirstComponent(projectile_entity_id, "VelocityComponent")
-  if not velocity_component_id then
+  if velocity_component_id ~= nil then
     return
   end
 

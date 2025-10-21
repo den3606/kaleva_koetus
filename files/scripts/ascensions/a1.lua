@@ -13,7 +13,7 @@ ascension.level = 1
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.hp_multiplier = 1.5
-ascension.tag_name = AscensionTags.A1 .. EventTypes.ENEMY_SPAWN
+ascension.tag_name = AscensionTags.A1 .. EventTypes.ENEMY_POST_SPAWN
 
 function ascension:on_activate()
   -- log:info("Enemy HP increase active (x%d)", self.hp_multiplier)
@@ -25,7 +25,7 @@ function ascension:on_activate()
   )
 end
 
-function ascension:on_enemy_spawn(payload)
+function ascension:on_enemy_post_spawn(payload)
   local enemy_entity = tonumber(payload[1])
   if not enemy_entity then
     return

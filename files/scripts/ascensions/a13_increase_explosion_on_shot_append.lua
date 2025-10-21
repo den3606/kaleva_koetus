@@ -8,6 +8,10 @@ local ELITE_EXPLOSION_STAINS_RADIUS = 1.25
 function shot(projectile_entity_id)
   -- log:debug("elite enemy shot")
   local projectile_component_id = EntityGetFirstComponent(projectile_entity_id, "ProjectileComponent")
+  if projectile_component_id ~= nil then
+    return
+  end
+
   local explosion_radius = ComponentObjectGetValue2(projectile_component_id, "config_explosion", "explosion_radius")
   local stains_radius = ComponentObjectGetValue2(projectile_component_id, "config_explosion", "stains_radius")
   ComponentObjectSetValue2(

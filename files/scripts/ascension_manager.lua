@@ -226,6 +226,14 @@ function AscensionManager:on_enemy_spawn(payload)
   end
 end
 
+function AscensionManager:on_enemy_post_spawn(payload)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_enemy_post_spawn then
+      ascension:on_enemy_post_spawn(payload)
+    end
+  end
+end
+
 function AscensionManager:on_shop_card_spawn(event_args)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_card_spawn then
