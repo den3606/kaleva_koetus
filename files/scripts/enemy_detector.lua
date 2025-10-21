@@ -64,8 +64,22 @@ local function is_active(entity_id)
   return true
 end
 
+local player_herd_id
+local function is_player_faction(entity_id)
+  local genome_data_components = EntityGetComponent(entity_id, "GenomeDataComponent")
+  if genome_data_components ~= nil then
+    for _, genome_data_component in ipairs(genome_data_components) do
+      if ComponentGetValue2(genome_data_component, "herd_id") == player_herd_id then
+        return true
+      end
+    end
+  end
+  return false
+end
+
 function EnemyDetector:init(called_from)
   self.tag_name = "kk_enemy_detected" .. "_" .. called_from
+  player_herd_id = StringToHerdId("player")
   -- log:debug("initialized")
 end
 
@@ -84,13 +98,17 @@ function EnemyDetector:check_unprocessed_enemies()
   local unprocessed_enemies = {}
   for _, entity_id in ipairs(all_enemies) do
     if not EntityHasTag(entity_id, self.tag_name) then
-      local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
-        unprocessed_enemies[#unprocessed_enemies + 1] = {
-          id = entity_id,
-          x = x,
-          y = y,
-        }
+        if is_player_faction(entity_id) == true then
+          EntityAddTag(entity_id, self.tag_name)
+        else
+          local x, y = EntityGetTransform(entity_id)
+          unprocessed_enemies[#unprocessed_enemies + 1] = {
+            id = entity_id,
+            x = x,
+            y = y,
+          }
+        end
       end
     end
   end
@@ -115,12 +133,13 @@ function EnemyDetector:get_unprocessed_enemies()
       local x, y = EntityGetTransform(entity_id)
       if is_active(entity_id) then
         EntityAddTag(entity_id, self.tag_name)
-
-        unprocessed_enemies[#unprocessed_enemies + 1] = {
-          id = entity_id,
-          x = x,
-          y = y,
-        }
+        if is_player_faction(entity_id) == false then
+          unprocessed_enemies[#unprocessed_enemies + 1] = {
+            id = entity_id,
+            x = x,
+            y = y,
+          }
+        end
       end
     end
   end
