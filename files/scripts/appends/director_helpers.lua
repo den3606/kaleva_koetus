@@ -26,6 +26,16 @@ local function file_not_boss_enemy(elem)
     return false
   end
 
+  for genome_data_component in elem:each_of("GenomeDataComponent") do
+    local _enabled = genome_data_component:get("_enabled")
+    if _enabled == nil or _enabled == "1" then
+      local herd_id = genome_data_component:get("herd_id")
+      if herd_id == nil or herd_id == "player" then
+        return false
+      end
+    end
+  end
+
   return true
 end
 

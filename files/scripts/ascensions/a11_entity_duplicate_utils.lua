@@ -19,7 +19,7 @@ function DuplicateUtils.has_boss_tag(tags)
     return true
   end
 
-  if string.find(padded_tags, ",%s*boss_[^,]%s*,") then
+  if string.find(padded_tags, ",%s*boss_[^,]*%s*,") then
     return true
   end
 
