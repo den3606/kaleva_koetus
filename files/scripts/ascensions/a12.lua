@@ -13,17 +13,26 @@ ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A12 .. "unused"
 
-function ascension:on_activate()
-  -- log:info("Temple Alter's water withered")
-  ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
-  ModLuaFileAppend("data/scripts/biomes/temple_altar_left.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar_left.lua")
+-- selene: allow(undefined_variable)
+local bit = bit
+
+local function wither_pool(image_path)
+  local id, w, h = ModImageMakeEditable(image_path, 0, 0)
+  for i = 0, w - 1 do
+    for j = 0, h - 1 do
+      local color = ModImageGetPixel(id, i, j)
+      -- water & mud & spawn_fish
+      if bit.bxor(color, 0xff4c552f) == 0 or bit.bxor(color, 0xff213e36) == 0 or bit.bxor(color, 0xffafde03) == 0 then
+        ModImageSetPixel(id, i, j, 0xff000000)
+      end
+    end
+  end
 end
 
-function ascension:on_world_initialized()
-  -- NOTE:
-  -- Check appends temple_altar_left.lua / temple_altar.lua
-  -- log:debug("load a12 override")
-  GlobalsSetValue(AscensionTags.A12 .. "override_pixel_scene", "1")
+function ascension:on_activate()
+  -- log:info("Temple Alter's water withered")
+  wither_pool("data/biome_impl/temple/altar.png")
+  wither_pool("data/biome_impl/temple/altar_left.png")
 end
 
 return ascension
