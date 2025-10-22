@@ -1,11 +1,11 @@
+-- NOTE:
+-- This position is player position
 -- selene: allow(unused_variable)
 function teleported(from_x, from_y, to_x, to_y, portal_teleport)
   if portal_teleport then
-    -- 200px以内にfriendがいなければ、テレポート処理を防ぐ
-    local plyer_entity_id = GetPlayerEntity()
-    local player_x, player_y = EntityGetTransform(plyer_entity_id)
-    local friend_entity_id = EntityGetInRadiusWithTag(player_x, player_y, 200, "kk_a17_friend")[1]
+    local friend_entity_id = EntityGetInRadiusWithTag(from_x, from_y, 200, "kk_a17_friend")[1]
 
+    print(tostring(friend_entity_id))
     if not friend_entity_id then
       return
     end
