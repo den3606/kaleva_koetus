@@ -19,7 +19,13 @@ function ascension:on_activate()
 end
 
 function ascension:on_player_spawn()
+  if GlobalsGetValue(ascension.tag_name, "0") == "1" then
+    return
+  end
+
   GlobalsSetValue("STEVARI_DEATHS", tostring(2))
+
+  GlobalsSetValue(ascension.tag_name, "1")
 end
 
 function ascension:on_necromancer_spawn(payload)
@@ -33,15 +39,8 @@ function ascension:on_necromancer_spawn(payload)
 
   -- log:debug("Summoning guardians at %d,%d", x, y)
 
-  local thunder_skull_id = EntityLoad("data/entities/animals/thunderskull.xml", x - 20, y)
-  if thunder_skull_id then
-    EntityAddTag(thunder_skull_id, ascension.tag_name)
-  end
-
-  local ice_skull_id = EntityLoad("data/entities/animals/iceskull.xml", x + 20, y)
-  if ice_skull_id then
-    EntityAddTag(ice_skull_id, ascension.tag_name)
-  end
+  local _ = EntityLoad("data/entities/animals/thunderskull.xml", x - 20, y)
+  _ = EntityLoad("data/entities/animals/iceskull.xml", x + 20, y)
 end
 
 return ascension
