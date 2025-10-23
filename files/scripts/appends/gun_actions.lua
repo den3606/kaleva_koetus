@@ -1,3 +1,5 @@
+local RandomUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a15_random_utils.lua")
+
 -- Localise
 local function kaleva_koetus_broken_spell_text()
   local current_language = GameTextGet("$current_language")
@@ -19,62 +21,7 @@ local function kaleva_koetus_broken_spell_text()
   return translations[current_language] or translations["English"]
 end
 
-local function addr_seed_from_table(t)
-  local s = tostring(t or {})
-  local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
-  local n = tonumber(hex, 16) or 0
-
-  -- 32bitに畳んで拡散（軽いミックス）
-  -- n >> 16 を算術演算で実装
-  local shift = math.floor(n / 65536)
-
-  -- n ^ (n >> 16) のXORを算術演算で実装
-  local xor_result = 0
-  local a, b = n, shift
-  for i = 0, 31 do
-    local bit_val = 2 ^ i
-    local bit_a = math.floor(a / bit_val) % 2
-    local bit_b = math.floor(b / bit_val) % 2
-    if bit_a ~= bit_b then
-      xor_result = xor_result + bit_val
-    end
-  end
-
-  -- 乗算して32bitマスク
-  n = (xor_result * 0x45d9f3b) % 4294967296
-
-  return n
-end
-
-local function random_unique_integers(min, max, count)
-  local numbers = {}
-  for i = min, max do
-    table.insert(numbers, i)
-  end
-
-  -- Fisher-Yates shuffle
-  for i = #numbers, 2, -1 do
-    local j = math.random(1, i)
-    numbers[i], numbers[j] = numbers[j], numbers[i]
-  end
-
-  local result = {}
-  for i = 1, count do
-    table.insert(result, numbers[i])
-  end
-
-  return result
-end
 local function a15_action(action)
-  local gun_action_seed = ModSettingGet("kaleva_koetus.gun_action_seed") or 0
-
-  if gun_action_seed == 0 then
-    local year, month, day, hour, minute, second = GameGetDateAndTimeUTC()
-    gun_action_seed = year + month + day + hour + minute + second + addr_seed_from_table()
-    ModSettingSet("kaleva_koetus.gun_action_seed", gun_action_seed)
-  end
-  math.randomseed(gun_action_seed)
-
   action.name = kaleva_koetus_broken_spell_text() .. GameTextGetTranslatedOrNot(action.name)
 
   local rnd = math.random()
@@ -88,12 +35,9 @@ local function a15_action(action)
     end
   end
 
-  -- NOTE:
-  -- action.actionは呪文が呼び出される度に実行される
-  -- そのため、gun_action読み込み時にrand値を保持しないと、呪文詠唱毎で実行されるデバフが変わってしまう。
   local has_cool_time = 0.5 < math.random() or true
   local has_fire_rate_debuff = 0.5 < math.random() or false
-  local selected_debuff = random_unique_integers(1, 5, 2)
+  local selected_debuff = RandomUtils.random_unique_integers(1, 5, 2)
   local debuff_fire_rate_wait = math.random(5, 15)
   local debuff_reload_time = math.random(5, 15)
   local debuff_spread_degrees = math.random(3, 7)
@@ -143,12 +87,16 @@ local function a15_action(action)
   end
 end
 
+local actions_seed = RandomUtils.derive_seed("gun_actions")
+math.randomseed(actions_seed)
+
 -- selene: allow(undefined_variable)
-for _, action in ipairs(actions) do
-  -- NOTE:
-  -- ダミーの画像参照をから、対象スペルかを判断している
-  local exist = ModImageDoesExist("kk/a15/" .. action.sprite)
-  if exist then
-    a15_action(action)
+local actions = actions
+local target_indexes = RandomUtils.random_unique_integers(1, #actions, math.floor(#actions * RandomUtils.UNCOMPLETED_MULTIPLIER))
+for _, index in ipairs(target_indexes) do
+  if actions[index].id ~= "MANA_REDUCE" then
+    local action_seed = RandomUtils.derive_seed("gun_action_" .. tostring(index))
+    math.randomseed(action_seed)
+    a15_action(actions[index])
   end
 end

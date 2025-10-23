@@ -2,87 +2,37 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
+local RandomUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a15_random_utils.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 -- local log = Logger:new("a15.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
-local UNCOMPLETED_MULTIPLIER = 0.3
+local UNCOMPLETED_MULTIPLIER = RandomUtils.UNCOMPLETED_MULTIPLIER
 
 ascension.level = 15
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A15 .. EventTypes.SPELL_GENERATED
 
-local function addr_seed_from_table(t)
-  local s = tostring(t or {})
-  local hex = s:match("0x(%x+)") or s:match("(%x+)$") or "0"
-  local n = tonumber(hex, 16) or 0
-
-  -- 32bitに畳んで拡散（軽いミックス）
-  -- n >> 16 を算術演算で実装
-  local shift = math.floor(n / 65536)
-
-  -- n ^ (n >> 16) のXORを算術演算で実装
-  local xor_result = 0
-  local a, b = n, shift
-  for i = 0, 31 do
-    local bit_val = 2 ^ i
-    local bit_a = math.floor(a / bit_val) % 2
-    local bit_b = math.floor(b / bit_val) % 2
-    if bit_a ~= bit_b then
-      xor_result = xor_result + bit_val
-    end
-  end
-
-  -- 乗算して32bitマスク
-  n = (xor_result * 0x45d9f3b) % 4294967296
-
-  return n
-end
-
-local function random_unique_integers(min, max, count)
-  local numbers = {}
-  for i = min, max do
-    table.insert(numbers, i)
-  end
-
-  -- Fisher-Yates shuffle
-  for i = #numbers, 2, -1 do
-    local j = math.random(1, i)
-    numbers[i], numbers[j] = numbers[j], numbers[i]
-  end
-
-  local result = {}
-  for i = 1, count do
-    table.insert(result, numbers[i])
-  end
-
-  return result
-end
-
 function ascension:on_activate()
   -- log:info("Broken spells")
 end
 
 function ascension:on_mod_post_init()
+  RandomUtils.init_root_seed()
+  local actions_seed = RandomUtils.derive_seed("gun_actions")
+  math.randomseed(actions_seed)
+
   local _ = dofile_once("data/scripts/gun/gun_actions.lua")
   -- selene: allow(undefined_variable)
   local actions = actions
-  local _, _, _, _, minute, second = GameGetDateAndTimeUTC()
-  math.randomseed(addr_seed_from_table() + minute + second)
 
-  -- NOTE:
-  -- 再起動すると、Noitaのワールドシード依存でないため、対象の呪文が変わってしまう
-  -- しかしゲーム開始前だとNoitaのRandom関数が使えない（GameSeed依存にならない）ため、再起動時に変わることを許容する
-  local target_indexes = random_unique_integers(1, #actions, math.floor(#actions * UNCOMPLETED_MULTIPLIER))
+  local target_indexes = RandomUtils.random_unique_integers(1, #actions, math.floor(#actions * UNCOMPLETED_MULTIPLIER))
   for _, index in ipairs(target_indexes) do
     if actions[index].id ~= "MANA_REDUCE" then
       local id, x, y = ModImageMakeEditable(actions[index].sprite, 0, 0)
-      -- NOTE:
-      -- ダミーの画像参照を作って、gun_actions側で対象画像かを判別できるようにする
-      local _ = ModImageMakeEditable("kk/a15/" .. actions[index].sprite, 1, 1)
 
       for i = 0, x, 1 do
         for j = 0, y, 1 do
