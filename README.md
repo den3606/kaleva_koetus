@@ -51,4 +51,5 @@ They can also be viewed in-game from the Ascension icon.
 
 ## Contribution
 
-Pull requests and issue reports are welcome.
+Pull requests and issue reports are welcome.  
+If you'd like to contribute, please check [Development flow](docs/development_flow.md)
