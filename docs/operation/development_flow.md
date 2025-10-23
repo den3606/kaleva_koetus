@@ -3,6 +3,8 @@
 This document describes the standard release process for the project.
 This project follows the GitHub Flow development model.
 
+><https://docs.github.com/en/get-started/using-github/github-flow>
+
 ## 1. Submit an Issue
 
 Create an issue for the corresponding ticket.  
