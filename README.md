@@ -4,9 +4,9 @@
 
 Noita Ascension Mod
 
-![Thumbnail](./workshop_preview_image.png)
+![Thumbnail](/workshop_preview_image.png)
 
-[Japanese](./docs/README.ja.md)
+[Japanese](/docs/README.ja.md)
 
 ## Overview
 
@@ -20,7 +20,7 @@ Please see the Steam Workshop page for a detailed description:
 
 ## Ascension List
 
-You can check the text messages in [common.csv](files/translations/common.csv).  
+You can check the text messages in [common.csv](/files/translations/common.csv).  
 They can also be viewed in-game from the Ascension icon.
 
 ## How to Use
@@ -46,10 +46,10 @@ They can also be viewed in-game from the Ascension icon.
 
 ## LICENSE
 
-- [Noita MOD Rules](docs/NOITA_MOD_RULES.md)  
-- [This Project License](docs/LICENSE.md)
+- [Noita MOD Rules](/docs/NOITA_MOD_RULES.md)  
+- [This Project License](/docs/LICENSE.md)
 
 ## Contribution
 
 Pull requests and issue reports are welcome.  
-If you'd like to contribute, please check [Development flow](docs/development_flow.md)
+If you'd like to contribute, please check [Development flow](/docs/operation/development_flow.md)
