@@ -12,8 +12,6 @@ local EventTypes = {
   NECROMANCER_SPAWN = "necromancer_spawn",
   POTION_GENERATED = "potion_generated",
   BOOK_GENERATED = "book_generated",
-  FUNGAL_SHIFTED = "fungal_shifted",
-  FUNGAL_SHIFT_CURSE_RELEASED = "fungal_shift_curse_released",
   GOLD_SPAWN = "gold_spawn",
   SPELL_GENERATED = "spell_generated",
   BOSS_DIED = "boss_died",
@@ -52,8 +50,6 @@ local EventArgs = {
   [EventTypes.POTION_GENERATED] = {
     { name = "entity_id", type = "number" },
   },
-  [EventTypes.FUNGAL_SHIFTED] = {},
-  [EventTypes.FUNGAL_SHIFT_CURSE_RELEASED] = {},
   [EventTypes.GOLD_SPAWN] = {
     { name = "entity_id", type = "number" },
     { name = "x", type = "number" },

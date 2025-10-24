@@ -1,0 +1,8 @@
+<Entity>
+  <Base file="data/entities/misc/effect_trip_03.xml">
+    <LuaComponent
+        _remove_from_base="1"
+    >
+    </LuaComponent>
+  </Base>
+</Entity>
