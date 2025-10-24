@@ -16,21 +16,39 @@ ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_POST_SPAWN
 
-local function random_unique_integers(min, max, count)
-  local numbers = {}
-  for i = min, max do
-    table.insert(numbers, i)
+local function enemy_not_boss(entity_id)
+  local tags = EntityGetTags(entity_id)
+  if tags == nil then
+    return false
+  end
+  local padded_tags = "," .. tags .. ","
+
+  if string.find(padded_tags, ",%s*boss%s*,") then
+    return false
+  end
+  if string.find(padded_tags, ",%s*boss_[^,]*%s*,") then
+    return false
   end
 
-  -- Fisher-Yates shuffle
-  for i = #numbers, 2, -1 do
-    local j = Random(1, i)
+  return true
+end
+
+local function random_unique_integers(min, max, count)
+  min = min - 1
+  local total = max - min
+  local numbers = {}
+  for i = 1, total do
+    numbers[i] = i + min
+  end
+
+  for i = 1, count do
+    local j = Random(i, total)
     numbers[i], numbers[j] = numbers[j], numbers[i]
   end
 
   local result = {}
   for i = 1, count do
-    table.insert(result, numbers[i])
+    result[i] = numbers[i]
   end
 
   return result
@@ -102,8 +120,10 @@ local function upgrade_enemy(enemy_entity_id, x, y)
 
   -- 血をvoid waterに(must)
   local damage_model_component_id = EntityGetFirstComponentIncludingDisabled(enemy_entity_id, "DamageModelComponent")
-  ComponentSetValue2(damage_model_component_id, "blood_spray_material", "material_darkness")
-  ComponentSetValue2(damage_model_component_id, "blood_material", "material_darkness")
+  if damage_model_component_id ~= nil then
+    ComponentSetValue2(damage_model_component_id, "blood_spray_material", "material_darkness")
+    ComponentSetValue2(damage_model_component_id, "blood_material", "material_darkness")
+  end
 
   SetRandomSeed(x + enemy_entity_id, y)
   if can_shot(enemy_entity_id) then
@@ -152,6 +172,10 @@ function ascension:on_enemy_post_spawn(payload)
   end
 
   if EntityHasTag(enemy_entity_id, ascension.tag_name) then
+    return
+  end
+
+  if enemy_not_boss(enemy_entity_id) == false then
     return
   end
 
