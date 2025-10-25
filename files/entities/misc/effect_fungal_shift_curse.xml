@@ -3,11 +3,12 @@
     _enabled="1">
   </InheritTransformComponent>
 
-  <!-- NOTE: Lifetime defined in a10.lua -->
+  <!-- NOTE: VariableStorageComponent added in a10.lua, add_fungal_curse() -->
 
   <GameEffectComponent
     effect="CUSTOM"
     custom_effect_id="KALEVA_KOETUS_FUNGAL_SHIFT_CURSE"
+    frames="54000"
   >
   </GameEffectComponent>
 
@@ -22,9 +23,9 @@
   </UIIconComponent>
 
   <LuaComponent
-    script_source_file="mods/kaleva_koetus/files/scripts/fungal_shift_curse_released.lua"
+    script_source_file="mods/kaleva_koetus/files/scripts/ascensions/a10_fungal_shift_curse_init.lua"
     execute_every_n_frame="-1"
-    execute_on_removed="1"
+    execute_on_added="1"
   >
   </LuaComponent>
 </Entity>
