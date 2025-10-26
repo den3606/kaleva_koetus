@@ -3,7 +3,7 @@ local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/difficulty_s
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local AscensionTags = EventDefs.AscensionTags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 

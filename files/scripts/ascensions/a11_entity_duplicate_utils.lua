@@ -8,7 +8,7 @@ local SPAWN_CHANCE_1 = 0.25
 local SPAWN_CHANCE_2 = 0.10
 local SPAWN_CHANCE_3 = 0.05
 
-local AscensionTags = EventDefs.Tags
+local AscensionTags = EventDefs.AscensionTags
 local EventTypes = EventDefs.Types
 DuplicateUtils.tag_name = AscensionTags.A11 .. EventTypes.ENEMY_SPAWN
 

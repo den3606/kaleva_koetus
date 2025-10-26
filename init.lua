@@ -1,7 +1,7 @@
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local AscensionTags = EventDefs.Tags
+local AscensionTags = EventDefs.AscensionTags
 local EventTypes = EventDefs.Types
 
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")

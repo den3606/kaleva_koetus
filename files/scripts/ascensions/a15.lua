@@ -4,7 +4,7 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local RandomUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a15_random_utils.lua")
 
-local AscensionTags = EventDefs.Tags
+local AscensionTags = EventDefs.AscensionTags
 local EventTypes = EventDefs.Types
 -- local log = Logger:new("a15.lua")
 

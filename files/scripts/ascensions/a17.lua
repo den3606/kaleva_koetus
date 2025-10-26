@@ -4,7 +4,7 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 
-local AscensionTags = EventDefs.Tags
+local AscensionTags = EventDefs.AscensionTags
 
 local ascension = setmetatable({}, { __index = AscensionBase })
 
