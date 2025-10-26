@@ -6,8 +6,8 @@ local AscensionManager = {}
 AscensionManager.MAX_LEVEL = 20
 
 -- State
-AscensionManager.current_level = 0
-AscensionManager.highest_level = 0
+AscensionManager.current_level = 1
+AscensionManager.highest_level = 1
 AscensionManager.single_ascension = false
 AscensionManager.active_ascensions = {}
 

@@ -10,11 +10,17 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 -- local log = Logger:new("init.lua")
 
-local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local mark_enemy_as_processed
+
+-- Select Difficulty
+local difficultyManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
+if ModSettingGet("kaleva_koetus.select_difficulty") == "beyond" then
+  print("select difficulty manager")
+  difficultyManager = dofile_once("mods/kaleva_koetus/files/scripts/beyond_manager.lua")
+end
 
 -- log:info("Kaleva Koetus mod loading...")
 
@@ -25,13 +31,13 @@ end
 function OnModInit()
   -- log:debug("Mod - OnModInit()")
   -- Initialize Ascension System
-  ascensionManager:init()
+  difficultyManager:init()
 end
 
 function OnModPostInit()
   -- log:debug("Mod - OnModPostInit()")
 
-  ascensionManager:on_mod_post_init()
+  difficultyManager:on_mod_post_init()
 end
 
 function OnWorldInitialized()
@@ -43,27 +49,27 @@ function OnWorldInitialized()
 
   -- 存在するイベントをすべて登録する
   for _, event_type in pairs(EventTypes) do
-    eventBroker:subscribe_event(event_type, ascensionManager)
+    eventBroker:subscribe_event(event_type, difficultyManager)
   end
 
   -- Reset victory flag for new run
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")
 
-  ascensionManager:on_world_initialized()
+  difficultyManager:on_world_initialized()
 
   -- Show current ascension info
-  local info = ascensionManager:get_info()
+  local info = difficultyManager:get_info()
   if info.current > 0 then
     GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
   end
 end
 
 function OnBiomeConfigLoaded()
-  ascensionManager:on_biome_config_loaded()
+  difficultyManager:on_biome_config_loaded()
 end
 
 function OnPlayerSpawned(player_entity_id) -- This runs when player entity has been created
-  ascensionManager:on_player_spawn(player_entity_id)
+  difficultyManager:on_player_spawn(player_entity_id)
 end
 
 function OnWorldPreUpdate()
@@ -86,7 +92,7 @@ function OnWorldPreUpdate()
 
   -- NOTE:
   -- updateをEvent経由で呼ぶと大量に呼ばれてしまうので、直接callする
-  ascensionManager:update()
+  difficultyManager:update()
 
   wake_up_waiting_threads(1)
 end

@@ -67,6 +67,26 @@ local function reset_ascension_level()
   update_ascension_setting_values()
 end
 
+local function display_ascension_settings()
+  return {
+    {
+      id = "ascension_current",
+      ui_name = "Ascension Level",
+      ui_description = "Select the ascension level for this run",
+      value_default = "1",
+      values = get_ascension_values(),
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+    {
+      id = "show_ascension_info",
+      ui_name = "Show Ascension Info",
+      ui_description = "Display current ascension level and effects during gameplay",
+      value_default = true,
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+  }
+end
+
 ----------------------------------------
 --- Beyond Settings
 ----------------------------------------
@@ -133,6 +153,26 @@ local function reset_beyond_level()
   update_beyond_setting_values()
 end
 
+local function display_beyond_settings()
+  return {
+    {
+      id = "beyond_current",
+      ui_name = "Beyond Level",
+      ui_description = "Select the beyond level for this run",
+      value_default = "1",
+      values = get_beyond_values(),
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+    {
+      id = "show_beyond_info",
+      ui_name = "Show Beyond Info",
+      ui_description = "Display current beyond level and effects during gameplay",
+      value_default = true,
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+  }
+end
+
 ----------------------------------------
 --- Mod Settings
 ----------------------------------------
@@ -156,118 +196,129 @@ function ModSettingsGui(gui, in_main_menu)
   mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
 end
 
--- TODO: Switching System between ascension and beyond
--- Define mod settings
-mod_settings_version = 1
-mod_settings = {
-  {
-    category_id = "kaleva_koetus_settings",
-    ui_name = "Kaleva Koetus Settings",
-    ui_description = "Configure difficulty level for your run",
-    settings = {
-      {
-        id = "ascension_current",
-        ui_name = "Ascension Level",
-        ui_description = "Select the ascension level for this run",
-        value_default = "1",
-        values = get_ascension_values(),
-        scope = MOD_SETTING_SCOPE_NEW_GAME,
-      },
-      {
-        id = "show_ascension_info",
-        ui_name = "Show Ascension Info",
-        ui_description = "Display current ascension level and effects during gameplay",
-        value_default = true,
-        scope = MOD_SETTING_SCOPE_NEW_GAME,
-      },
-      {
-        id = "beyond_current",
-        ui_name = "Beyond Level",
-        ui_description = "Select the beyond level for this run",
-        value_default = "1",
-        values = get_beyond_values(),
-        scope = MOD_SETTING_SCOPE_NEW_GAME,
-      },
-      {
-        id = "show_beyond_info",
-        ui_name = "Show Beyond Info",
-        ui_description = "Display current beyond level and effects during gameplay",
-        value_default = true,
-        scope = MOD_SETTING_SCOPE_NEW_GAME,
-      },
-      {
-        category_id = "debug_settings",
-        ui_name = "Debug Settings",
-        ui_description = "Debug options for testing",
-        foldable = true,
-        _folded = true,
-        settings = {
-          {
-            id = "log_level",
-            ui_name = "Log Level",
-            ui_description = "Select verbosity for Kaleva Koetus logs",
-            value_default = "INFO",
-            values = {
-              { "ERROR", "Error" },
-              { "WARN", "Warn" },
-              { "INFO", "Info" },
-              { "DEBUG", "Debug" },
-              { "VERBOSE", "Verbose" },
-            },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-          },
-          {
-            id = "single_ascension",
-            ui_name = "Single Ascension",
-            ui_description = "Activate only one ascension",
-            value_default = false,
-            scope = MOD_SETTING_SCOPE_NEW_GAME,
-          },
-          {
-            id = "single_beyond",
-            ui_name = "Single Beyond",
-            ui_description = "Activate only one beyond",
-            value_default = false,
-            scope = MOD_SETTING_SCOPE_NEW_GAME,
-          },
-          {
-            id = "lock_all",
-            ui_name = "Lock All Difficulties",
-            ui_description = "Instantly lock all difficulty levels (for testing)",
-            value_default = "Click to lock difficulties",
-            values = { { "ok", "OK" } },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-              -- Unlock all levels
-              ModSettingSet("kaleva_koetus.ascension_highest", "1")
-              ModSettingSet("kaleva_koetus.beyond_highest", "1")
-              reset_ascension_level()
-              reset_beyond_level()
+----------------------------------------
+--- Mod Settings (customize field)
+----------------------------------------
+local display_difficulty_settings = display_ascension_settings()
+local switch_difficulty
+local debug_settings_category
 
-              print("[Kaleva Koetus] All ascensions locked!")
-              print("[Kaleva Koetus] All beyonds locked!")
-            end,
-          },
-          {
-            id = "unlock_all",
-            ui_name = "Unlock All Difficulties",
-            ui_description = "Instantly unlock all difficulty levels (for testing)",
-            value_default = "Click to unlock difficulties",
-            values = { { "ok", "OK" } },
-            scope = MOD_SETTING_SCOPE_RUNTIME,
-            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-              -- Unlock all levels
-              ModSettingSet("kaleva_koetus.ascension_highest", "20")
-              ModSettingSet("kaleva_koetus.beyond_highest", "20")
-              reset_ascension_level()
-              reset_beyond_level()
+local function build_mod_settings()
+  mod_settings = {}
 
-              print("[Kaleva Koetus] All ascensions unlocked!")
-              print("[Kaleva Koetus] All beyonds unlocked!")
-            end,
-          },
-        },
+  if ModSettingGet("kaleva_koetus.has_cleared_a20") then
+    table.insert(mod_settings, switch_difficulty)
+  end
+
+  for _, setting in ipairs(display_difficulty_settings) do
+    table.insert(mod_settings, setting)
+  end
+
+  if debug_settings_category then
+    table.insert(mod_settings, debug_settings_category)
+  end
+end
+
+local function select_display_difficulty(difficulty_name)
+  if difficulty_name == "beyond" then
+    display_difficulty_settings = display_beyond_settings()
+    build_mod_settings()
+  elseif difficulty_name == "ascension" then
+    display_difficulty_settings = display_ascension_settings()
+    build_mod_settings()
+  else
+    error("Unknown difficulty name: " .. tostring(difficulty_name))
+  end
+end
+
+if ModSettingGet("kaleva_koetus.has_cleared_a20") == true then
+  switch_difficulty = {
+    id = "select_difficulty",
+    ui_name = "Select Difficulty",
+    ui_description = "You can change the difficulty mode.",
+    value_default = "Click to change difficulties",
+    values = { { "ascension", "Ascension" }, { "beyond", "Beyond" } },
+    scope = MOD_SETTING_SCOPE_RUNTIME,
+    change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+      select_display_difficulty(_new_value)
+    end,
+  }
+end
+
+debug_settings_category = {
+  category_id = "debug_settings",
+  ui_name = "Debug Settings",
+  ui_description = "Debug options for testing",
+  foldable = true,
+  _folded = true,
+  settings = {
+    {
+      id = "log_level",
+      ui_name = "Log Level",
+      ui_description = "Select verbosity for Kaleva Koetus logs",
+      value_default = "INFO",
+      values = {
+        { "ERROR", "Error" },
+        { "WARN", "Warn" },
+        { "INFO", "Info" },
+        { "DEBUG", "Debug" },
+        { "VERBOSE", "Verbose" },
       },
+      scope = MOD_SETTING_SCOPE_RUNTIME,
+    },
+    {
+      id = "single_ascension",
+      ui_name = "Single Ascension",
+      ui_description = "Activate only one ascension",
+      value_default = false,
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+    {
+      id = "single_beyond",
+      ui_name = "Single Beyond",
+      ui_description = "Activate only one beyond",
+      value_default = false,
+      scope = MOD_SETTING_SCOPE_NEW_GAME,
+    },
+    {
+      id = "lock_all",
+      ui_name = "Lock All Difficulties",
+      ui_description = "Instantly lock all difficulty levels (for testing)",
+      value_default = "Click to lock difficulties",
+      values = { { "ok", "OK" } },
+      scope = MOD_SETTING_SCOPE_RUNTIME,
+      change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+        -- Unlock all levels
+        ModSettingSet("kaleva_koetus.ascension_highest", "1")
+        ModSettingSet("kaleva_koetus.beyond_highest", "1")
+        reset_ascension_level()
+        reset_beyond_level()
+
+        print("[Kaleva Koetus] All ascensions locked!")
+        print("[Kaleva Koetus] All beyonds locked!")
+      end,
+    },
+    {
+      id = "unlock_all",
+      ui_name = "Unlock All Difficulties",
+      ui_description = "Instantly unlock all difficulty levels (for testing)",
+      value_default = "Click to unlock difficulties",
+      values = { { "ok", "OK" } },
+      scope = MOD_SETTING_SCOPE_RUNTIME,
+      change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+        -- Unlock all levels
+        ModSettingSet("kaleva_koetus.ascension_highest", "20")
+        ModSettingSet("kaleva_koetus.beyond_highest", "20")
+        reset_ascension_level()
+        reset_beyond_level()
+
+        print("[Kaleva Koetus] All ascensions unlocked!")
+        print("[Kaleva Koetus] All beyonds unlocked!")
+      end,
     },
   },
 }
+
+build_mod_settings()
+
+mod_settings_version = 1
