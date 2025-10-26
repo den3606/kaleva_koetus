@@ -52,7 +52,7 @@ function OnWorldInitialized()
   ascensionManager:on_world_initialized()
 
   -- Show current ascension info
-  local info = ascensionManager:get_ascension_info()
+  local info = ascensionManager:get_info()
   if info.current > 0 then
     GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
   end

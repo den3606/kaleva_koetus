@@ -314,7 +314,7 @@ function AscensionManager:on_new_game_plus_started()
   end
 end
 
-function AscensionManager:get_ascension_info()
+function AscensionManager:get_info()
   return {
     current = self.current_level,
     highest_level = self.highest_level,
