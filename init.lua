@@ -18,7 +18,6 @@ local mark_enemy_as_processed
 -- Select Difficulty
 local difficultyManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 if ModSettingGet("kaleva_koetus.select_difficulty") == "beyond" then
-  print("select difficulty manager")
   difficultyManager = dofile_once("mods/kaleva_koetus/files/scripts/beyond_manager.lua")
 end
 
