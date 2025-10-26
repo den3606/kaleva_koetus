@@ -219,6 +219,27 @@ local function display_beyond_settings()
   }
 end
 
+local function get_display_settings_for_difficulty(difficulty_name)
+  if difficulty_name == "beyond" then
+    return display_beyond_settings()
+  end
+
+  if difficulty_name == "ascension" then
+    return display_ascension_settings()
+  end
+
+  error("Unknown difficulty name: " .. tostring(difficulty_name))
+end
+
+local function resolve_selected_difficulty()
+  local saved_value = ModSettingGet("kaleva_koetus.select_difficulty")
+  if saved_value == "beyond" then
+    return "beyond"
+  end
+
+  return "ascension"
+end
+
 ----------------------------------------
 --- Mod Settings
 ----------------------------------------
@@ -246,7 +267,7 @@ end
 ----------------------------------------
 --- Mod Settings (customize field)
 ----------------------------------------
-local display_difficulty_settings = display_ascension_settings()
+local display_difficulty_settings = get_display_settings_for_difficulty(resolve_selected_difficulty())
 local switch_difficulty
 local debug_settings_category
 
@@ -267,15 +288,8 @@ build_mod_settings = function()
 end
 
 local function select_display_difficulty(difficulty_name)
-  if difficulty_name == "beyond" then
-    display_difficulty_settings = display_beyond_settings()
-    build_mod_settings()
-  elseif difficulty_name == "ascension" then
-    display_difficulty_settings = display_ascension_settings()
-    build_mod_settings()
-  else
-    error("Unknown difficulty name: " .. tostring(difficulty_name))
-  end
+  display_difficulty_settings = get_display_settings_for_difficulty(difficulty_name)
+  build_mod_settings()
 end
 
 if ModSettingGet("kaleva_koetus.has_cleared_a20") == true then
