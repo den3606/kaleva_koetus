@@ -163,6 +163,10 @@ function AscensionManager:on_victory()
       -- log:info("Ascension %d cleared", self.current_level)
       GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
     end
+
+    if self.current_level == self.MAX_LEVEL then
+      ModSettingSet("kaleva_koetus.has_cleared_max_level", true)
+    end
   end
 
   self:save_progress()

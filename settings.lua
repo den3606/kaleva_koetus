@@ -206,7 +206,7 @@ local debug_settings_category
 local function build_mod_settings()
   mod_settings = {}
 
-  if ModSettingGet("kaleva_koetus.has_cleared_a20") then
+  if ModSettingGet("kaleva_koetus.has_cleared_max_level") then
     table.insert(mod_settings, switch_difficulty)
   end
 
@@ -314,6 +314,19 @@ debug_settings_category = {
 
         print("[Kaleva Koetus] All ascensions unlocked!")
         print("[Kaleva Koetus] All beyonds unlocked!")
+      end,
+    },
+    {
+      id = "toggle_beyond_mode_display",
+      ui_name = "Switch Display Beyond Mode",
+      ui_description = "Switch Beyond Mode display",
+      value_default = "Click to switch beyond mode display",
+      values = { { "ok", "OK" } },
+      scope = MOD_SETTING_SCOPE_RUNTIME,
+      change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+        local toggled = not (ModSettingGet("kaleva_koetus.has_cleared_max_level") == true)
+        ModSettingSet("kaleva_koetus.has_cleared_max_level", toggled)
+        select_display_difficulty("ascension")
       end,
     },
   },
