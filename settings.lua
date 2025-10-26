@@ -1,6 +1,10 @@
 local _ = dofile_once("data/scripts/lib/mod_settings.lua")
-
 local mod_id = "kaleva_koetus"
+
+----------------------------------------
+--- Ascension Settings
+----------------------------------------
+
 local ascension_setting
 
 local function get_ascension_values()
@@ -26,14 +30,14 @@ local function locate_ascension_setting()
     return nil
   end
 
-  local function search(settings)
+  local function search_ascension(settings)
     for _, setting in ipairs(settings) do
       if setting.id == "ascension_current" then
         ascension_setting = setting
         return true
       end
 
-      if setting.settings and search(setting.settings) then
+      if setting.settings and search_ascension(setting.settings) then
         return true
       end
     end
@@ -42,7 +46,7 @@ local function locate_ascension_setting()
   end
 
   for _, category in ipairs(mod_settings) do
-    if category.settings and search(category.settings) then
+    if category.settings and search_ascension(category.settings) then
       break
     end
   end
@@ -63,10 +67,80 @@ local function reset_ascension_level()
   update_ascension_setting_values()
 end
 
+----------------------------------------
+--- Beyond Settings
+----------------------------------------
+
+local beyond_setting
+
+local function get_beyond_values()
+  local values = {}
+  local max_level = ModSettingGet("kaleva_koetus.beyond_highest") or 1
+  -- Add unlocked ascension levels
+  for i = 1, math.max(max_level, 1) do -- Show at least level 1 for testing
+    table.insert(values, {
+      tostring(i),
+      "Beyond " .. i,
+    })
+  end
+
+  return values
+end
+
+local function locate_beyond_setting()
+  if beyond_setting ~= nil then
+    return beyond_setting
+  end
+
+  if not mod_settings then
+    return nil
+  end
+
+  local function search_beyond(settings)
+    for _, setting in ipairs(settings) do
+      if setting.id == "beyond_current" then
+        beyond_setting = setting
+        return true
+      end
+
+      if setting.settings and search_beyond(setting.settings) then
+        return true
+      end
+    end
+
+    return false
+  end
+
+  for _, category in ipairs(mod_settings) do
+    if category.settings and search_beyond(category.settings) then
+      break
+    end
+  end
+
+  return beyond_setting
+end
+
+local function update_beyond_setting_values()
+  local setting = locate_beyond_setting()
+  if setting then
+    setting.values = get_beyond_values()
+  end
+end
+
+-- selene: allow(unused_variable)
+local function reset_beyond_level()
+  beyond_setting = nil
+  update_beyond_setting_values()
+end
+
+----------------------------------------
+--- Mod Settings
+----------------------------------------
 -- This function is called when the game is initializing settings
 function ModSettingsUpdate(init_scope)
   local _old_version = mod_settings_get_version(mod_id)
   update_ascension_setting_values()
+  update_beyond_setting_values()
   mod_settings_update(mod_id, mod_settings, init_scope)
 end
 
@@ -78,16 +152,18 @@ end
 -- This function is called when drawing the settings UI
 function ModSettingsGui(gui, in_main_menu)
   update_ascension_setting_values()
+  update_beyond_setting_values()
   mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
 end
 
+-- TODO: Switching System between ascension and beyond
 -- Define mod settings
 mod_settings_version = 1
 mod_settings = {
   {
-    category_id = "ascension_settings",
-    ui_name = "Ascension Settings",
-    ui_description = "Configure ascension level for your run",
+    category_id = "kaleva_koetus_settings",
+    ui_name = "Kaleva Koetus Settings",
+    ui_description = "Configure difficulty level for your run",
     settings = {
       {
         id = "ascension_current",
@@ -104,66 +180,94 @@ mod_settings = {
         value_default = true,
         scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
-      -- {
-      --   category_id = "debug_settings",
-      --   ui_name = "Debug Settings",
-      --   ui_description = "Debug options for testing",
-      --   foldable = true,
-      --   _folded = true,
-      --   settings = {
-      --     {
-      --       id = "log_level",
-      --       ui_name = "Log Level",
-      --       ui_description = "Select verbosity for Kaleva Koetus logs",
-      --       value_default = "INFO",
-      --       values = {
-      --         { "ERROR", "Error" },
-      --         { "WARN", "Warn" },
-      --         { "INFO", "Info" },
-      --         { "DEBUG", "Debug" },
-      --         { "VERBOSE", "Verbose" },
-      --       },
-      --       scope = MOD_SETTING_SCOPE_RUNTIME,
-      --     },
-      --     {
-      --       id = "single_ascension",
-      --       ui_name = "Single Ascension",
-      --       ui_description = "Activate only one ascension",
-      --       value_default = false,
-      --       scope = MOD_SETTING_SCOPE_NEW_GAME,
-      --     },
-      --     {
-      --       id = "lock_all",
-      --       ui_name = "Lock All Ascensions",
-      --       ui_description = "Instantly lock all ascension levels (for testing)",
-      --       value_default = "Click to lock ascension",
-      --       values = { { "ok", "OK" } },
-      --       scope = MOD_SETTING_SCOPE_RUNTIME,
-      --       change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-      --         -- Unlock all levels
-      --         ModSettingSet("kaleva_koetus.ascension_highest", "1")
-      --         reset_ascension_level()
+      {
+        id = "beyond_current",
+        ui_name = "Beyond Level",
+        ui_description = "Select the beyond level for this run",
+        value_default = "1",
+        values = get_beyond_values(),
+        scope = MOD_SETTING_SCOPE_NEW_GAME,
+      },
+      {
+        id = "show_beyond_info",
+        ui_name = "Show Beyond Info",
+        ui_description = "Display current beyond level and effects during gameplay",
+        value_default = true,
+        scope = MOD_SETTING_SCOPE_NEW_GAME,
+      },
+      {
+        category_id = "debug_settings",
+        ui_name = "Debug Settings",
+        ui_description = "Debug options for testing",
+        foldable = true,
+        _folded = true,
+        settings = {
+          {
+            id = "log_level",
+            ui_name = "Log Level",
+            ui_description = "Select verbosity for Kaleva Koetus logs",
+            value_default = "INFO",
+            values = {
+              { "ERROR", "Error" },
+              { "WARN", "Warn" },
+              { "INFO", "Info" },
+              { "DEBUG", "Debug" },
+              { "VERBOSE", "Verbose" },
+            },
+            scope = MOD_SETTING_SCOPE_RUNTIME,
+          },
+          {
+            id = "single_ascension",
+            ui_name = "Single Ascension",
+            ui_description = "Activate only one ascension",
+            value_default = false,
+            scope = MOD_SETTING_SCOPE_NEW_GAME,
+          },
+          {
+            id = "single_beyond",
+            ui_name = "Single Beyond",
+            ui_description = "Activate only one beyond",
+            value_default = false,
+            scope = MOD_SETTING_SCOPE_NEW_GAME,
+          },
+          {
+            id = "lock_all",
+            ui_name = "Lock All Difficulties",
+            ui_description = "Instantly lock all difficulty levels (for testing)",
+            value_default = "Click to lock difficulties",
+            values = { { "ok", "OK" } },
+            scope = MOD_SETTING_SCOPE_RUNTIME,
+            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+              -- Unlock all levels
+              ModSettingSet("kaleva_koetus.ascension_highest", "1")
+              ModSettingSet("kaleva_koetus.beyond_highest", "1")
+              reset_ascension_level()
+              reset_beyond_level()
 
-      --         print("[Kaleva Koetus] All ascensions locked!")
-      --       end,
-      --     },
-      --     {
-      --       id = "unlock_all",
-      --       ui_name = "Unlock All Ascensions",
-      --       ui_description = "Instantly unlock all ascension levels (for testing)",
-      --       value_default = "Click to unlock ascension",
-      --       values = { { "ok", "OK" } },
-      --       scope = MOD_SETTING_SCOPE_RUNTIME,
-      --       change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
-      --         -- Unlock all levels
-      --         ModSettingSet("kaleva_koetus.ascension_highest", "20")
-      --         reset_ascension_level()
+              print("[Kaleva Koetus] All ascensions locked!")
+              print("[Kaleva Koetus] All beyonds locked!")
+            end,
+          },
+          {
+            id = "unlock_all",
+            ui_name = "Unlock All Difficulties",
+            ui_description = "Instantly unlock all difficulty levels (for testing)",
+            value_default = "Click to unlock difficulties",
+            values = { { "ok", "OK" } },
+            scope = MOD_SETTING_SCOPE_RUNTIME,
+            change_fn = function(_mod_id, _gui, _in_main_menu, _setting, _old_value, _new_value)
+              -- Unlock all levels
+              ModSettingSet("kaleva_koetus.ascension_highest", "20")
+              ModSettingSet("kaleva_koetus.beyond_highest", "20")
+              reset_ascension_level()
+              reset_beyond_level()
 
-      --         print("[Kaleva Koetus] All ascensions unlocked!")
-      --       end,
-      --     },
-      --   },
-      -- },
+              print("[Kaleva Koetus] All ascensions unlocked!")
+              print("[Kaleva Koetus] All beyonds unlocked!")
+            end,
+          },
+        },
+      },
     },
   },
 }
