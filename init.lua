@@ -14,9 +14,8 @@ local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
-local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
-
 local mark_enemy_as_processed
+
 -- log:info("Kaleva Koetus mod loading...")
 
 function OnModPreInit()
@@ -27,9 +26,6 @@ function OnModInit()
   -- log:debug("Mod - OnModInit()")
   -- Initialize Ascension System
   ascensionManager:init()
-  if ascensionManager.current_level >= 5 then
-    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
-  end
 end
 
 function OnModPostInit()

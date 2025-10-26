@@ -1,6 +1,7 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/difficulty_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 local AscensionTags = EventDefs.AscensionTags
 local EventTypes = EventDefs.Types
@@ -28,6 +29,8 @@ end
 
 function ascension:on_activate()
   log:info("Spell inventory slot reduction active (-%d)", SLOT_REDUCTION)
+
+  ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
 end
 
 function ascension:on_player_spawn(player_entity_id)
