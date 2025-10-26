@@ -1,5 +1,5 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
+local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/difficulty_subscriber.lua")
 local DuplicateUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a11_entity_duplicate_utils.lua")
 
 local ascension = setmetatable({}, { __index = AscensionBase })
