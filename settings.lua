@@ -1,6 +1,52 @@
 local _ = dofile_once("data/scripts/lib/mod_settings.lua")
 local mod_id = "kaleva_koetus"
 
+local debug_combo_latched = false
+
+local function detect_debug_combo_press()
+  _ = dofile_once("data/scripts/debug/keycodes.lua")
+
+  -- selene: allow(undefined_variable)
+  local key_d = Key_d
+  -- selene: allow(undefined_variable)
+  local key_b = Key_b
+  -- selene: allow(undefined_variable)
+  local key_g = Key_g
+
+  if not (key_d and key_b and key_g) then
+    return false
+  end
+
+  local all_pressed = InputIsKeyDown(key_d) and InputIsKeyDown(key_b) and InputIsKeyDown(key_g)
+  if not all_pressed then
+    debug_combo_latched = false
+    return false
+  end
+
+  if debug_combo_latched then
+    return false
+  end
+
+  if InputIsKeyJustDown(key_d) or InputIsKeyJustDown(key_b) or InputIsKeyJustDown(key_g) then
+    debug_combo_latched = true
+    return true
+  end
+
+  return false
+end
+
+local build_mod_settings -- forward declaration
+local debug_settings_visible = false
+
+local function apply_debug_settings_toggle()
+  if detect_debug_combo_press() then
+    debug_settings_visible = not debug_settings_visible
+    if build_mod_settings then
+      build_mod_settings()
+    end
+  end
+end
+
 ----------------------------------------
 --- Ascension Settings
 ----------------------------------------
@@ -193,6 +239,7 @@ end
 function ModSettingsGui(gui, in_main_menu)
   update_ascension_setting_values()
   update_beyond_setting_values()
+  apply_debug_settings_toggle()
   mod_settings_gui(mod_id, mod_settings, gui, in_main_menu)
 end
 
@@ -203,7 +250,7 @@ local display_difficulty_settings = display_ascension_settings()
 local switch_difficulty
 local debug_settings_category
 
-local function build_mod_settings()
+build_mod_settings = function()
   mod_settings = {}
 
   if ModSettingGet("kaleva_koetus.has_cleared_max_level") then
@@ -214,7 +261,7 @@ local function build_mod_settings()
     table.insert(mod_settings, setting)
   end
 
-  if debug_settings_category then
+  if debug_settings_visible and debug_settings_category then
     table.insert(mod_settings, debug_settings_category)
   end
 end
