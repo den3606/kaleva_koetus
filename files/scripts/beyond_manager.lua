@@ -119,7 +119,7 @@ function BeyondManager:_add_beyond_info_park(player_entity_id)
 
     local description = ""
     for i = 1, self.current_level, 1 do
-      local line = GameTextGetTranslatedOrNot("$kaleva_koetus_specification_a" .. i) .. " [A" .. i .. "]" .. "\n"
+      local line = GameTextGetTranslatedOrNot("$kaleva_koetus_specification_a" .. i) .. " [B" .. i .. "]" .. "\n"
       description = description .. line
     end
 
