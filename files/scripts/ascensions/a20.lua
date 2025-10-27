@@ -21,10 +21,18 @@ function ascension:on_activate()
     "data/scripts/biomes/mountain/mountain_floating_island.lua",
     "mods/kaleva_koetus/files/scripts/appends/mountain_floating_island.lua"
   )
-  ModLuaFileAppend(
-    "data/entities/animals/boss_centipede/rewards/spawn_rewards.lua",
-    "mods/kaleva_koetus/files/scripts/appends/spawn_rewards.lua"
-  )
+
+  if ModIsEnabled("nightmare") then
+    ModLuaFileAppend(
+      "data/entities/animals/boss_centipede/rewards/spawn_rewards.lua",
+      "mods/kaleva_koetus/files/scripts/appends/spawn_rewards_nightmare_a20.lua"
+    )
+  else
+    ModLuaFileAppend(
+      "data/entities/animals/boss_centipede/rewards/spawn_rewards.lua",
+      "mods/kaleva_koetus/files/scripts/appends/spawn_rewards_a20.lua"
+    )
+  end
 end
 
 function ascension:on_boss_died()
