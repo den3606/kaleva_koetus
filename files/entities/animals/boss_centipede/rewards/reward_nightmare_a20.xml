@@ -1,0 +1,14 @@
+<Entity tags="teleportable_NOT">
+  <Base file="data/entities/animals/boss_centipede/rewards/gold_reward.xml">
+    <UIInfoComponent name="$kaleva_koetus_reward_ascension20_nightmare" />
+    <ItemComponent item_name="$kaleva_koetus_reward_ascension20_nightmare" />
+    <PhysicsImageShapeComponent
+      image_file="mods/kaleva_koetus/files/entities/animals/boss_centipede/rewards/reward_nightmare_a20.png" />
+  </Base>
+
+  <VariableStorageComponent
+    name="end_gold"
+    value_int="111109103">
+  </VariableStorageComponent>
+
+</Entity>
