@@ -21,6 +21,7 @@ function ascension:on_activate()
     "data/scripts/biomes/mountain/mountain_floating_island.lua",
     "mods/kaleva_koetus/files/scripts/appends/mountain_floating_island.lua"
   )
+  ModLuaFileAppend("data/scripts/biome_map.lua", "mods/kaleva_koetus/files/scripts/appends/biome_map.lua")
 
   if ModIsEnabled("nightmare") then
     ModLuaFileAppend(
