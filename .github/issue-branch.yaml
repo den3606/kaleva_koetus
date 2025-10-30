@@ -1,0 +1,15 @@
+mode: chatops
+autoCloseIssue: true
+autoLinkIssue: true
+# どのブランチから切るか（ラベルで切り替え）
+defaultBranch: 'main'
+branches:
+  - label: beyond
+    name: beyond
+    prefix: feature/
+  - label: enhancement
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+branchName: full
+gitSafeReplacementChar: '-'
