@@ -13,7 +13,7 @@ local _ = dofile_once("data/scripts/lib/coroutines.lua")
 local ascensionManager = dofile_once("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
 local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
-local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
+-- local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
 local mark_enemy_as_processed
@@ -41,7 +41,7 @@ end
 function OnWorldInitialized()
   eventBroker:init()
   EnemyDetector:init("from_init")
-  SpellDetector:init("from_init")
+  -- SpellDetector:init("from_init")
 
   mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
@@ -81,10 +81,10 @@ function OnWorldPreUpdate()
     eventBroker:direct_dispatch(EventTypes.ENEMY_POST_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
   end
 
-  local unprocessed_spells = SpellDetector:get_unprocessed_spells()
-  for _, spell_data in ipairs(unprocessed_spells) do
-    eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
-  end
+  -- local unprocessed_spells = SpellDetector:get_unprocessed_spells()
+  -- for _, spell_data in ipairs(unprocessed_spells) do
+  --   eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
+  -- end
 
   eventBroker:flush_event_queue()
 

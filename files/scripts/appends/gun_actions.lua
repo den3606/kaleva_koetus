@@ -1,28 +1,11 @@
 local RandomUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a15_random_utils.lua")
 
--- Localise
-local function kaleva_koetus_broken_spell_text()
-  local current_language = GameTextGet("$current_language")
-
-  local translations = {
-    ["English"] = "Incomplete ",
-    ["русский"] = "Неполное ",
-    ["Português (Brasil)"] = "Incompleto ",
-    ["Español"] = "Incompleto ",
-    ["Deutsch"] = "Unvollständig ",
-    ["Français"] = "Incomplet ",
-    ["Italiano"] = "Incompleto ",
-    ["Polska"] = "Niekompletne ",
-    ["简体中文"] = "未完成的",
-    ["日本語"] = "未完成の",
-    ["한국어"] = "불완전한",
-  }
-
-  return translations[current_language] or translations["English"]
-end
-
 local function a15_action(action)
-  action.name = kaleva_koetus_broken_spell_text() .. GameTextGetTranslatedOrNot(action.name)
+  if action.name ~= nil and string.sub(action.name, 1, 1) == "$" then
+    action.name = "$kaleva_koetus_a15_" .. string.sub(action.name, 2)
+  else
+    action.name = "$kaleva_koetus_a15_" .. action.id
+  end
 
   local rnd = math.random()
 
