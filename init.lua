@@ -104,6 +104,7 @@ ModLuaFileAppend(
   "data/entities/animals/boss_centipede/ending/sampo_start_ending_sequence.lua",
   "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
 )
+ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
 ModLuaFileAppend("data/scripts/items/potion.lua", "mods/kaleva_koetus/files/scripts/appends/potion.lua")

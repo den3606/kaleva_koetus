@@ -104,7 +104,6 @@ end
 
 function ascension:on_activate()
   -- log:info("Shop price increase active")
-  ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
 end
 
 function ascension:on_shop_card_spawn(payload)

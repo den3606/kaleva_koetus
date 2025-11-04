@@ -58,6 +58,8 @@ function ascension:on_activate()
     return false
   end
   wither_pool("data/biome_impl/temple/altar_left.png", clean_all)
+
+  ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena_a12.lua")
 end
 
 return ascension
