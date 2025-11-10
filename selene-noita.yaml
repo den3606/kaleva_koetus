@@ -2387,6 +2387,24 @@ globals:
       required: true
     - type: number
       required: true
+  ConvertMaterialOnAreaInstantly:
+    args:
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: number
+      required: true
+    - type: bool
+      required: true
+    - type: bool
+      required: true
   LoadRagdoll:
     args:
     - type: string
