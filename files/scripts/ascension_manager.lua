@@ -116,12 +116,11 @@ function AscensionManager:_can_unlock_next_level()
 end
 
 -- TODO:
-function AscensionManager:_add_ascension_info_park(player_entity_id)
+function AscensionManager:_add_ascension_info_perk(player_entity_id)
   local ascension_perk_added = GlobalsGetValue("kaleva_koetus_ascension_perk_added", "false") == "true"
   if not ascension_perk_added then
     -- 処理
-    local entity_ui = EntityCreateNew("")
-    EntityAddTag(entity_ui, "perk_entity")
+    local entity_ui = EntityCreateNew("kaleva_koetus_ascension_info")
 
     local description = ""
     for i = 1, self.current_level, 1 do
@@ -192,7 +191,7 @@ function AscensionManager:on_player_spawn(player_entity_id)
   end
 
   if ModSettingGet("kaleva_koetus.show_ascension_info") then
-    AscensionManager:_add_ascension_info_park(player_entity_id)
+    AscensionManager:_add_ascension_info_perk(player_entity_id)
   end
 
   for _, ascension in ipairs(self.active_ascensions) do
