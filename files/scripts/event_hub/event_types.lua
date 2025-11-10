@@ -52,9 +52,6 @@ local EventArgs = {
   },
   [EventTypes.GOLD_SPAWN] = {
     { name = "entity_id", type = "number" },
-    { name = "x", type = "number" },
-    { name = "y", type = "number" },
-    { name = "must_remove_timer", type = "boolean" },
   },
   [EventTypes.SPELL_GENERATED] = {
     { name = "entity_id", type = "number" },

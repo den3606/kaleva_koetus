@@ -109,7 +109,7 @@ ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files
 ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
 ModLuaFileAppend("data/scripts/items/potion.lua", "mods/kaleva_koetus/files/scripts/appends/potion.lua")
 ModLuaFileAppend("data/scripts/items/potion_starting.lua", "mods/kaleva_koetus/files/scripts/appends/potion_starting.lua")
-ModLuaFileAppend("data/scripts/game_helpers.lua", "mods/kaleva_koetus/files/scripts/appends/game_helpers.lua")
+ModLuaFileAppend("data/scripts/perks/gold_explosion.lua", "mods/kaleva_koetus/files/scripts/appends/gold_explosion.lua")
 
 for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
   content:create_child(
