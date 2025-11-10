@@ -1,5 +1,7 @@
 <Entity tags="glue_NOT" name="following_friend">
 
+  <!-- NOTE: VariableStorageComponent (owner_id, target_x, target_y) added in a17.lua, ascension:on_player_spawn() -->
+
   <LightComponent
     _enabled="1"
     radius="32"
@@ -73,10 +75,4 @@
     emission_interval_max_frames="20"
     is_emitting="1">
   </ParticleEmitterComponent>
-
-  <VariableStorageComponent
-    name="memory"
-    value_int="0"
-  >
-  </VariableStorageComponent>
 </Entity>

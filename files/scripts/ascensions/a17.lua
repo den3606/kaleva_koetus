@@ -38,10 +38,11 @@ function ascension:on_activate()
   end
 
   for content in nxml.edit_file("data/entities/animals/boss_centipede/sampo.xml") do
-    content:create_child(
-      "LuaComponent",
-      { script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_sampo_pickup_option.lua", execute_every_n_frame = "10" }
-    )
+    content:create_child("LuaComponent", {
+      script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_sampo_pickup_option.lua",
+      execute_on_added = "1",
+      execute_every_n_frame = "1",
+    })
   end
 end
 
@@ -49,24 +50,33 @@ function ascension:on_player_spawn(player_entity_id)
   local friend_not_spawned = GlobalsGetValue("kaleva_koetus.a17_friend_not_spawned", "true") == "true"
   if friend_not_spawned then
     local x, y = EntityGetTransform(player_entity_id)
-    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
-      script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_friend_radar.lua",
-      execute_every_n_frame = 1,
-    })
+
     local friend_entity_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/following_friend.xml", x, y)
     EntityAddTag(friend_entity_id, "kk_a17_friend")
     local _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
       name = "owner_id",
       value_int = player_entity_id,
     })
-    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
-      script_portal_teleport_used = "mods/kaleva_koetus/files/scripts/ascensions/a17_player_portal_teleported.lua",
-      execute_every_n_frame = -1,
+    _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
+      name = "target_x",
+      value_float = x,
     })
-    local _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
+    _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
+      name = "target_y",
+      value_float = y,
+    })
+    GlobalsSetValue("kaleva_koetus.a17_friend_last_x", tostring(x))
+    GlobalsSetValue("kaleva_koetus.a17_friend_last_y", tostring(y))
+
+    _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
+      script_source_file = "mods/kaleva_koetus/files/scripts/ascensions/a17_friend_radar.lua",
+      execute_every_n_frame = 1,
+    })
+    _ = EntityAddComponent2(player_entity_id, "LuaComponent", {
       script_teleported = "mods/kaleva_koetus/files/scripts/ascensions/a17_player_portal_teleported.lua",
       execute_every_n_frame = -1,
     })
+
     GlobalsSetValue("kaleva_koetus.a17_friend_not_spawned", "false")
   end
 end
