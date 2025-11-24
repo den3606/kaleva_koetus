@@ -1,5 +1,6 @@
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+local reduce_potion = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a7_reduce_potion_capacity.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 -- local log = Logger:new("a7.lua")
@@ -7,8 +8,6 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 local ascension = setmetatable({}, { __index = AscensionBase })
-
-local MATERIAL_SCALE = 0.5
 
 ascension.level = 7
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
@@ -23,21 +22,15 @@ function ascension:on_potion_generated(payload)
   -- log:info("on_potion_generated")
   local potion_entity_id = tonumber(payload[1])
   -- log:debug("potion_entity: " .. potion_entity_id)
-  local component_id = EntityGetFirstComponentIncludingDisabled(potion_entity_id, "MaterialSuckerComponent")
+  if potion_entity_id == nil or potion_entity_id == 0 then
+    return
+  end
 
-  local original_barrel_size = ComponentGetValue2(component_id, "barrel_size")
-  local resized_barrel_size = original_barrel_size * MATERIAL_SCALE
-  -- log:debug("resized_barrel_size: " .. resized_barrel_size)
+  if EntityGetIsAlive(potion_entity_id) == false then
+    return
+  end
 
-  ComponentSetValue2(component_id, "barrel_size", resized_barrel_size)
-
-  local material_id = GetMaterialInventoryMainMaterial(potion_entity_id)
-  RemoveMaterialInventoryMaterial(potion_entity_id)
-  AddMaterialInventoryMaterial(potion_entity_id, CellFactory_GetName(material_id), resized_barrel_size)
-
-  -- log:debug("Scaled potion %d contents to %.0f%%", potion_entity_id, resized_barrel_size)
-
-  EntityAddTag(potion_entity_id, ascension.tag_name)
+  reduce_potion(potion_entity_id)
 end
 
 return ascension
