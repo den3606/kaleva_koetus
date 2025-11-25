@@ -26,36 +26,36 @@ if comps ~= nil then
     elseif name == "target_y" then
       target_y_comp = v
     end
+  end
 
-    if owner_id_comp ~= nil then
-      local temp_owner_id = ComponentGetValue2(owner_id_comp, "value_int")
-      if EntityGetIsAlive(temp_owner_id) == true then
-        owner_id = temp_owner_id
-        px, py = EntityGetTransform(owner_id)
+  if owner_id_comp ~= nil then
+    local temp_owner_id = ComponentGetValue2(owner_id_comp, "value_int")
+    if temp_owner_id ~= 0 and EntityGetIsAlive(temp_owner_id) == true then
+      owner_id = temp_owner_id
+      px, py = EntityGetTransform(owner_id)
+    end
+  end
+
+  if owner_id == nil then
+    local temp_owner_id = GetPlayerEntity()
+    if temp_owner_id ~= nil and EntityGetIsAlive(temp_owner_id) == true then
+      owner_id = temp_owner_id
+      px, py = EntityGetTransform(owner_id)
+      if owner_id_comp ~= nil then
+        ComponentSetValue2(owner_id_comp, "value_int", owner_id)
       end
     end
+  end
 
-    if owner_id == nil then
-      local temp_owner_id = GetPlayerEntity()
-      if temp_owner_id ~= nil and EntityGetIsAlive(temp_owner_id) == true then
-        owner_id = temp_owner_id
-        px, py = EntityGetTransform(owner_id)
-        if owner_id_comp ~= nil then
-          ComponentSetValue2(owner_id_comp, "value_int", owner_id)
-        end
-      end
+  if owner_id == nil then
+    px = target_x_comp ~= nil and ComponentGetValue2(target_x_comp, "value_float") or x
+    py = target_y_comp ~= nil and ComponentGetValue2(target_y_comp, "value_float") or y
+  else
+    if target_x_comp ~= nil then
+      ComponentSetValue2(target_x_comp, "value_float", px)
     end
-
-    if owner_id == nil then
-      px = target_x_comp ~= nil and ComponentGetValue2(target_x_comp, "value_float") or x
-      py = target_y_comp ~= nil and ComponentGetValue2(target_y_comp, "value_float") or y
-    else
-      if target_x_comp ~= nil then
-        ComponentSetValue2(target_x_comp, "value_float", px)
-      end
-      if target_y_comp ~= nil then
-        ComponentSetValue2(target_y_comp, "value_float", py)
-      end
+    if target_y_comp ~= nil then
+      ComponentSetValue2(target_y_comp, "value_float", py)
     end
   end
 end
