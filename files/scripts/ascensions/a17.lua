@@ -53,10 +53,15 @@ function ascension:on_player_spawn(player_entity_id)
 
     local friend_entity_id = EntityLoad("mods/kaleva_koetus/files/entities/misc/following_friend.xml", x, y)
     EntityAddTag(friend_entity_id, "kk_a17_friend")
-    local _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
-      name = "owner_id",
-      value_int = player_entity_id,
-    })
+    local variable_storage_components = EntityGetComponent(friend_entity_id, "VariableStorageComponent")
+    if variable_storage_components ~= nil then
+      for _, variable_storage_cid in ipairs(variable_storage_components) do
+        if ComponentGetValue2(variable_storage_cid, "name") == "owner_id" then
+          ComponentSetValue2(variable_storage_cid, "value_int", player_entity_id)
+          break
+        end
+      end
+    end
     _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
       name = "target_x",
       value_float = x,
