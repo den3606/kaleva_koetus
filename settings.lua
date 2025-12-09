@@ -3,11 +3,17 @@ local _ = dofile_once("data/scripts/lib/mod_settings.lua")
 local mod_id = "kaleva_koetus"
 local ascension_setting
 
+---@return number
+local function get_max_ascension_level()
+  local setting_max_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest"))
+  return setting_max_level and setting_max_level > 0 and setting_max_level or 1 -- At least level 1
+end
+
 local function get_ascension_values()
   local values = {}
-  local max_level = ModSettingGet("kaleva_koetus.ascension_highest") or 1
+  local max_level = get_max_ascension_level()
   -- Add unlocked ascension levels
-  for i = 1, math.max(max_level, 1) do -- Show at least level 1 for testing
+  for i = 1, max_level do
     table.insert(values, {
       tostring(i),
       "Ascension " .. i,
@@ -93,7 +99,7 @@ mod_settings = {
         id = "ascension_current",
         ui_name = "Ascension Level",
         ui_description = "Select the ascension level for this run",
-        value_default = "1",
+        value_default = tostring(get_max_ascension_level()),
         values = get_ascension_values(),
         scope = MOD_SETTING_SCOPE_NEW_GAME,
       },
