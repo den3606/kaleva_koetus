@@ -4,3 +4,6 @@
 [submodule "files/scripts/lib/luanxml"]
 	path = files/scripts/lib/luanxml
 	url = git@github.com:NathanSnail/luanxml.git
+[submodule "files/scripts/lib/noita_common_csv"]
+	path = files/scripts/lib/noita_common_csv
+	url = https://github.com/SlpAus/noita_common_csv
