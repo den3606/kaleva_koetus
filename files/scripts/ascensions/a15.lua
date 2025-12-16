@@ -1,5 +1,5 @@
 ---@type common_csv
-local common_csv = dofile_once("mods/kaleva_koetus/files/scripts/lib/common_csv.lua")
+local common_csv = dofile_once("mods/kaleva_koetus/files/scripts/lib/noita_common_csv/common_csv.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
@@ -44,16 +44,10 @@ function ascension:on_mod_post_init()
   local common_text = ModTextFileGetContent("data/translations/common.csv")
   local parsed_common = common_csv.parse(common_text)
 
-  local language_line = parsed_common:line(1)
   local prefixes = {}
-  local min_columns = 1
-  for index = 2, #language_line do
-    local language = language_line[index]
-    if language == "" then
-      break
-    end
-    prefixes[index - 1] = translated_prefixes[language] or translated_prefixes["en"]
-    min_columns = index
+  local language_list, min_columns = parsed_common:parse_header()
+  for index, language in ipairs(language_list) do
+    prefixes[index] = translated_prefixes[language] or translated_prefixes["en"]
   end
 
   local common_add = {}
