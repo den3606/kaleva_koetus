@@ -1,6 +1,6 @@
 local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
 
-local UNCOMPLETED_MULTIPLIER = 0.3
+local UNCOMPLETED_MULTIPLIER = 0.5
 
 local function debuff_template_fire_rate_wait()
   local debuff_fire_rate_wait = math.random(5, 15)
@@ -61,7 +61,7 @@ local function a15_action(action)
   end
 
   if action.max_uses == nil then
-    action.max_uses = action.price * 10
+    action.max_uses = action.price * 2
   end
 
   if action.mana and math.random() < 0.5 then
