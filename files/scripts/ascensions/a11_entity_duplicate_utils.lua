@@ -1,7 +1,7 @@
 local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua")
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local NxmlHelper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
+local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
 
 local DuplicateUtils = {}
 
@@ -27,7 +27,7 @@ function DuplicateUtils.has_boss_tag(tags)
   return false
 end
 
-local error_tracker = NxmlHelper.create_error_tracker()
+local error_tracker = nxml_helper.create_tracker_ignoring({ "duplicate_attribute" })
 
 local XML_ENTITY_WRAPPER_WITH_NAME = [[<Entity tags="%s" name="%s">
 %s
@@ -45,7 +45,7 @@ local XML_BASE_WRAPPER_WITH_CBC = [[  <Base file="%s" include_children="1">
 local XML_BASE_WRAPPER = [[  <Base file="%s" include_children="1" />]]
 local function get_duplicated_file_content(filename, should_duplicate)
   error_tracker.reset()
-  local elem = NxmlHelper.using_error_handler(nxml, error_tracker.error_handler, function()
+  local elem = nxml_helper.use_error_handler(nxml, error_tracker.error_handler, function()
     local parsed_elem = nxml.parse_file(filename)
     parsed_elem:expand_base()
     return parsed_elem
