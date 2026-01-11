@@ -64,11 +64,9 @@ local function a15_action(action)
     action.max_uses = action.price * 2
   end
 
-  if action.mana and math.random() < 0.5 then
-    if action.mana > 0 then
+  if action.mana and action.mana > 0 then
+    if math.random() < 0.5 then
       action.mana = math.floor(action.mana * RNG.random_float(1.2, 1.7))
-    elseif action.mana < 0 then
-      action.mana = math.ceil(action.mana * RNG.random_float(0.3, 0.8))
     end
   end
 
