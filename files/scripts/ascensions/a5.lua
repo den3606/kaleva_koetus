@@ -30,7 +30,7 @@ function ascension:on_activate()
   log:info("Spell inventory slot reduction active (-%d)", SLOT_REDUCTION)
 end
 
-function ascension:on_player_spawn(player_entity_id)
+function ascension:on_player_spawned(player_entity_id)
   if EntityHasTag(player_entity_id, ascension.tag_name) then
     return
   end

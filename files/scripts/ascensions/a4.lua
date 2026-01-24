@@ -18,7 +18,7 @@ function ascension:on_activate()
   -- log:info("Divine retribution enabled")
 end
 
-function ascension:on_player_spawn()
+function ascension:on_player_spawned()
   if GlobalsGetValue(ascension.tag_name, "0") == "1" then
     return
   end

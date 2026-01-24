@@ -46,7 +46,7 @@ function ascension:on_activate()
   end
 end
 
-function ascension:on_player_spawn(player_entity_id)
+function ascension:on_player_spawned(player_entity_id)
   local friend_not_spawned = GlobalsGetValue("kaleva_koetus.a17_friend_not_spawned", "true") == "true"
   if friend_not_spawned then
     local x, y = EntityGetTransform(player_entity_id)

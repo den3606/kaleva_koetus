@@ -25,7 +25,7 @@ function ascension:on_activate()
   -- log:info("Reduced starting HP active (set to %d)", TARGET_HP)
 end
 
-function ascension:on_player_spawn(player_entity_id)
+function ascension:on_player_spawned(player_entity_id)
   if EntityHasTag(player_entity_id, ascension.tag_name) then
     return
   end

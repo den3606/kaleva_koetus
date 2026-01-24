@@ -46,7 +46,7 @@ function ascension:on_activate()
   -- log:info("Levitation reduced to %.0f%%", LEVITATION_SCALE * 100)
 end
 
-function ascension:on_player_spawn(player_entity_id)
+function ascension:on_player_spawned(player_entity_id)
   scale_levitation(player_entity_id)
 end
 
