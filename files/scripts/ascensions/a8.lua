@@ -12,11 +12,9 @@ function ascension:on_mod_init()
   -- log:info("Preventing tablet spawns")
 end
 
-function ascension:on_book_generated(payload)
+function ascension:on_book_generated(entity_id)
   -- log:info("on_book_generated")
-  local book_entity_id = tonumber(payload[1])
-  -- log:debug("book_entity_id: " .. book_entity_id)
-  EntityKill(book_entity_id)
+  EntityKill(entity_id)
 end
 
 return ascension

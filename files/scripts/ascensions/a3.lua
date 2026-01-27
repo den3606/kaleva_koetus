@@ -14,12 +14,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 local a3_player_tag = AscensionTags.A3 .. EventTypes.PLAYER_SPAWN
 
-local TARGET_HP = 70
-local HP_TO_ENTITY_UNITS = 0.04
-
-local function to_entity_health(hit_points)
-  return hit_points * HP_TO_ENTITY_UNITS
-end
+local HP_SCALE = 0.7
 
 function ascension:on_mod_init()
   -- log:info("Reduced starting HP active (set to %d)", TARGET_HP)
@@ -35,11 +30,8 @@ function ascension:on_player_spawned(player_entity_id)
     error("[Kaleva Koetus A3] Player DamageModelComponent not found")
   end
 
-  -- selene: allow(unused_variable)
-  local current_hp = ComponentGetValue2(damage_model, "hp")
-  -- selene: allow(unused_variable)
   local current_max_hp = ComponentGetValue2(damage_model, "max_hp")
-  local target_health = to_entity_health(TARGET_HP)
+  local target_health = current_max_hp * HP_SCALE
 
   ComponentSetValue2(damage_model, "max_hp", target_health)
   ComponentSetValue2(damage_model, "hp", target_health)

@@ -106,19 +106,11 @@ function ascension:on_mod_init()
   -- log:info("Shop price increase active")
 end
 
-function ascension:on_shop_card_spawn(payload)
-  local entity_ids = payload[1]
-  local x = payload[2]
-  local y = payload[3]
-
+function ascension:on_shop_card_spawn(entity_ids, x, y)
   increase_prices(entity_ids, x, y, 4, SPELL_PRICE_MULTIPLIER)
 end
 
-function ascension:on_shop_wand_spawn(payload)
-  local entity_ids = payload[1]
-  local x = payload[2]
-  local y = payload[3]
-
+function ascension:on_shop_wand_spawn(entity_ids, x, y)
   increase_prices(entity_ids, x, y, 2, WAND_PRICE_MULTIPLIER)
 end
 

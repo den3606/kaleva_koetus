@@ -13,19 +13,16 @@ function ascension:on_mod_init()
   -- log:info("Potion volume reduced to %.0f%%", MATERIAL_SCALE * 100)
 end
 
-function ascension:on_potion_generated(payload)
-  -- log:info("on_potion_generated")
-  local potion_entity_id = tonumber(payload[1])
-  -- log:debug("potion_entity: " .. potion_entity_id)
-  if potion_entity_id == nil or potion_entity_id == 0 then
+function ascension:on_potion_generated(entity_id)
+  if entity_id == 0 then
     return
   end
 
-  if EntityGetIsAlive(potion_entity_id) == false then
+  if EntityGetIsAlive(entity_id) == false then
     return
   end
 
-  reduce_potion(potion_entity_id)
+  reduce_potion(entity_id)
 end
 
 return ascension

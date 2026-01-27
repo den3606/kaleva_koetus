@@ -25,20 +25,15 @@ function ascension:on_mod_init()
   )
 end
 
-function ascension:on_enemy_post_spawn(payload)
-  local enemy_entity = tonumber(payload[1])
-  if not enemy_entity then
-    return
-  end
-
-  if EntityHasTag(enemy_entity, a1_enemy_tag) then
+function ascension:on_enemy_post_spawn(entity_id, _, _)
+  if EntityHasTag(entity_id, a1_enemy_tag) then
     -- log:debug("Entity %d already processed, skipping", enemy_entity)
     return
   end
 
-  local damage_model = EntityGetFirstComponent(enemy_entity, "DamageModelComponent")
+  local damage_model = EntityGetFirstComponent(entity_id, "DamageModelComponent")
   if not damage_model then
-    log:warn("No DamageModelComponent found for entity %d", enemy_entity)
+    log:warn("No DamageModelComponent found for entity %d", entity_id)
     return
   end
 
@@ -51,7 +46,7 @@ function ascension:on_enemy_post_spawn(payload)
   ComponentSetValue2(damage_model, "hp", new_hp)
   ComponentSetValue2(damage_model, "max_hp", new_max_hp)
 
-  EntityAddTag(enemy_entity, a1_enemy_tag)
+  EntityAddTag(entity_id, a1_enemy_tag)
 
   -- log:verbose("Entity %d HP %.1f -> %.1f, MaxHP %.1f -> %.1f", enemy_entity, current_hp, new_hp, max_hp, new_max_hp)
 end

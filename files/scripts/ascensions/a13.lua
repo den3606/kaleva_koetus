@@ -160,22 +160,17 @@ function ascension:on_mod_init()
   -- log:info("Elite enemy spawns")
 end
 
-function ascension:on_enemy_post_spawn(payload)
+function ascension:on_enemy_post_spawn(entity_id, x, y)
   -- log:verbose("on_enemy_post_spawn")
-
-  local enemy_entity_id = tonumber(payload[1])
-  local x = tonumber(payload[2]) or 0
-  local y = tonumber(payload[3]) or 0
-
-  if not enemy_entity_id or enemy_entity_id == 0 then
+  if entity_id == 0 then
     return
   end
 
-  if EntityHasTag(enemy_entity_id, a13_enemy_tag) then
+  if EntityHasTag(entity_id, a13_enemy_tag) then
     return
   end
 
-  if enemy_not_boss(enemy_entity_id) == false then
+  if enemy_not_boss(entity_id) == false then
     return
   end
 
@@ -184,7 +179,7 @@ function ascension:on_enemy_post_spawn(payload)
   SetRandomSeed(seed_x, seed_y)
   local randf = Randomf()
   if randf <= UPGRADE_CHANCE then
-    upgrade_enemy(enemy_entity_id, x, y)
+    upgrade_enemy(entity_id, x, y)
   end
 end
 

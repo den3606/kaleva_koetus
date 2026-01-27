@@ -1,4 +1,4 @@
-local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
@@ -10,7 +10,7 @@ ascension.level = 4
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
-local log = Logger:new("a4.lua")
+-- local log = Logger:new("a4.lua")
 
 local a4_necromancer_key = AscensionTags.A4 .. EventTypes.NECROMANCER_SPAWN
 
@@ -18,7 +18,7 @@ function ascension:on_mod_init()
   -- log:info("Divine retribution enabled")
 end
 
-function ascension:on_player_spawned()
+function ascension:on_world_initialized()
   if GlobalsGetValue(a4_necromancer_key, "0") == "1" then
     return
   end
@@ -28,17 +28,8 @@ function ascension:on_player_spawned()
   GlobalsSetValue(a4_necromancer_key, "1")
 end
 
-function ascension:on_necromancer_spawn(payload)
-  local x = tonumber(payload[1])
-  local y = tonumber(payload[2])
-
-  if not x or not y then
-    log:warn("Invalid necromancer spawn payload")
-    return
-  end
-
+function ascension:on_necromancer_spawn(x, y)
   -- log:debug("Summoning guardians at %d,%d", x, y)
-
   local _ = EntityLoad("data/entities/animals/thunderskull.xml", x - 20, y)
   _ = EntityLoad("data/entities/animals/iceskull.xml", x + 20, y)
 end

@@ -19,9 +19,7 @@ function EventDispatcher:dispatch(event_type, ...)
   local listeners = self._listeners[event_type]
   if listeners then
     for _, handler in ipairs(listeners) do
-      -- for temporarily compatibility
-      handler({...})
-      -- handler(...)
+      handler(...)
     end
   end
 end

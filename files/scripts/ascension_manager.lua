@@ -150,10 +150,10 @@ function AscensionManager:on_mod_init()
   end
 end
 
-function AscensionManager:on_mod_post_init(...)
+function AscensionManager:on_mod_post_init()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_mod_post_init then
-      ascension:on_mod_post_init(...)
+      ascension:on_mod_post_init()
     end
   end
 end
@@ -177,8 +177,8 @@ function AscensionManager:on_world_initialized()
   EventBroker:subscribe("BOOK_GENERATED", function(...)
     return self:on_book_generated(...)
   end)
-  EventBroker:subscribe("BOSS_DIED", function(...)
-    return self:on_boss_died(...)
+  EventBroker:subscribe("BOSS_DIED", function()
+    return self:on_boss_died()
   end)
   EventBroker:subscribe("ENEMY_POST_SPAWN", function(...)
     return self:on_enemy_post_spawn(...)
@@ -192,8 +192,8 @@ function AscensionManager:on_world_initialized()
   EventBroker:subscribe("NECROMANCER_SPAWN", function(...)
     return self:on_necromancer_spawn(...)
   end)
-  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function(...)
-    return self:on_new_game_plus_started(...)
+  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function()
+    return self:on_new_game_plus_started()
   end)
   EventBroker:subscribe("POTION_GENERATED", function(...)
     return self:on_potion_generated(...)
@@ -204,8 +204,8 @@ function AscensionManager:on_world_initialized()
   EventBroker:subscribe("SHOP_WAND_SPAWN", function(...)
     return self:on_shop_wand_spawn(...)
   end)
-  EventBroker:subscribe("VICTORY", function(...)
-    return self:on_victory(...)
+  EventBroker:subscribe("VICTORY", function()
+    return self:on_victory()
   end)
 
   -- Reset victory flag for new run
@@ -302,10 +302,10 @@ function AscensionManager:on_book_generated(...)
   end
 end
 
-function AscensionManager:on_boss_died(...)
+function AscensionManager:on_boss_died()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_boss_died then
-      ascension:on_boss_died(...)
+      ascension:on_boss_died()
     end
   end
 end
@@ -342,10 +342,10 @@ function AscensionManager:on_necromancer_spawn(...)
   end
 end
 
-function AscensionManager:on_new_game_plus_started(...)
+function AscensionManager:on_new_game_plus_started()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_new_game_plus_started then
-      ascension:on_new_game_plus_started(...)
+      ascension:on_new_game_plus_started()
     end
   end
 end
@@ -374,7 +374,7 @@ function AscensionManager:on_shop_wand_spawn(...)
   end
 end
 
-function AscensionManager:on_victory(...)
+function AscensionManager:on_victory()
   -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
   local current_ascension = self.active_ascensions[#self.active_ascensions]
   if current_ascension and current_ascension.should_unlock_next and current_ascension:should_unlock_next() then
@@ -395,7 +395,7 @@ function AscensionManager:on_victory(...)
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_victory then
-      ascension:on_victory(...)
+      ascension:on_victory()
     end
   end
 end
