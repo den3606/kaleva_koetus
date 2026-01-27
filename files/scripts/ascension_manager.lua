@@ -3,9 +3,9 @@ local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local AscensionTags = EventDefs.Tags
-local EventTypes = EventDefs.Types
 
-local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+---@type EventBroker
+local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 -- local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
@@ -105,8 +105,8 @@ function AscensionManager:activate_ascension()
     if ascension then
       table.insert(self.active_ascensions, ascension)
 
-      if ascension.on_activate then
-        ascension:on_activate()
+      if ascension.on_mod_init then
+        ascension:on_mod_init()
       end
 
       -- log:debug("Activated Ascension %d", self.current_level)
@@ -117,8 +117,8 @@ function AscensionManager:activate_ascension()
       if ascension then
         table.insert(self.active_ascensions, ascension)
 
-        if ascension.on_activate then
-          ascension:on_activate()
+        if ascension.on_mod_init then
+          ascension:on_mod_init()
         end
 
         -- log:debug("Activated Ascension %d", i)
@@ -162,26 +162,46 @@ function AscensionManager:on_magic_numbers_and_world_seed_initialized()
   RNG.init_root_seed()
 end
 
-function AscensionManager:get_ascension_info()
-  return {
-    current = self.current_level,
-    highest_level = self.highest_level,
-    max_level = self.get_max_level(),
-    active = #self.active_ascensions > 0,
-  }
-end
-
 function AscensionManager:on_world_initialized()
-  eventBroker:init()
-  EnemyDetector:init("from_init")
-  -- SpellDetector:init("from_init")
-
+  EnemyDetector:init("ascension")
   mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
-  -- 存在するイベントをすべて登録する
-  for _, event_type in pairs(EventTypes) do
-    eventBroker:subscribe_event(event_type, self)
-  end
+  EventBroker:subscribe("ENEMY_SPAWN", function(...)
+    return self:on_enemy_spawn(...)
+  end)
+  EventBroker:subscribe("ENEMY_POST_SPAWN", function(...)
+    return self:on_enemy_post_spawn(...)
+  end)
+  EventBroker:subscribe("SHOP_CARD_SPAWN", function(...)
+    return self:on_shop_card_spawn(...)
+  end)
+  EventBroker:subscribe("SHOP_WAND_SPAWN", function(...)
+    return self:on_shop_wand_spawn(...)
+  end)
+  EventBroker:subscribe("VICTORY", function(...)
+    return self:on_victory(...)
+  end)
+  EventBroker:subscribe("NECROMANCER_SPAWN", function(...)
+    return self:on_necromancer_spawn(...)
+  end)
+  EventBroker:subscribe("POTION_GENERATED", function(...)
+    return self:on_potion_generated(...)
+  end)
+  EventBroker:subscribe("BOOK_GENERATED", function(...)
+    return self:on_book_generated(...)
+  end)
+  EventBroker:subscribe("GOLD_SPAWN", function(...)
+    return self:on_gold_spawn(...)
+  end)
+  EventBroker:subscribe("SPELL_GENERATED", function(...)
+    return self:on_spell_generated(...)
+  end)
+  EventBroker:subscribe("BOSS_DIED", function(...)
+    return self:on_boss_died(...)
+  end)
+  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function(...)
+    return self:on_new_game_plus_started(...)
+  end)
 
   -- Reset victory flag for new run
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")
@@ -252,134 +272,123 @@ end
 function AscensionManager:on_world_pre_update()
   local unprocessed_enemies = EnemyDetector:check_unprocessed_enemies()
   for _, enemy_data in ipairs(unprocessed_enemies) do
-    eventBroker:direct_dispatch(EventTypes.ENEMY_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
+    EventBroker.direct.ENEMY_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
   end
 
   unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
   for _, enemy_data in ipairs(unprocessed_enemies) do
-    eventBroker:direct_dispatch(EventTypes.ENEMY_POST_SPAWN, enemy_data.id, enemy_data.x, enemy_data.y)
+    EventBroker.direct.ENEMY_POST_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y)
   end
 
-  -- local unprocessed_spells = SpellDetector:get_unprocessed_spells()
-  -- for _, spell_data in ipairs(unprocessed_spells) do
-  --   eventBroker:publish_event_sync("init", EventTypes.SPELL_GENERATED, spell_data.id)
-  -- end
-
-  eventBroker:flush_event_queue()
+  EventBroker:flush_event_queue()
 
   for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_update then
-      ascension:on_update()
+    if ascension.on_world_pre_update then
+      ascension:on_world_pre_update()
     end
   end
 end
 
-function AscensionManager:on_enemy_spawn(payload)
+function AscensionManager:on_enemy_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_spawn then
-      ascension:on_enemy_spawn(payload)
+      ascension:on_enemy_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_enemy_post_spawn(payload)
+function AscensionManager:on_enemy_post_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_post_spawn then
-      ascension:on_enemy_post_spawn(payload)
+      ascension:on_enemy_post_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_shop_card_spawn(event_args)
+function AscensionManager:on_shop_card_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_card_spawn then
-      ascension:on_shop_card_spawn(event_args)
+      ascension:on_shop_card_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_shop_wand_spawn(event_args)
+function AscensionManager:on_shop_wand_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_wand_spawn then
-      ascension:on_shop_wand_spawn(event_args)
+      ascension:on_shop_wand_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_necromancer_spawn(event_args)
+function AscensionManager:on_necromancer_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_necromancer_spawn then
-      ascension:on_necromancer_spawn(event_args)
+      ascension:on_necromancer_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_potion_generated(event_args)
+function AscensionManager:on_potion_generated(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_potion_generated then
-      ascension:on_potion_generated(event_args)
+      ascension:on_potion_generated(...)
     end
   end
 end
 
-function AscensionManager:on_book_generated(event_args)
+function AscensionManager:on_book_generated(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_book_generated then
-      ascension:on_book_generated(event_args)
+      ascension:on_book_generated(...)
     end
   end
 end
 
-function AscensionManager:on_gold_spawn(event_args)
+function AscensionManager:on_gold_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_gold_spawn then
-      ascension:on_gold_spawn(event_args)
+      ascension:on_gold_spawn(...)
     end
   end
 end
 
-function AscensionManager:on_spell_generated(payload)
+function AscensionManager:on_spell_generated(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_spell_generated then
-      ascension:on_spell_generated(payload)
+      ascension:on_spell_generated(...)
     end
   end
 end
 
-function AscensionManager:on_mod_post_init(payload)
+function AscensionManager:on_mod_post_init(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_mod_post_init then
-      ascension:on_mod_post_init(payload)
+      ascension:on_mod_post_init(...)
     end
   end
 end
 
-function AscensionManager:on_boss_died()
+function AscensionManager:on_boss_died(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_boss_died then
-      ascension:on_boss_died()
+      ascension:on_boss_died(...)
     end
   end
 end
 
-function AscensionManager:on_new_game_plus_started()
+function AscensionManager:on_new_game_plus_started(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_new_game_plus_started then
-      ascension:on_new_game_plus_started()
+      ascension:on_new_game_plus_started(...)
     end
   end
 end
 
-function AscensionManager:on_victory()
+function AscensionManager:on_victory(...)
   -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
-
   local current_ascension = self.active_ascensions[#self.active_ascensions]
-  if not current_ascension or not current_ascension.should_unlock_next then
-    self:save_progress()
-    return
-  end
-
-  if current_ascension:should_unlock_next() then
+  if current_ascension and current_ascension.should_unlock_next and current_ascension:should_unlock_next() then
     if self.current_level == 0 then
       log:warn("Victory with no ascension active (current level 0)")
       GamePrintImportant("Victory! (No ascension active)")
@@ -393,8 +402,13 @@ function AscensionManager:on_victory()
       GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
     end
   end
-
   self:save_progress()
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_victory then
+      ascension:on_victory(...)
+    end
+  end
 end
 
 return AscensionManager

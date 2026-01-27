@@ -1,15 +1,13 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local DuplicateUtils = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a11_entity_duplicate_utils.lua")
 
-local ascension = setmetatable({}, { __index = AscensionBase })
-
--- local log = Logger:new("a11.lua")
-
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
 ascension.level = 11
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = DuplicateUtils.tag_name
+
+-- local log = Logger:new("a11.lua")
 
 local function enemy_not_boss(entity_id)
   local tags = EntityGetTags(entity_id)
@@ -45,7 +43,7 @@ local function add_no_gold(entity_id)
   local _ = EntityAddComponent2(entity_id, "VariableStorageComponent", { _tags = "no_gold_drop" })
 end
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   -- log:info("Increasing enemy spawns")
   DuplicateUtils.build_duplicated_files_from_storage()
   ModLuaFileAppend("data/scripts/director_helpers.lua", "mods/kaleva_koetus/files/scripts/appends/director_helpers.lua")
@@ -61,7 +59,7 @@ function ascension:on_enemy_spawn(payload)
     return
   end
 
-  if EntityHasTag(enemy_entity_id, ascension.tag_name) then
+  if EntityHasTag(enemy_entity_id, DuplicateUtils.tag_name) then
     return
   end
 
@@ -85,13 +83,13 @@ function ascension:on_enemy_spawn(payload)
     if children ~= nil then
       for _, child_entity_id in ipairs(children) do
         if EntityGetName(child_entity_id) == "inventory_quick" then
-          EntityAddTag(enemy_entity_id, ascension.tag_name)
+          EntityAddTag(enemy_entity_id, DuplicateUtils.tag_name)
           local how_many = DuplicateUtils.get_extra_count(x, y)
           for _ = 1, how_many, 1 do
             local offset_x = Random(-16, 16)
             local offset_y = Random(-16, 0)
             local _, apparition_entity_id = SpawnApparition(x + offset_x, y + offset_y, 0, true)
-            EntityAddTag(apparition_entity_id, ascension.tag_name)
+            EntityAddTag(apparition_entity_id, DuplicateUtils.tag_name)
             if should_no_gold == true then
               add_no_gold(apparition_entity_id)
             end

@@ -1,19 +1,15 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 
-local AscensionTags = EventDefs.Tags
-
-local ascension = setmetatable({}, { __index = AscensionBase })
-
--- local log = Logger:new("a20.lua")
-
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
 ascension.level = 20
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A20
 
-function ascension:on_activate()
+-- local log = Logger:new("a20.lua")
+
+function ascension:on_mod_init()
   -- log:debug("new game plus")
   ModSettingSet("kaleva_koetus.a20_dead_boss", false)
   ModLuaFileAppend("data/entities/animals/boss_centipede/death_check.lua", "mods/kaleva_koetus/files/scripts/appends/death_check.lua")
@@ -43,8 +39,8 @@ function ascension:on_boss_died()
   end
 
   local _ = dofile_once("data/scripts/newgame_plus.lua")
-  local p_x = MagicNumbersGetValue("DESIGN_PLAYER_START_POS_X")
-  local p_y = MagicNumbersGetValue("DESIGN_PLAYER_START_POS_Y")
+  local p_x = tonumber(MagicNumbersGetValue("DESIGN_PLAYER_START_POS_X")) or 0
+  local p_y = tonumber(MagicNumbersGetValue("DESIGN_PLAYER_START_POS_Y")) or 0
 
   local player = EntityGetWithTag("player_unit")[1]
   if player ~= nil then
@@ -54,9 +50,7 @@ function ascension:on_boss_died()
   do_newgame_plus()
   ModSettingSet("kaleva_koetus.a20_dead_boss", true)
 
-  local EventTypes = EventDefs.Types
-  local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
-  EventBroker:publish_event_sync("a20", EventTypes.NEW_GAME_PLUS_STARTED)
+  EventBroker.queue.NEW_GAME_PLUS_STARTED()
 end
 
 function ascension:should_unlock_next()

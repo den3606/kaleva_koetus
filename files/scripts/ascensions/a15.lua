@@ -4,22 +4,17 @@ local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml
 local common_csv = dofile_once("mods/kaleva_koetus/files/scripts/lib/noita_common_csv/common_csv.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
-local AscensionTags = EventDefs.Tags
-local EventTypes = EventDefs.Types
 -- local log = Logger:new("a15.lua")
 
-local ascension = setmetatable({}, { __index = AscensionBase })
-
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
 ascension.level = 15
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A15 .. EventTypes.SPELL_GENERATED
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   -- log:info("Broken spells")
 end
 

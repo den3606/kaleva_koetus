@@ -33,6 +33,15 @@ function Difficulty.get_max_level()
   return MAX_LEVEL
 end
 
+function Difficulty:get_ascension_info()
+  return {
+    current = self.current_level,
+    highest_level = self.highest_level,
+    max_level = self.get_max_level(),
+    active = #self.active_ascensions > 0,
+  }
+end
+
 function Difficulty:load_progress()
   self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest")) or self.highest_level
   self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current")) or self.current_level

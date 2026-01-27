@@ -1,11 +1,14 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
-local ascension = setmetatable({}, { __index = AscensionBase })
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
+ascension.level = 2
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a2.lua")
 
@@ -15,10 +18,7 @@ local SPELL_PRICE_MULTIPLIER = 2.2
 local WAND_PRICE_MULTIPLIER = 1.5
 local MIN_PRICE_INCREASE = 50
 
-ascension.level = 2
-ascension.description = "$kaleva_koetus_description_a" .. ascension.level
-ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
+local a2_shop_item_tag = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
 
 local function pick_random(ids, pick_count, seed_a, seed_b)
   local picked_entity_ids = {}
@@ -98,11 +98,11 @@ local function increase_prices(entity_ids, x, y, target_count, multiplier)
   for _, target_entity_id in ipairs(target_entity_ids) do
     -- log:debug("target_entity_id: %d", target_entity_id)
     update_item_cost(target_entity_id, multiplier)
-    EntityAddTag(target_entity_id, ascension.tag_name)
+    EntityAddTag(target_entity_id, a2_shop_item_tag)
   end
 end
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   -- log:info("Shop price increase active")
 end
 
