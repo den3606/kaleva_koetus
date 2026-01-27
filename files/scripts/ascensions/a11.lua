@@ -96,6 +96,9 @@ function ascension:on_enemy_spawn(entity_id, x, y, mark_as_processed)
   end
 
   local duplicated_filename = DuplicateUtils.get_duplicated_filename(entity_filename)
+  if duplicated_filename == "" then
+    return
+  end
 
   mark_as_processed(entity_id)
   EntityKill(entity_id)
