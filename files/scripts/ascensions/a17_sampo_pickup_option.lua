@@ -1,8 +1,19 @@
 local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+
+local EventTypes = EventDefs.Types
+local AscensionTags = EventDefs.Tags
+
+local a20_boss_died_key = AscensionTags.A1 .. EventTypes.BOSS_DIED
+
 local sampo_entity_id = GetUpdatedEntityID()
 local item_component_id = EntityGetFirstComponentIncludingDisabled(sampo_entity_id, "ItemComponent")
-if ModSettingGet("kaleva_koetus.a20_dead_boss") or ((tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0) > 0) then
+if item_component_id == nil then
+  return
+end
+
+if GlobalsGetValue(a20_boss_died_key, "0") == "1" or ((tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0) > 0) then
   ComponentSetValue2(item_component_id, "is_pickable", true)
   local lua_component_id = GetUpdatedComponentID()
   EntityRemoveComponent(sampo_entity_id, lua_component_id)

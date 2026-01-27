@@ -2,6 +2,10 @@
 
 ---@type Events
 local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+
+local EventTypes = EventDefs.Types
+local AscensionTags = EventDefs.Tags
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -11,9 +15,10 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a20.lua")
 
+local a20_boss_died_key = AscensionTags.A1 .. EventTypes.BOSS_DIED
+
 function ascension:on_mod_init()
   -- log:debug("new game plus")
-  ModSettingSet("kaleva_koetus.a20_dead_boss", false)
   ModLuaFileAppend("data/entities/animals/boss_centipede/death_check.lua", "mods/kaleva_koetus/files/scripts/appends/death_check.lua")
   ModLuaFileAppend(
     "data/scripts/biomes/mountain/mountain_floating_island.lua",
@@ -36,7 +41,7 @@ end
 
 function ascension:on_boss_died()
   -- log:debug("a20 on_boss_died")
-  if ModSettingGet("kaleva_koetus.a20_dead_boss") then
+  if GlobalsGetValue(a20_boss_died_key, "0") == "1" then
     return
   end
 
@@ -50,7 +55,7 @@ function ascension:on_boss_died()
   end
   -- selene: allow(undefined_variable)
   do_newgame_plus()
-  ModSettingSet("kaleva_koetus.a20_dead_boss", true)
+  GlobalsSetValue(a20_boss_died_key, "1")
 
   Events.queue.NEW_GAME_PLUS_STARTED()
 end
