@@ -1,5 +1,4 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local A13EliteSkills = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a13_elite_skills.lua")
 
@@ -7,14 +6,15 @@ local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 -- local log = Logger:new("a13.lua")
 
-local ascension = setmetatable({}, { __index = AscensionBase })
-
-local UPGRADE_CHANCE = 0.20
-
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
 ascension.level = 13
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A13 .. EventTypes.ENEMY_POST_SPAWN
+
+local UPGRADE_CHANCE = 0.20
+
+local a13_enemy_tag = AscensionTags.A13 .. EventTypes.ENEMY_POST_SPAWN
 
 local function enemy_not_boss(entity_id)
   local tags = EntityGetTags(entity_id)
@@ -60,8 +60,8 @@ local function can_shot(enemy_entity_id)
     return
   end
 
-  local range_attack = ComponentGetValue2(component_id, "attack_ranged_entity_file")
-  return range_attack ~= "" and range_attack ~= nil
+  local attack_ranged_enabled = ComponentGetValue2(component_id, "attack_ranged_enabled")
+  return attack_ranged_enabled
 end
 
 local function add_elite_effect(enemy_entity_id)
@@ -152,11 +152,11 @@ local function upgrade_enemy(enemy_entity_id, x, y)
     end
   end
 
-  EntityAddTag(enemy_entity_id, ascension.tag_name)
+  EntityAddTag(enemy_entity_id, a13_enemy_tag)
   -- log:verbose("Upgrade enemy %d", enemy_entity_id)
 end
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   -- log:info("Elite enemy spawns")
 end
 
@@ -171,7 +171,7 @@ function ascension:on_enemy_post_spawn(payload)
     return
   end
 
-  if EntityHasTag(enemy_entity_id, ascension.tag_name) then
+  if EntityHasTag(enemy_entity_id, a13_enemy_tag) then
     return
   end
 
