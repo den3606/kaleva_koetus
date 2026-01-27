@@ -1,5 +1,7 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+
+---@type Events
+local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -50,7 +52,7 @@ function ascension:on_boss_died()
   do_newgame_plus()
   ModSettingSet("kaleva_koetus.a20_dead_boss", true)
 
-  EventBroker.queue.NEW_GAME_PLUS_STARTED()
+  Events.queue.NEW_GAME_PLUS_STARTED()
 end
 
 function ascension:should_unlock_next()

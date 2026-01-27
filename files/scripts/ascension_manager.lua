@@ -4,8 +4,8 @@ local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local AscensionTags = EventDefs.Tags
 
----@type EventBroker
-local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+---@type Events
+local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
@@ -174,37 +174,37 @@ function AscensionManager:on_world_initialized()
   EnemyDetector:init("ascension")
   mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
-  function EventBroker.on.BOOK_GENERATED(...)
+  function Events.on.BOOK_GENERATED(...)
     return self:on_book_generated(...)
   end
-  function EventBroker.on.BOSS_DIED()
+  function Events.on.BOSS_DIED()
     return self:on_boss_died()
   end
-  function EventBroker.on.ENEMY_POST_SPAWN(...)
+  function Events.on.ENEMY_POST_SPAWN(...)
     return self:on_enemy_post_spawn(...)
   end
-  function EventBroker.on.ENEMY_SPAWN(...)
+  function Events.on.ENEMY_SPAWN(...)
     return self:on_enemy_spawn(...)
   end
-  function EventBroker.on.GOLD_SPAWN(...)
+  function Events.on.GOLD_SPAWN(...)
     return self:on_gold_spawn(...)
   end
-  function EventBroker.on.NECROMANCER_SPAWN(...)
+  function Events.on.NECROMANCER_SPAWN(...)
     return self:on_necromancer_spawn(...)
   end
-  function EventBroker.on.NEW_GAME_PLUS_STARTED()
+  function Events.on.NEW_GAME_PLUS_STARTED()
     return self:on_new_game_plus_started()
   end
-  function EventBroker.on.POTION_GENERATED(...)
+  function Events.on.POTION_GENERATED(...)
     return self:on_potion_generated(...)
   end
-  function EventBroker.on.SHOP_CARD_SPAWN(...)
+  function Events.on.SHOP_CARD_SPAWN(...)
     return self:on_shop_card_spawn(...)
   end
-  function EventBroker.on.SHOP_WAND_SPAWN(...)
+  function Events.on.SHOP_WAND_SPAWN(...)
     return self:on_shop_wand_spawn(...)
   end
-  function EventBroker.on.VICTORY()
+  function Events.on.VICTORY()
     return self:on_victory()
   end
 
@@ -277,15 +277,15 @@ end
 function AscensionManager:on_world_pre_update()
   local unprocessed_enemies = EnemyDetector:check_unprocessed_enemies()
   for _, enemy_data in ipairs(unprocessed_enemies) do
-    EventBroker.direct.ENEMY_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
+    Events.direct.ENEMY_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
   end
 
   unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
   for _, enemy_data in ipairs(unprocessed_enemies) do
-    EventBroker.direct.ENEMY_POST_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y)
+    Events.direct.ENEMY_POST_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y)
   end
 
-  EventBroker:flush_event_queue()
+  Events.flush_queue()
 
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_world_pre_update then

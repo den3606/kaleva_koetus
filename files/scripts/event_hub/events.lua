@@ -4,9 +4,8 @@ local EventDispatcher = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/
 ---@class EventSignaturesLocal : EventSignatures
 ---@field ENEMY_SPAWN fun(entity_id:number, x:number, y:number, mark_as_processed:function)
 
----@class EventBroker
-local EventBroker = {}
-EventBroker._listeners = {}
+---@class Events
+local Events = {}
 
 ---@param mode "direct"|"queue"
 ---@return EventSignaturesLocal
@@ -34,8 +33,8 @@ local function create_event_proxy(mode)
   })
 end
 
-EventBroker.queue = create_event_proxy("queue")
-EventBroker.direct = create_event_proxy("direct")
+Events.queue = create_event_proxy("queue")
+Events.direct = create_event_proxy("direct")
 
 ---@return EventSignaturesLocal
 local function create_subscribe_proxy()
@@ -46,12 +45,12 @@ local function create_subscribe_proxy()
   })
 end
 
-EventBroker.on = create_subscribe_proxy()
+Events.on = create_subscribe_proxy()
 
-function EventBroker:flush_event_queue()
+function Events.flush_queue()
   for event_type, get_params in EventMessage:fetch() do
     EventDispatcher:dispatch(event_type, get_params())
   end
 end
 
-return EventBroker
+return Events
