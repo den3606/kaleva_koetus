@@ -48,12 +48,6 @@ function AscensionManager:init()
     end
 
     for content in nxml.edit_file("data/entities/items/pickup/potion_aggressive.xml") do
-      content:create_child("LuaComponent", {
-        execute_every_n_frame = "-1",
-        remove_after_executed = "1",
-        script_item_picked_up = "mods/kaleva_koetus/files/scripts/appends/potion_aggressive_pick_up.lua",
-      })
-
       local base = content:first_of("Base")
       if base then
         base:create_child("LuaComponent", { _remove_from_base = "1" })
