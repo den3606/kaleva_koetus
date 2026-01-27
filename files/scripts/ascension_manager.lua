@@ -174,39 +174,39 @@ function AscensionManager:on_world_initialized()
   EnemyDetector:init("ascension")
   mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
-  EventBroker:subscribe("BOOK_GENERATED", function(...)
+  function EventBroker.on.BOOK_GENERATED(...)
     return self:on_book_generated(...)
-  end)
-  EventBroker:subscribe("BOSS_DIED", function()
+  end
+  function EventBroker.on.BOSS_DIED()
     return self:on_boss_died()
-  end)
-  EventBroker:subscribe("ENEMY_POST_SPAWN", function(...)
+  end
+  function EventBroker.on.ENEMY_POST_SPAWN(...)
     return self:on_enemy_post_spawn(...)
-  end)
-  EventBroker:subscribe("ENEMY_SPAWN", function(...)
+  end
+  function EventBroker.on.ENEMY_SPAWN(...)
     return self:on_enemy_spawn(...)
-  end)
-  EventBroker:subscribe("GOLD_SPAWN", function(...)
+  end
+  function EventBroker.on.GOLD_SPAWN(...)
     return self:on_gold_spawn(...)
-  end)
-  EventBroker:subscribe("NECROMANCER_SPAWN", function(...)
+  end
+  function EventBroker.on.NECROMANCER_SPAWN(...)
     return self:on_necromancer_spawn(...)
-  end)
-  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function()
+  end
+  function EventBroker.on.NEW_GAME_PLUS_STARTED()
     return self:on_new_game_plus_started()
-  end)
-  EventBroker:subscribe("POTION_GENERATED", function(...)
+  end
+  function EventBroker.on.POTION_GENERATED(...)
     return self:on_potion_generated(...)
-  end)
-  EventBroker:subscribe("SHOP_CARD_SPAWN", function(...)
+  end
+  function EventBroker.on.SHOP_CARD_SPAWN(...)
     return self:on_shop_card_spawn(...)
-  end)
-  EventBroker:subscribe("SHOP_WAND_SPAWN", function(...)
+  end
+  function EventBroker.on.SHOP_WAND_SPAWN(...)
     return self:on_shop_wand_spawn(...)
-  end)
-  EventBroker:subscribe("VICTORY", function()
+  end
+  function EventBroker.on.VICTORY()
     return self:on_victory()
-  end)
+  end
 
   -- Reset victory flag for new run
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")

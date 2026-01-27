@@ -37,9 +37,16 @@ end
 EventBroker.queue = create_event_proxy("queue")
 EventBroker.direct = create_event_proxy("direct")
 
-function EventBroker:subscribe(event_type, handler)
-  return EventDispatcher:add_listener(event_type, handler)
+---@return EventSignaturesLocal
+local function create_subscribe_proxy()
+  return setmetatable({}, {
+    __newindex = function(_, event_type, handler)
+      EventDispatcher:add_listener(event_type, handler)
+    end,
+  })
 end
+
+EventBroker.on = create_subscribe_proxy()
 
 function EventBroker:flush_event_queue()
   for event_type, get_params in EventMessage:fetch() do
