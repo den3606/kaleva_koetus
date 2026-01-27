@@ -12,17 +12,17 @@
 ---@field on_world_pre_update function?
 
 ---@class Ascension
+---@field on_book_generated function?
+---@field on_boss_died function?
+---@field on_enemy_post_spawn function?
+---@field on_enemy_spawn function?
+---@field on_gold_spawn function?
+---@field on_necromancer_spawn function?
+---@field on_new_game_plus_started function?
+---@field on_potion_generated function?
 ---@field on_shop_card_spawn function?
 ---@field on_shop_wand_spawn function?
----@field on_necromancer_spawn function?
----@field on_enemy_spawn function?
----@field on_enemy_post_spawn function?
----@field on_potion_generated function?
----@field on_book_generated function?
----@field on_gold_spawn function?
----@field on_spell_generated function?
----@field on_boss_died function?
----@field on_new_game_plus_started function?
+---@field on_victory function?
 local ascension = {}
 
 function ascension:should_unlock_next()

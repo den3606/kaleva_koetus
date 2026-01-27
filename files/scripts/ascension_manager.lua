@@ -7,7 +7,6 @@ local AscensionTags = EventDefs.Tags
 ---@type EventBroker
 local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
--- local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
 
@@ -17,6 +16,7 @@ local log = Logger:new("ascension_manager.lua")
 local mark_enemy_as_processed
 
 ---@class AscensionManager : Difficulty
+---@field active_ascensions Ascension[]
 local AscensionManager = dofile("mods/kaleva_koetus/files/scripts/base_difficulty.lua")
 
 function AscensionManager:init()
@@ -150,6 +150,14 @@ function AscensionManager:on_mod_init()
   end
 end
 
+function AscensionManager:on_mod_post_init(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_mod_post_init then
+      ascension:on_mod_post_init(...)
+    end
+  end
+end
+
 function AscensionManager:on_biome_config_loaded()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_biome_config_loaded then
@@ -166,11 +174,29 @@ function AscensionManager:on_world_initialized()
   EnemyDetector:init("ascension")
   mark_enemy_as_processed = EnemyDetector:get_processed_marker()
 
-  EventBroker:subscribe("ENEMY_SPAWN", function(...)
-    return self:on_enemy_spawn(...)
+  EventBroker:subscribe("BOOK_GENERATED", function(...)
+    return self:on_book_generated(...)
+  end)
+  EventBroker:subscribe("BOSS_DIED", function(...)
+    return self:on_boss_died(...)
   end)
   EventBroker:subscribe("ENEMY_POST_SPAWN", function(...)
     return self:on_enemy_post_spawn(...)
+  end)
+  EventBroker:subscribe("ENEMY_SPAWN", function(...)
+    return self:on_enemy_spawn(...)
+  end)
+  EventBroker:subscribe("GOLD_SPAWN", function(...)
+    return self:on_gold_spawn(...)
+  end)
+  EventBroker:subscribe("NECROMANCER_SPAWN", function(...)
+    return self:on_necromancer_spawn(...)
+  end)
+  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function(...)
+    return self:on_new_game_plus_started(...)
+  end)
+  EventBroker:subscribe("POTION_GENERATED", function(...)
+    return self:on_potion_generated(...)
   end)
   EventBroker:subscribe("SHOP_CARD_SPAWN", function(...)
     return self:on_shop_card_spawn(...)
@@ -180,27 +206,6 @@ function AscensionManager:on_world_initialized()
   end)
   EventBroker:subscribe("VICTORY", function(...)
     return self:on_victory(...)
-  end)
-  EventBroker:subscribe("NECROMANCER_SPAWN", function(...)
-    return self:on_necromancer_spawn(...)
-  end)
-  EventBroker:subscribe("POTION_GENERATED", function(...)
-    return self:on_potion_generated(...)
-  end)
-  EventBroker:subscribe("BOOK_GENERATED", function(...)
-    return self:on_book_generated(...)
-  end)
-  EventBroker:subscribe("GOLD_SPAWN", function(...)
-    return self:on_gold_spawn(...)
-  end)
-  EventBroker:subscribe("SPELL_GENERATED", function(...)
-    return self:on_spell_generated(...)
-  end)
-  EventBroker:subscribe("BOSS_DIED", function(...)
-    return self:on_boss_died(...)
-  end)
-  EventBroker:subscribe("NEW_GAME_PLUS_STARTED", function(...)
-    return self:on_new_game_plus_started(...)
   end)
 
   -- Reset victory flag for new run
@@ -289,10 +294,18 @@ function AscensionManager:on_world_pre_update()
   end
 end
 
-function AscensionManager:on_enemy_spawn(...)
+function AscensionManager:on_book_generated(...)
   for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_enemy_spawn then
-      ascension:on_enemy_spawn(...)
+    if ascension.on_book_generated then
+      ascension:on_book_generated(...)
+    end
+  end
+end
+
+function AscensionManager:on_boss_died(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_boss_died then
+      ascension:on_boss_died(...)
     end
   end
 end
@@ -301,6 +314,46 @@ function AscensionManager:on_enemy_post_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_enemy_post_spawn then
       ascension:on_enemy_post_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_enemy_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_enemy_spawn then
+      ascension:on_enemy_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_gold_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_gold_spawn then
+      ascension:on_gold_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_necromancer_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_necromancer_spawn then
+      ascension:on_necromancer_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_new_game_plus_started(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_new_game_plus_started then
+      ascension:on_new_game_plus_started(...)
+    end
+  end
+end
+
+function AscensionManager:on_potion_generated(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_potion_generated then
+      ascension:on_potion_generated(...)
     end
   end
 end
@@ -317,70 +370,6 @@ function AscensionManager:on_shop_wand_spawn(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_shop_wand_spawn then
       ascension:on_shop_wand_spawn(...)
-    end
-  end
-end
-
-function AscensionManager:on_necromancer_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_necromancer_spawn then
-      ascension:on_necromancer_spawn(...)
-    end
-  end
-end
-
-function AscensionManager:on_potion_generated(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_potion_generated then
-      ascension:on_potion_generated(...)
-    end
-  end
-end
-
-function AscensionManager:on_book_generated(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_book_generated then
-      ascension:on_book_generated(...)
-    end
-  end
-end
-
-function AscensionManager:on_gold_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_gold_spawn then
-      ascension:on_gold_spawn(...)
-    end
-  end
-end
-
-function AscensionManager:on_spell_generated(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_spell_generated then
-      ascension:on_spell_generated(...)
-    end
-  end
-end
-
-function AscensionManager:on_mod_post_init(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_mod_post_init then
-      ascension:on_mod_post_init(...)
-    end
-  end
-end
-
-function AscensionManager:on_boss_died(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_boss_died then
-      ascension:on_boss_died(...)
-    end
-  end
-end
-
-function AscensionManager:on_new_game_plus_started(...)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_new_game_plus_started then
-      ascension:on_new_game_plus_started(...)
     end
   end
 end
