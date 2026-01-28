@@ -7,7 +7,6 @@ local AscensionTags = EventDefs.Tags
 ---@type Events
 local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
-local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
 
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
@@ -99,10 +98,6 @@ function AscensionManager:activate_ascension()
     if ascension then
       table.insert(self.active_ascensions, ascension)
 
-      if ascension.on_mod_init then
-        ascension:on_mod_init()
-      end
-
       -- log:debug("Activated Ascension %d", self.current_level)
     end
   else
@@ -110,10 +105,6 @@ function AscensionManager:activate_ascension()
       local ascension = _load_ascension(i, max_level)
       if ascension then
         table.insert(self.active_ascensions, ascension)
-
-        if ascension.on_mod_init then
-          ascension:on_mod_init()
-        end
 
         -- log:debug("Activated Ascension %d", i)
       end
@@ -139,8 +130,10 @@ function AscensionManager:on_mod_init()
     log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
   end
 
-  if self.current_level >= 5 then
-    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_mod_init then
+      ascension:on_mod_init()
+    end
   end
 end
 
