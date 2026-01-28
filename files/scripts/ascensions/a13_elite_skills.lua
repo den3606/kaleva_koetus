@@ -5,6 +5,7 @@ local _ = dofile_once("data/scripts/gun/procedural/gun_procedural.lua")
 
 local a13_elite_skills = {}
 
+local PROJECTILE_MULTIPLIER = 2
 local ELITE_HP_MULTIPLIER = 2
 local ELITE_FIRE_LATE = 2
 local DAMAGE_MELEE_MULTIPLIER = 2
@@ -29,9 +30,8 @@ function a13_elite_skills:add_extra_projectile(enemy_entity_id)
   local projectile_min = ComponentGetValue2(component_id, "attack_ranged_entity_count_min")
   local projectile_max = ComponentGetValue2(component_id, "attack_ranged_entity_count_max")
 
-  local multiplier = a13_elite_skills.projectile_multiplier
-  ComponentSetValue2(component_id, "attack_ranged_entity_count_min", projectile_min * multiplier)
-  ComponentSetValue2(component_id, "attack_ranged_entity_count_max", projectile_max * multiplier)
+  ComponentSetValue2(component_id, "attack_ranged_entity_count_min", projectile_min * PROJECTILE_MULTIPLIER)
+  ComponentSetValue2(component_id, "attack_ranged_entity_count_max", projectile_max * PROJECTILE_MULTIPLIER)
 end
 
 function a13_elite_skills:increase_projectile_fire_rate(enemy_entity_id)

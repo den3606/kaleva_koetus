@@ -1,33 +1,78 @@
+local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
+local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
+
+local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
+local AscensionTags = EventDefs.Tags
+
+---@type Events
+local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
+local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
+local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
+local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
+
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local log = Logger:new("ascension_manager.lua")
 
-local AscensionManager = {}
+local mark_enemy_as_processed
 
-AscensionManager.MAX_LEVEL = 20
-
--- State
-AscensionManager.current_level = 0
-AscensionManager.highest_level = 0
-AscensionManager.single_ascension = false
-AscensionManager.active_ascensions = {}
+---@class AscensionManager : Difficulty
+---@field active_ascensions Ascension[]
+local AscensionManager = dofile("mods/kaleva_koetus/files/scripts/base_difficulty.lua")
 
 function AscensionManager:init()
-  -- log:info("Initializing Ascension Manager")
+  -- append files
+  ModLuaFileAppend(
+    "data/entities/animals/boss_centipede/ending/sampo_start_ending_sequence.lua",
+    "mods/kaleva_koetus/files/scripts/appends/sampo_start_ending_sequence.lua"
+  )
+  ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/kaleva_koetus/files/scripts/appends/temple_altar.lua")
+  ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
+  ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
+  ModLuaFileAppend("data/scripts/perks/gold_explosion.lua", "mods/kaleva_koetus/files/scripts/appends/gold_explosion.lua")
 
-  -- Load saved data
-  self:load_progress()
+  local error_tracker = nxml_helper.create_tracker_ignoring({ "duplicate_attribute" })
+  nxml_helper.use_error_handler(nxml, error_tracker.error_handler, function()
+    local potions_to_edit = {
+      "data/entities/items/pickup/potion.xml",
+      "data/entities/items/easter/beer_bottle.xml",
+    }
+    for _, potion_file in ipairs(potions_to_edit) do
+      for content in nxml.edit_file(potion_file) do
+        content:create_child("LuaComponent", {
+          script_source_file = "mods/kaleva_koetus/files/scripts/appends/potion_spawn.lua",
+          execute_on_added = "1",
+          execute_every_n_frame = "-1",
+          remove_after_executed = "1",
+        })
+      end
+    end
 
-  -- Activate ascension if current_level is set
-  if self.current_level > 0 and self.current_level <= self.highest_level then
-    self:activate_ascension(self.current_level)
-    -- log:info("Start Ascension %d", self.current_level)
-  else
-    log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
-  end
+    for content in nxml.edit_file("data/entities/items/pickup/potion_aggressive.xml") do
+      local base = content:first_of("Base")
+      if base then
+        base:create_child("LuaComponent", { _remove_from_base = "1" })
+      end
+    end
+
+    for content in nxml.edit_file("data/entities/items/books/base_book.xml") do
+      content:create_child(
+        "LuaComponent",
+        { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua", execute_on_added = true, execute_every_n_frame = "-1" }
+      )
+    end
+
+    for content in nxml.edit_file("data/entities/misc/sale_indicator.xml") do
+      content:set("tags", AscensionTags.A2 .. "sale_indicator")
+    end
+  end)
+
+  local translation_csv = ModTextFileGetContent("data/translations/common.csv")
+  local kaleva_koetus_translation_csv = ModTextFileGetContent("mods/kaleva_koetus/files/translations/common.csv")
+  ModTextFileSetContent("data/translations/common.csv", translation_csv .. kaleva_koetus_translation_csv)
 end
 
-function AscensionManager:_load_ascension(level)
-  if level < 1 or level > self.MAX_LEVEL then
+local function _load_ascension(level, max_level)
+  if level < 1 or level > max_level then
     log:error("Invalid ascension level requested: %s", tostring(level))
     return nil
   end
@@ -46,28 +91,28 @@ end
 
 function AscensionManager:activate_ascension()
   -- log:info("Activating ascensions 1-%d", self.current_level)
-
+  local max_level = self.get_max_level()
   self.active_ascensions = {}
 
   if self.single_ascension then
-    local ascension = self:_load_ascension(self.current_level)
+    local ascension = _load_ascension(self.current_level, max_level)
     if ascension then
       table.insert(self.active_ascensions, ascension)
 
-      if ascension.on_activate then
-        ascension:on_activate()
+      if ascension.on_mod_init then
+        ascension:on_mod_init()
       end
 
       -- log:debug("Activated Ascension %d", self.current_level)
     end
   else
     for i = 1, self.current_level do
-      local ascension = self:_load_ascension(i)
+      local ascension = _load_ascension(i, max_level)
       if ascension then
         table.insert(self.active_ascensions, ascension)
 
-        if ascension.on_activate then
-          ascension:on_activate()
+        if ascension.on_mod_init then
+          ascension:on_mod_init()
         end
 
         -- log:debug("Activated Ascension %d", i)
@@ -80,50 +125,107 @@ function AscensionManager:activate_ascension()
   end
 end
 
-function AscensionManager:load_progress()
-  self.highest_level = tonumber(ModSettingGet("kaleva_koetus.ascension_highest") or "1")
-  self.current_level = tonumber(ModSettingGet("kaleva_koetus.ascension_current") or "1")
+function AscensionManager:on_mod_init()
+  -- log:info("Initializing Ascension Manager")
 
-  -- v1.0.00以前のセーブデータ対応
-  if self.current_level == 0 or self.highest_level == 0 then
-    self.highest_level = 1
-    self.current_level = 1
+  -- Load saved data
+  self:load_progress()
+
+  -- Activate ascension if current_level is set
+  if self.current_level > 0 and self.current_level <= self.highest_level then
+    self:activate_ascension()
+    -- log:info("Start Ascension %d", self.current_level)
+  else
+    log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
   end
 
-  self.single_ascension = ModSettingGet("kaleva_koetus.single_ascension") or false
-
-  -- log:debug("Loaded progress. Current: %d, Highest: %d", self.current_level, self.highest_level)
-end
-
-function AscensionManager:save_progress()
-  local highest_level = tostring(self.highest_level)
-  local current_level = tostring(self.current_level)
-
-  ModSettingSet("kaleva_koetus.ascension_highest", highest_level)
-  ModSettingSet("kaleva_koetus.ascension_current", current_level)
-
-  ModSettingSetNextValue("kaleva_koetus.ascension_highest", highest_level, false)
-  ModSettingSetNextValue("kaleva_koetus.ascension_current", current_level, false)
-
-  -- log:debug("Saved progress. Current: %s, Highest: %s", current_level, highest_level)
-end
-
-function AscensionManager:_can_unlock_next_level()
-  if self.current_level > 0 and self.current_level == self.highest_level then
-    return self.highest_level < self.MAX_LEVEL
+  if self.current_level >= 5 then
+    ImageEditor:override_image("data/ui_gfx/inventory/background.png", "mods/kaleva_koetus/files/ui_gfx/inventory/a5_background.png")
   end
-  return false
 end
 
--- TODO:
-function AscensionManager:_add_ascension_info_perk(player_entity_id)
+function AscensionManager:on_mod_post_init()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_mod_post_init then
+      ascension:on_mod_post_init()
+    end
+  end
+end
+
+function AscensionManager:on_biome_config_loaded()
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_biome_config_loaded then
+      ascension:on_biome_config_loaded()
+    end
+  end
+end
+
+function AscensionManager:on_magic_numbers_and_world_seed_initialized()
+  RNG.init_root_seed()
+end
+
+function AscensionManager:on_world_initialized()
+  EnemyDetector:init("ascension")
+  mark_enemy_as_processed = EnemyDetector:get_processed_marker()
+
+  function Events.on.BOOK_GENERATED(...)
+    return self:on_book_generated(...)
+  end
+  function Events.on.BOSS_DIED()
+    return self:on_boss_died()
+  end
+  function Events.on.ENEMY_POST_SPAWN(...)
+    return self:on_enemy_post_spawn(...)
+  end
+  function Events.on.ENEMY_SPAWN(...)
+    return self:on_enemy_spawn(...)
+  end
+  function Events.on.GOLD_SPAWN(...)
+    return self:on_gold_spawn(...)
+  end
+  function Events.on.NECROMANCER_SPAWN(...)
+    return self:on_necromancer_spawn(...)
+  end
+  function Events.on.NEW_GAME_PLUS_STARTED()
+    return self:on_new_game_plus_started()
+  end
+  function Events.on.POTION_GENERATED(...)
+    return self:on_potion_generated(...)
+  end
+  function Events.on.SHOP_CARD_SPAWN(...)
+    return self:on_shop_card_spawn(...)
+  end
+  function Events.on.SHOP_WAND_SPAWN(...)
+    return self:on_shop_wand_spawn(...)
+  end
+  function Events.on.VICTORY()
+    return self:on_victory()
+  end
+
+  -- Reset victory flag for new run
+  GlobalsSetValue("kaleva_koetus_victory_processed", "0")
+
+  -- Show current ascension info
+  local info = self:get_ascension_info()
+  if info.current > 0 then
+    GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
+  end
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_world_initialized then
+      ascension:on_world_initialized()
+    end
+  end
+end
+
+local function _add_ascension_info_perk(player_entity_id, current_level)
   local ascension_perk_added = GlobalsGetValue("kaleva_koetus_ascension_perk_added", "false") == "true"
   if not ascension_perk_added then
     -- 処理
     local entity_ui = EntityCreateNew("kaleva_koetus_ascension_info")
 
     local description = ""
-    for i = 1, self.current_level, 1 do
+    for i = 1, current_level, 1 do
       local line = GameTextGetTranslatedOrNot("$kaleva_koetus_specification_a" .. i) .. " [A" .. i .. "]" .. "\n"
       description = description .. line
     end
@@ -131,7 +233,7 @@ function AscensionManager:_add_ascension_info_perk(player_entity_id)
     local _ = EntityAddComponent2(entity_ui, "UIIconComponent", {
       name = "$kaleva_koetus_ascension_info_name",
       description = description,
-      icon_sprite_file = "mods/kaleva_koetus/files/ui_gfx/ascensions/a" .. self.current_level .. ".png",
+      icon_sprite_file = "mods/kaleva_koetus/files/ui_gfx/ascensions/a" .. current_level .. ".png",
     })
 
     EntityAddChild(player_entity_id, entity_ui)
@@ -140,42 +242,7 @@ function AscensionManager:_add_ascension_info_perk(player_entity_id)
   end
 end
 
-function AscensionManager:on_victory()
-  -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
-
-  local current_ascension = self.active_ascensions[#self.active_ascensions]
-  if not current_ascension or not current_ascension.should_unlock_next then
-    self:save_progress()
-    return
-  end
-
-  if current_ascension:should_unlock_next() then
-    if self.current_level == 0 then
-      log:warn("Victory with no ascension active (current level 0)")
-      GamePrintImportant("Victory! (No ascension active)")
-    elseif self:_can_unlock_next_level() then
-      self.highest_level = self.highest_level + 1
-      -- log:info("Ascension %d cleared. Unlocking %d", self.current_level, self.highest_level)
-      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Ascension " .. self.highest_level .. " Unlocked!")
-      self.current_level = self.current_level + 1
-    else
-      -- log:info("Ascension %d cleared", self.current_level)
-      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
-    end
-  end
-
-  self:save_progress()
-end
-
-function AscensionManager:update()
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_update then
-      ascension:on_update()
-    end
-  end
-end
-
-function AscensionManager:on_player_spawn(player_entity_id)
+function AscensionManager:on_player_spawned(player_entity_id)
   local entity_id = tonumber(player_entity_id)
   if not entity_id then
     log:error("Invalid player entity id: %s", tostring(player_entity_id))
@@ -191,108 +258,40 @@ function AscensionManager:on_player_spawn(player_entity_id)
   end
 
   if ModSettingGet("kaleva_koetus.show_ascension_info") then
-    AscensionManager:_add_ascension_info_perk(player_entity_id)
+    _add_ascension_info_perk(player_entity_id, self.current_level)
   end
 
   for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_player_spawn then
-      ascension:on_player_spawn(entity_id)
+    if ascension.on_player_spawned then
+      ascension:on_player_spawned(entity_id)
     end
   end
 end
 
-function AscensionManager:on_world_initialized()
+function AscensionManager:on_world_pre_update()
+  local unprocessed_enemies = EnemyDetector:check_unprocessed_enemies()
+  for _, enemy_data in ipairs(unprocessed_enemies) do
+    Events.direct.ENEMY_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y, mark_enemy_as_processed)
+  end
+
+  unprocessed_enemies = EnemyDetector:get_unprocessed_enemies()
+  for _, enemy_data in ipairs(unprocessed_enemies) do
+    Events.direct.ENEMY_POST_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y)
+  end
+
+  Events.flush_queue()
+
   for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_world_initialized then
-      ascension:on_world_initialized()
+    if ascension.on_world_pre_update then
+      ascension:on_world_pre_update()
     end
   end
 end
 
-function AscensionManager:on_biome_config_loaded()
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_biome_config_loaded then
-      ascension:on_biome_config_loaded()
-    end
-  end
-end
-
-function AscensionManager:on_enemy_spawn(payload)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_enemy_spawn then
-      ascension:on_enemy_spawn(payload)
-    end
-  end
-end
-
-function AscensionManager:on_enemy_post_spawn(payload)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_enemy_post_spawn then
-      ascension:on_enemy_post_spawn(payload)
-    end
-  end
-end
-
-function AscensionManager:on_shop_card_spawn(event_args)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_shop_card_spawn then
-      ascension:on_shop_card_spawn(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_shop_wand_spawn(event_args)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_shop_wand_spawn then
-      ascension:on_shop_wand_spawn(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_necromancer_spawn(event_args)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_necromancer_spawn then
-      ascension:on_necromancer_spawn(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_potion_generated(event_args)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_potion_generated then
-      ascension:on_potion_generated(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_book_generated(event_args)
+function AscensionManager:on_book_generated(...)
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_book_generated then
-      ascension:on_book_generated(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_gold_spawn(event_args)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_gold_spawn then
-      ascension:on_gold_spawn(event_args)
-    end
-  end
-end
-
-function AscensionManager:on_spell_generated(payload)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_spell_generated then
-      ascension:on_spell_generated(payload)
-    end
-  end
-end
-
-function AscensionManager:on_mod_post_init(payload)
-  for _, ascension in ipairs(self.active_ascensions) do
-    if ascension.on_mod_post_init then
-      ascension:on_mod_post_init(payload)
+      ascension:on_book_generated(...)
     end
   end
 end
@@ -305,6 +304,38 @@ function AscensionManager:on_boss_died()
   end
 end
 
+function AscensionManager:on_enemy_post_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_enemy_post_spawn then
+      ascension:on_enemy_post_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_enemy_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_enemy_spawn then
+      ascension:on_enemy_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_gold_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_gold_spawn then
+      ascension:on_gold_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_necromancer_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_necromancer_spawn then
+      ascension:on_necromancer_spawn(...)
+    end
+  end
+end
+
 function AscensionManager:on_new_game_plus_started()
   for _, ascension in ipairs(self.active_ascensions) do
     if ascension.on_new_game_plus_started then
@@ -313,13 +344,54 @@ function AscensionManager:on_new_game_plus_started()
   end
 end
 
-function AscensionManager:get_ascension_info()
-  return {
-    current = self.current_level,
-    highest_level = self.highest_level,
-    max_level = self.MAX_LEVEL,
-    active = #self.active_ascensions > 0,
-  }
+function AscensionManager:on_potion_generated(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_potion_generated then
+      ascension:on_potion_generated(...)
+    end
+  end
+end
+
+function AscensionManager:on_shop_card_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_shop_card_spawn then
+      ascension:on_shop_card_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_shop_wand_spawn(...)
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_shop_wand_spawn then
+      ascension:on_shop_wand_spawn(...)
+    end
+  end
+end
+
+function AscensionManager:on_victory()
+  -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
+  local current_ascension = self.active_ascensions[#self.active_ascensions]
+  if current_ascension and current_ascension.should_unlock_next and current_ascension:should_unlock_next() then
+    if self.current_level == 0 then
+      log:warn("Victory with no ascension active (current level 0)")
+      GamePrintImportant("Victory! (No ascension active)")
+    elseif self:can_unlock_next_level() then
+      self.highest_level = self.highest_level + 1
+      -- log:info("Ascension %d cleared. Unlocking %d", self.current_level, self.highest_level)
+      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Ascension " .. self.highest_level .. " Unlocked!")
+      self.current_level = self.current_level + 1
+    else
+      -- log:info("Ascension %d cleared", self.current_level)
+      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
+    end
+  end
+  self:save_progress()
+
+  for _, ascension in ipairs(self.active_ascensions) do
+    if ascension.on_victory then
+      ascension:on_victory()
+    end
+  end
 end
 
 return AscensionManager

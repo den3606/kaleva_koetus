@@ -120,7 +120,7 @@ function DuplicateUtils.build_duplicated_files_from_storage()
   local duplicated_files_data = ModSettingGet(duplicated_file_storage_key)
   local duplicated_files = json.decode(duplicated_files_data)
   for origin_filename, related_filename in pairs(duplicated_files) do
-    local file_content = get_duplicated_file_content(origin_filename)
+    local file_content = get_duplicated_file_content(origin_filename) or ""
     ModTextFileSetContent(related_filename, file_content)
   end
 end

@@ -2436,7 +2436,9 @@ globals:
     args: []
     must_use: true
   ModDoesFileExist:
-    args: []
+    args:
+    - type: string
+      required: true
     must_use: true
   ModMaterialFilesGet:
     args: []

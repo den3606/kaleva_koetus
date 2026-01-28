@@ -1,21 +1,21 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local AscensionTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
-local ascension = setmetatable({}, { __index = AscensionBase })
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
+ascension.level = 5
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 local log = Logger:new("a5.lua")
 
 local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1
 
-ascension.level = 5
-ascension.description = "$kaleva_koetus_description_a" .. ascension.level
-ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A5 .. EventTypes.PLAYER_SPAWN
+local a5_player_tag = AscensionTags.A5 .. EventTypes.PLAYER_SPAWN
 
 local function clamp_slots(original_slots)
   local reduced = original_slots - SLOT_REDUCTION
@@ -26,12 +26,12 @@ local function clamp_slots(original_slots)
   return reduced
 end
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   log:info("Spell inventory slot reduction active (-%d)", SLOT_REDUCTION)
 end
 
-function ascension:on_player_spawn(player_entity_id)
-  if EntityHasTag(player_entity_id, ascension.tag_name) then
+function ascension:on_player_spawned(player_entity_id)
+  if EntityHasTag(player_entity_id, a5_player_tag) then
     return
   end
 
@@ -45,12 +45,12 @@ function ascension:on_player_spawn(player_entity_id)
   local target_slots = clamp_slots(current_slots)
 
   if current_slots == target_slots then
-    EntityAddTag(player_entity_id, ascension.tag_name)
+    EntityAddTag(player_entity_id, a5_player_tag)
     return
   end
 
   ComponentSetValue2(inventory_component, "full_inventory_slots_x", target_slots)
-  EntityAddTag(player_entity_id, ascension.tag_name)
+  EntityAddTag(player_entity_id, a5_player_tag)
 
   -- log:debug("Full inventory slots reduced %d -> %d", current_slots, target_slots)
 end
