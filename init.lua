@@ -14,7 +14,7 @@ elseif current_difficulty == "beyond" then
   ---@type Difficulty
   difficulty = dofile("mods/kaleva_koetus/files/scripts/beyond_manager.lua")
 else
-  log:error("%s is not implemented yet.", current_difficulty)
+  log:warn("%s is not implemented yet.", current_difficulty)
   return
 end
 

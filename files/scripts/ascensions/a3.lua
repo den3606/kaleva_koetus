@@ -1,4 +1,4 @@
--- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
@@ -10,7 +10,7 @@ ascension.level = 3
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
--- local log = Logger:new("a3.lua")
+local log = Logger:new("a3.lua")
 
 local a3_player_tag = LevelTags.A3 .. EventTypes.PLAYER_SPAWN
 
@@ -27,7 +27,8 @@ function ascension:on_player_spawned(player_entity_id)
 
   local damage_model = EntityGetFirstComponent(player_entity_id, "DamageModelComponent")
   if not damage_model then
-    error("[Kaleva Koetus A3] Player DamageModelComponent not found")
+    log:warn("[Kaleva Koetus A3] Player DamageModelComponent not found")
+    return
   end
 
   local current_max_hp = ComponentGetValue2(damage_model, "max_hp")
