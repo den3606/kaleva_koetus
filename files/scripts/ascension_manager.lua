@@ -370,6 +370,12 @@ end
 
 function AscensionManager:on_victory()
   -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
+
+  -- for future settings v2
+  if self.current_level == self.highest_level and self.highest_level == self.get_max_level() then
+    ModSettingSet("kaleva_koetus.ascension.cleared", true)
+  end
+
   local current_ascension = self.active_ascensions[#self.active_ascensions]
   if current_ascension and current_ascension.should_unlock_next and current_ascension:should_unlock_next() then
     if self.current_level == 0 then
