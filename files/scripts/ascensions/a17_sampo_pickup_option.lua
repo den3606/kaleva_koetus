@@ -5,7 +5,7 @@ local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_
 local EventTypes = EventDefs.Types
 local AscensionTags = EventDefs.Tags
 
-local a20_boss_died_key = AscensionTags.A1 .. EventTypes.BOSS_DIED
+local a20_boss_died_key = AscensionTags.A20 .. EventTypes.BOSS_DIED
 
 local sampo_entity_id = GetUpdatedEntityID()
 local item_component_id = EntityGetFirstComponentIncludingDisabled(sampo_entity_id, "ItemComponent")
