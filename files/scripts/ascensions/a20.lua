@@ -60,8 +60,4 @@ function ascension:on_boss_died()
   Events.queue.NEW_GAME_PLUS_STARTED()
 end
 
-function ascension:should_unlock_next()
-  return false
-end
-
 return ascension

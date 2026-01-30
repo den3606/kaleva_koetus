@@ -24,9 +24,6 @@
 ---@field on_shop_wand_spawn fun(self:Ascension, entity_ids:number[], x:number, y:number)
 ---@field on_victory fun(self:Ascension)
 local ascension = {}
+ascension.__index = ascension
 
-function ascension:should_unlock_next()
-  return true
-end
-
-return ascension
+return setmetatable({}, ascension)

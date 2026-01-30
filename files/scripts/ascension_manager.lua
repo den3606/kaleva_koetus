@@ -14,9 +14,12 @@ local log = Logger:new("ascension_manager.lua")
 
 local mark_enemy_as_processed
 
+---@type DifficultyManager
+local DifficultyManager = dofile_once("mods/kaleva_koetus/files/scripts/difficulty_manager.lua")
+
 ---@class AscensionManager : Difficulty
----@field active_ascensions Ascension[]
-local AscensionManager = dofile("mods/kaleva_koetus/files/scripts/base_difficulty.lua")
+---@field active_levels Ascension[]
+local AscensionManager = DifficultyManager.create("ascension")
 
 function AscensionManager:init()
   -- append files
@@ -91,12 +94,12 @@ end
 function AscensionManager:activate_ascension()
   -- log:info("Activating ascensions 1-%d", self.current_level)
   local max_level = self.get_max_level()
-  self.active_ascensions = {}
+  self.active_levels = {}
 
-  if self.single_ascension then
+  if self.single_level then
     local ascension = _load_ascension(self.current_level, max_level)
     if ascension then
-      table.insert(self.active_ascensions, ascension)
+      table.insert(self.active_levels, ascension)
 
       -- log:debug("Activated Ascension %d", self.current_level)
     end
@@ -104,14 +107,14 @@ function AscensionManager:activate_ascension()
     for i = 1, self.current_level do
       local ascension = _load_ascension(i, max_level)
       if ascension then
-        table.insert(self.active_ascensions, ascension)
+        table.insert(self.active_levels, ascension)
 
         -- log:debug("Activated Ascension %d", i)
       end
     end
 
     if self.current_level > 0 then
-      GamePrint("[Kaleva Koetus] Ascensions 1-" .. self.current_level .. " Active (" .. #self.active_ascensions .. " effects)")
+      GamePrint("[Kaleva Koetus] Ascensions 1-" .. self.current_level .. " Active (" .. #self.active_levels .. " effects)")
     end
   end
 end
@@ -130,7 +133,7 @@ function AscensionManager:on_mod_init()
     log:warn("No valid ascension to activate (current: %d, unlocked: %d)", self.current_level, self.highest_level)
   end
 
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_mod_init then
       ascension:on_mod_init()
     end
@@ -138,7 +141,7 @@ function AscensionManager:on_mod_init()
 end
 
 function AscensionManager:on_mod_post_init()
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_mod_post_init then
       ascension:on_mod_post_init()
     end
@@ -146,7 +149,7 @@ function AscensionManager:on_mod_post_init()
 end
 
 function AscensionManager:on_biome_config_loaded()
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_biome_config_loaded then
       ascension:on_biome_config_loaded()
     end
@@ -199,12 +202,12 @@ function AscensionManager:on_world_initialized()
   GlobalsSetValue("kaleva_koetus_victory_processed", "0")
 
   -- Show current ascension info
-  local info = self:get_ascension_info()
+  local info = self:get_info()
   if info.current > 0 then
     GamePrint("[Kaleva Koetus] Ascension " .. info.current .. " Active")
   end
 
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_world_initialized then
       ascension:on_world_initialized()
     end
@@ -242,19 +245,19 @@ function AscensionManager:on_player_spawned(player_entity_id)
     return
   end
 
-  log:info(#self.active_ascensions)
-  log:info(self.active_ascensions[#self.active_ascensions])
-  if self.current_level > 0 and self.active_ascensions[#self.active_ascensions].level == self.current_level then
+  log:info(#self.active_levels)
+  log:info(self.active_levels[#self.active_levels])
+  if self.current_level > 0 and self.active_levels[#self.active_levels].level == self.current_level then
     local translated_ascension = GameTextGetTranslatedOrNot("$kaleva_koetus_ascension")
-    local translated_description = GameTextGetTranslatedOrNot(self.active_ascensions[#self.active_ascensions].description)
+    local translated_description = GameTextGetTranslatedOrNot(self.active_levels[#self.active_levels].description)
     GamePrintImportant(translated_ascension .. " " .. self.current_level, translated_description)
   end
 
-  if ModSettingGet("kaleva_koetus.show_ascension_info") then
+  if self:should_show_info() then
     _add_ascension_info_perk(player_entity_id, self.current_level)
   end
 
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_player_spawned then
       ascension:on_player_spawned(entity_id)
     end
@@ -274,7 +277,7 @@ function AscensionManager:on_world_pre_update()
 
   Events.flush_queue()
 
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_world_pre_update then
       ascension:on_world_pre_update()
     end
@@ -282,7 +285,7 @@ function AscensionManager:on_world_pre_update()
 end
 
 function AscensionManager:on_book_generated(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_book_generated then
       ascension:on_book_generated(...)
     end
@@ -290,7 +293,7 @@ function AscensionManager:on_book_generated(...)
 end
 
 function AscensionManager:on_boss_died()
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_boss_died then
       ascension:on_boss_died()
     end
@@ -298,7 +301,7 @@ function AscensionManager:on_boss_died()
 end
 
 function AscensionManager:on_enemy_post_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_enemy_post_spawn then
       ascension:on_enemy_post_spawn(...)
     end
@@ -306,7 +309,7 @@ function AscensionManager:on_enemy_post_spawn(...)
 end
 
 function AscensionManager:on_enemy_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_enemy_spawn then
       ascension:on_enemy_spawn(...)
     end
@@ -314,7 +317,7 @@ function AscensionManager:on_enemy_spawn(...)
 end
 
 function AscensionManager:on_gold_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_gold_spawn then
       ascension:on_gold_spawn(...)
     end
@@ -322,7 +325,7 @@ function AscensionManager:on_gold_spawn(...)
 end
 
 function AscensionManager:on_necromancer_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_necromancer_spawn then
       ascension:on_necromancer_spawn(...)
     end
@@ -330,7 +333,7 @@ function AscensionManager:on_necromancer_spawn(...)
 end
 
 function AscensionManager:on_new_game_plus_started()
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_new_game_plus_started then
       ascension:on_new_game_plus_started()
     end
@@ -338,7 +341,7 @@ function AscensionManager:on_new_game_plus_started()
 end
 
 function AscensionManager:on_potion_generated(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_potion_generated then
       ascension:on_potion_generated(...)
     end
@@ -346,7 +349,7 @@ function AscensionManager:on_potion_generated(...)
 end
 
 function AscensionManager:on_shop_card_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_shop_card_spawn then
       ascension:on_shop_card_spawn(...)
     end
@@ -354,7 +357,7 @@ function AscensionManager:on_shop_card_spawn(...)
 end
 
 function AscensionManager:on_shop_wand_spawn(...)
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_shop_wand_spawn then
       ascension:on_shop_wand_spawn(...)
     end
@@ -363,30 +366,18 @@ end
 
 function AscensionManager:on_victory()
   -- log:info("Victory detected at level %d (highest unlocked %d)", self.current_level, self.highest_level)
-
-  -- for future settings v2
-  if self.current_level == self.highest_level and self.highest_level == self.get_max_level() then
-    ModSettingSet("kaleva_koetus.ascension.cleared", true)
+  if self.current_level == 0 then
+    log:warn("Victory with no ascension active (current level 0)")
+    GamePrintImportant("Victory! (No ascension active)")
+  elseif self:will_unlock_next_level() then
+    GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Ascension " .. (self.highest_level + 1) .. " Unlocked!")
+  elseif self:will_unlock_next_difficulty() then
+    GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Beyond levels Unlocked!")
   end
 
-  local current_ascension = self.active_ascensions[#self.active_ascensions]
-  if current_ascension and current_ascension.should_unlock_next and current_ascension:should_unlock_next() then
-    if self.current_level == 0 then
-      log:warn("Victory with no ascension active (current level 0)")
-      GamePrintImportant("Victory! (No ascension active)")
-    elseif self:can_unlock_next_level() then
-      self.highest_level = self.highest_level + 1
-      -- log:info("Ascension %d cleared. Unlocking %d", self.current_level, self.highest_level)
-      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ", "Ascension " .. self.highest_level .. " Unlocked!")
-      self.current_level = self.current_level + 1
-    else
-      -- log:info("Ascension %d cleared", self.current_level)
-      GamePrintImportant("Ascension " .. self.current_level .. " Cleared! ")
-    end
-  end
-  self:save_progress()
+  self:update_progress()
 
-  for _, ascension in ipairs(self.active_ascensions) do
+  for _, ascension in ipairs(self.active_levels) do
     if ascension.on_victory then
       ascension:on_victory()
     end
