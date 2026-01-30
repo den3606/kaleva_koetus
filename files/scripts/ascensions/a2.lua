@@ -1,4 +1,6 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
+
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local LevelTags = EventDefs.Tags
@@ -104,6 +106,13 @@ end
 
 function ascension:on_mod_init()
   -- log:info("Shop price increase active")
+  for content in nxml.edit_file("data/entities/misc/sale_indicator.xml") do
+    local tags = content:get("tags")
+    if tags == "" then
+      tags = nil
+    end
+    content:set("tags", tags and (tags .. "," .. SALE_TAG) or SALE_TAG)
+  end
 end
 
 function ascension:on_shop_card_spawn(entity_ids, x, y)

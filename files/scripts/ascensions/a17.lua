@@ -51,9 +51,9 @@ function ascension:on_player_spawned(player_entity_id)
     EntityAddTag(friend_entity_id, "kk_a17_friend")
     local variable_storage_components = EntityGetComponent(friend_entity_id, "VariableStorageComponent")
     if variable_storage_components ~= nil then
-      for _, variable_storage_cid in ipairs(variable_storage_components) do
-        if ComponentGetValue2(variable_storage_cid, "name") == "owner_id" then
-          ComponentSetValue2(variable_storage_cid, "value_int", player_entity_id)
+      for _, variable_storage_component_id in ipairs(variable_storage_components) do
+        if ComponentGetValue2(variable_storage_component_id, "name") == "owner_id" then
+          ComponentSetValue2(variable_storage_component_id, "value_int", player_entity_id)
           break
         end
       end

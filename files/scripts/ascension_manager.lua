@@ -1,9 +1,6 @@
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
 
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local LevelTags = EventDefs.Tags
-
 ---@type Events
 local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lua")
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
@@ -61,10 +58,6 @@ function AscensionManager:init()
         "LuaComponent",
         { script_source_file = "mods/kaleva_koetus/files/scripts/appends/book.lua", execute_on_added = true, execute_every_n_frame = "-1" }
       )
-    end
-
-    for content in nxml.edit_file("data/entities/misc/sale_indicator.xml") do
-      content:set("tags", LevelTags.A2 .. "sale_indicator")
     end
   end)
 

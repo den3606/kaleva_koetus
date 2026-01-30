@@ -30,8 +30,8 @@ local function get_shop_wand_entities()
   return shop_entity_ids
 end
 
----@param ids EntityIdList
----@return table<EntityId, boolean>
+---@param ids number[]
+---@return table<number, boolean>
 local function to_lookup(ids)
   local lookup = {}
   for _, entity_id in ipairs(ids) do
@@ -40,9 +40,9 @@ local function to_lookup(ids)
   return lookup
 end
 
----@param before EntityIdList
----@param after EntityIdList
----@return EntityIdList
+---@param before number[]
+---@param after number[]
+---@return number[]
 local function diff_entities(before, after)
   if #after == 0 then
     return {}

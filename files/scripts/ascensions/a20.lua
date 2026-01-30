@@ -84,12 +84,12 @@ function ascension:on_new_game_plus_started()
   end
   local inventory_quick_id
   local inventory_full_id
-  for _, child_eid in ipairs(child_entities) do
-    local name = EntityGetName(child_eid)
+  for _, child_entity_id in ipairs(child_entities) do
+    local name = EntityGetName(child_entity_id)
     if inventory_quick_id == nil and name == "inventory_quick" then
-      inventory_quick_id = child_eid
+      inventory_quick_id = child_entity_id
     elseif inventory_full_id == nil and name == "inventory_full" then
-      inventory_full_id = child_eid
+      inventory_full_id = child_entity_id
     end
   end
 

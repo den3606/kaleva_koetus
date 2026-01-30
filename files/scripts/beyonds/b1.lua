@@ -1,8 +1,8 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local EventTypes = EventDefs.Types
 local LevelTags = EventDefs.Tags
+local EventTypes = EventDefs.Types
 
 ---@type Beyond
 local ascension = dofile("mods/kaleva_koetus/files/scripts/beyonds/base_beyond.lua")
