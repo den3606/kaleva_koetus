@@ -45,10 +45,14 @@ end
 ---@field current table
 ---@field show_info table
 ---@field is_unlocked fun():boolean
----@field is_cleared fun():boolean
----@field update fun(self:Difficulty_Setting ,current_difficulty: string)
+---@field is_cleared fun(self:Difficulty_Setting):boolean
+---@field update fun(self:Difficulty_Setting, current_difficulty: string)
 local Difficulty_Setting = {}
 Difficulty_Setting.__index = Difficulty_Setting
+
+function Difficulty_Setting:is_cleared()
+  return ModSettingGet(sub_id(mod_id, self.id, "cleared")) == true
+end
 
 ---@param is_hidden boolean
 function Difficulty_Setting:set_hidden(is_hidden)
@@ -95,9 +99,6 @@ ascension.show_info = {
 function ascension.is_unlocked()
   return true
 end
-function ascension.is_cleared()
-  return ModSettingGet(sub_id(mod_id, ascension.id, "cleared")) == true
-end
 
 local beyond = setmetatable({
   id = "beyond",
@@ -116,10 +117,7 @@ beyond.show_info = {
   scope = MOD_SETTING_SCOPE_NEW_GAME,
 }
 function beyond.is_unlocked()
-  return ascension.is_cleared()
-end
-function beyond.is_cleared()
-  return ModSettingGet(sub_id(mod_id, beyond.id, "cleared")) == true
+  return ascension:is_cleared()
 end
 
 local current_difficulty = {
@@ -145,6 +143,9 @@ function current_difficulty:update()
   end
 
   self.hidden = #self.values <= 1
+  if #self.values == 0 then
+    self.values = nil
+  end
 end
 
 ---@param update_difficulty_cache boolean?
