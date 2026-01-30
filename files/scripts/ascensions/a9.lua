@@ -1,7 +1,7 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -13,7 +13,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 local MIN_PERK_COUNT = 2
 
-local a9_reduce_perk_key = AscensionTags.A9 .. "perk_reduced"
+local a9_reduce_perk_key = LevelTags.A9 .. "perk_reduced"
 
 local function determine_target_perk_count()
   local default = tonumber(GlobalsGetValue("TEMPLE_PERK_COUNT", "3")) or 3

@@ -2,7 +2,7 @@
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -12,7 +12,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a3.lua")
 
-local a3_player_tag = AscensionTags.A3 .. EventTypes.PLAYER_SPAWN
+local a3_player_tag = LevelTags.A3 .. EventTypes.PLAYER_SPAWN
 
 local HP_SCALE = 0.7
 

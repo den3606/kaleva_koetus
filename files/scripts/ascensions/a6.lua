@@ -2,7 +2,7 @@ local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
 ---@type Ascension
@@ -15,7 +15,7 @@ local log = Logger:new("a6.lua")
 
 local LEVITATION_SCALE = 0.7
 
-local a6_player_tag = AscensionTags.A6 .. EventTypes.PLAYER_SPAWN
+local a6_player_tag = LevelTags.A6 .. EventTypes.PLAYER_SPAWN
 
 local function scale_levitation(player_entity_id)
   if EntityHasTag(player_entity_id, a6_player_tag) then

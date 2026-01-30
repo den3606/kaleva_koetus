@@ -59,8 +59,8 @@ local EventArgs = {
   [EventTypes.NEW_GAME_PLUS_STARTED] = {},
 }
 
-local AscensionTags = {
-  -- Prefixes for each ascension level
+local LevelTags = {
+  -- Prefixes for each level
   A1 = "kk_a1_",
   A2 = "kk_a2_",
   A3 = "kk_a3_",
@@ -81,11 +81,31 @@ local AscensionTags = {
   A18 = "kk_a18_",
   A19 = "kk_a19_",
   A20 = "kk_a20_",
+  B1 = "kk_b1_",
+  B2 = "kk_b2_",
+  B3 = "kk_b3_",
+  B4 = "kk_b4_",
+  B5 = "kk_b5_",
+  B6 = "kk_b6_",
+  B7 = "kk_b7_",
+  B8 = "kk_b8_",
+  B9 = "kk_b9_",
+  B10 = "kk_b10_",
+  B11 = "kk_b11_",
+  B12 = "kk_b12_",
+  B13 = "kk_b13_",
+  B14 = "kk_b14_",
+  B15 = "kk_b15_",
+  B16 = "kk_b16_",
+  B17 = "kk_b17_",
+  B18 = "kk_b18_",
+  B19 = "kk_b19_",
+  B20 = "kk_b20_",
 }
 
--- Export EventTypes, EventArgs, and AscensionTags
+-- Export EventTypes, EventArgs, and LevelTags
 return {
   Types = EventTypes,
   Args = EventArgs,
-  Tags = AscensionTags,
+  Tags = LevelTags,
 }

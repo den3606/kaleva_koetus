@@ -2,7 +2,7 @@
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local A13EliteSkills = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a13_elite_skills.lua")
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 -- local log = Logger:new("a13.lua")
 
@@ -14,7 +14,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 local UPGRADE_CHANCE = 0.20
 
-local a13_enemy_tag = AscensionTags.A13 .. EventTypes.ENEMY_POST_SPAWN
+local a13_enemy_tag = LevelTags.A13 .. EventTypes.ENEMY_POST_SPAWN
 
 local function enemy_not_boss(entity_id)
   local tags = EntityGetTags(entity_id)

@@ -2,7 +2,7 @@ local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
 ---@type Ascension
@@ -16,7 +16,7 @@ local log = Logger:new("a5.lua")
 local SLOT_REDUCTION = 6
 local MIN_FULL_SLOTS = 1
 
-local a5_player_tag = AscensionTags.A5 .. EventTypes.PLAYER_SPAWN
+local a5_player_tag = LevelTags.A5 .. EventTypes.PLAYER_SPAWN
 
 local function clamp_slots(original_slots)
   local reduced = original_slots - SLOT_REDUCTION

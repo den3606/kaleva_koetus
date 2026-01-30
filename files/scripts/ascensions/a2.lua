@@ -1,7 +1,7 @@
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
 
 ---@type Ascension
@@ -12,13 +12,13 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a2.lua")
 
-local SALE_TAG = AscensionTags.A2 .. "sale_indicator"
-local SHOP_TAG = AscensionTags.A2 .. "shop_item"
+local SALE_TAG = LevelTags.A2 .. "sale_indicator"
+local SHOP_TAG = LevelTags.A2 .. "shop_item"
 local SPELL_PRICE_MULTIPLIER = 2.2
 local WAND_PRICE_MULTIPLIER = 1.5
 local MIN_PRICE_INCREASE = 50
 
-local a2_shop_item_tag = AscensionTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
+local a2_shop_item_tag = LevelTags.A2 .. EventTypes.SHOP_CARD_SPAWN .. EventTypes.SHOP_WAND_SPAWN
 
 local function pick_random(ids, pick_count, seed_a, seed_b)
   local picked_entity_ids = {}

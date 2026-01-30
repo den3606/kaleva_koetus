@@ -3,9 +3,9 @@ local _ = dofile_once("data/scripts/lib/utilities.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
-local a20_boss_died_key = AscensionTags.A1 .. EventTypes.BOSS_DIED
+local a20_boss_died_key = LevelTags.A1 .. EventTypes.BOSS_DIED
 
 local entity_id = GetUpdatedEntityID()
 if GlobalsGetValue(a20_boss_died_key, "0") == "1" or ((tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0) > 0) then

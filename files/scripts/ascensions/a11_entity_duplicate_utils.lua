@@ -9,9 +9,9 @@ local SPAWN_CHANCE_1 = 0.25
 local SPAWN_CHANCE_2 = 0.10
 local SPAWN_CHANCE_3 = 0.05
 
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 local EventTypes = EventDefs.Types
-DuplicateUtils.tag_name = AscensionTags.A11 .. EventTypes.ENEMY_SPAWN
+DuplicateUtils.tag_name = LevelTags.A11 .. EventTypes.ENEMY_SPAWN
 
 function DuplicateUtils.has_boss_tag(tags)
   local padded_tags = "," .. tags .. ","

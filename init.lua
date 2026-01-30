@@ -10,8 +10,11 @@ local difficulty
 if current_difficulty == "ascension" then
   ---@type Difficulty
   difficulty = dofile("mods/kaleva_koetus/files/scripts/ascension_manager.lua")
+elseif current_difficulty == "beyond" then
+  ---@type Difficulty
+  difficulty = dofile("mods/kaleva_koetus/files/scripts/beyond_manager.lua")
 else
-  log:info("%s is not implemented yet.", current_difficulty)
+  log:error("%s is not implemented yet.", current_difficulty)
   return
 end
 

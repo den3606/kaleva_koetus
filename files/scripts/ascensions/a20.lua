@@ -8,7 +8,7 @@ local Events = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/events.lu
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -18,8 +18,8 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a20.lua")
 
-local a20_boss_died_key = AscensionTags.A20 .. EventTypes.BOSS_DIED
-local a20_sampo_tag = AscensionTags.A20 .. "sampo_to_remove"
+local a20_boss_died_key = LevelTags.A20 .. EventTypes.BOSS_DIED
+local a20_sampo_tag = LevelTags.A20 .. "sampo_to_remove"
 
 function ascension:on_mod_init()
   -- log:debug("new game plus")

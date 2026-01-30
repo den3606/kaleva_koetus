@@ -2,7 +2,7 @@
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
 ---@type Ascension
 local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
@@ -12,7 +12,7 @@ ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a4.lua")
 
-local a4_necromancer_key = AscensionTags.A4 .. EventTypes.NECROMANCER_SPAWN
+local a4_necromancer_key = LevelTags.A4 .. EventTypes.NECROMANCER_SPAWN
 
 function ascension:on_mod_init()
   -- log:info("Divine retribution enabled")

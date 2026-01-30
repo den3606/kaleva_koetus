@@ -3,9 +3,9 @@ local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/player.lua")
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
 local EventTypes = EventDefs.Types
-local AscensionTags = EventDefs.Tags
+local LevelTags = EventDefs.Tags
 
-local a20_boss_died_key = AscensionTags.A20 .. EventTypes.BOSS_DIED
+local a20_boss_died_key = LevelTags.A20 .. EventTypes.BOSS_DIED
 
 local sampo_entity_id = GetUpdatedEntityID()
 local item_component_id = EntityGetFirstComponentIncludingDisabled(sampo_entity_id, "ItemComponent")
