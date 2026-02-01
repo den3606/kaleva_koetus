@@ -2,25 +2,17 @@ local _ = dofile_once("mods/kaleva_koetus/files/scripts/lib/utilities.lua")
 _ = dofile_once("data/scripts/magic/fungal_shift.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 
-local AscensionTags = EventDefs.Tags
-local EventTypes = EventDefs.Types
-
-local ascension = setmetatable({}, { __index = AscensionBase })
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
+ascension.level = 10
+ascension.description = "$kaleva_koetus_description_a" .. ascension.level
+ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
 
 -- local log = Logger:new("a10.lua")
 
 local WAIT_FRAME = 60 * 60 * 15
 local EFFECT_FRAME = 60 * 10
-
-ascension.level = 10
-ascension.description = "$kaleva_koetus_description_a" .. ascension.level
-ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A10 .. EventTypes.PLAYER_SPAWN
-
-ascension._next_process_frame = nil
 
 local fungal_effect_tag = "kaleva_koetus_fungal_effect"
 local function start_fungal_shift(player_entity_id)
@@ -104,11 +96,11 @@ local function add_fungal_curse(player_entity_id, clean_old)
   EntityAddChild(player_entity_id, curse_effect_id)
 end
 
-function ascension:on_activate()
+function ascension:on_mod_init()
   -- log:info("fungal shift enabled")
 end
 
-function ascension:on_update()
+function ascension:on_world_pre_update()
   local player_entity_id = GetPlayerEntity()
   if player_entity_id == nil or EntityGetIsAlive(player_entity_id) == false then
     return

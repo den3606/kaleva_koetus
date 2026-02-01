@@ -1,21 +1,17 @@
--- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
-local AscensionBase = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/ascension_subscriber.lua")
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 
-local AscensionTags = EventDefs.Tags
+-- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
+local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
 
-local ascension = setmetatable({}, { __index = AscensionBase })
-
--- local log = Logger:new("a17.lua")
-
+---@type Ascension
+local ascension = dofile("mods/kaleva_koetus/files/scripts/ascensions/base_ascension.lua")
 ascension.level = 17
 ascension.description = "$kaleva_koetus_description_a" .. ascension.level
 ascension.specification = "$kaleva_koetus_specification_a" .. ascension.level
-ascension.tag_name = AscensionTags.A16 .. "dummy"
 
-function ascension:on_activate()
+-- local log = Logger:new("a17.lua")
+
+function ascension:on_mod_init()
   -- log:info("follow bird")
 
   local target_images = {
@@ -46,7 +42,7 @@ function ascension:on_activate()
   end
 end
 
-function ascension:on_player_spawn(player_entity_id)
+function ascension:on_player_spawned(player_entity_id)
   local friend_not_spawned = GlobalsGetValue("kaleva_koetus.a17_friend_not_spawned", "true") == "true"
   if friend_not_spawned then
     local x, y = EntityGetTransform(player_entity_id)

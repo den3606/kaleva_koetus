@@ -1,6 +1,4 @@
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local EventTypes = EventDefs.Types
-local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+local EventRemote = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_remote.lua")
 
 local _spawn_all_shopitems = spawn_all_shopitems
 
@@ -80,10 +78,10 @@ function spawn_all_shopitems(x, y)
   local shop_wand_entity_ids = diff_entities(before_wand_entity_ids, after_wand_entity_ids)
 
   if #shop_card_entity_ids ~= 0 then
-    EventBroker:publish_event_async("temple_altar", EventTypes.SHOP_CARD_SPAWN, shop_card_entity_ids, x, y)
+    EventRemote.SHOP_CARD_SPAWN(shop_card_entity_ids, x, y)
   end
 
   if #shop_wand_entity_ids ~= 0 then
-    EventBroker:publish_event_async("temple_altar", EventTypes.SHOP_WAND_SPAWN, shop_wand_entity_ids, x, y)
+    EventRemote.SHOP_WAND_SPAWN(shop_wand_entity_ids, x, y)
   end
 end

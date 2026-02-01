@@ -1,6 +1,5 @@
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local EventTypes = EventDefs.Types
-local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+---@class EventRemote
+local EventRemote = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_remote.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 
@@ -9,4 +8,4 @@ if entity_id == 0 then
   return
 end
 
-EventBroker:publish_event_async("potion_spawn", EventTypes.POTION_GENERATED, entity_id)
+EventRemote.POTION_GENERATED(entity_id)

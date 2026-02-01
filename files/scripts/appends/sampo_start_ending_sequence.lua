@@ -7,12 +7,11 @@ end
 
 GlobalsSetValue("kaleva_koetus_victory_processed", "1")
 
-local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
-local EventTypes = EventDefs.Types
-local EventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_broker.lua")
+---@class EventRemote
+local EventRemote = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_remote.lua")
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 -- local log = Logger:new("sampo_start_ending_sequence.lua")
 
 -- log:debug("Victory detected - Sampo ending sequence started")
-EventBroker:publish_event_sync("sampo_start_ending_sequence", EventTypes.VICTORY)
+EventRemote.VICTORY()

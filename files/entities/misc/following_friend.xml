@@ -1,6 +1,6 @@
 <Entity tags="glue_NOT" name="following_friend">
 
-  <!-- NOTE: VariableStorageComponent (target_x, target_y) added in a17.lua, ascension:on_player_spawn() -->
+  <!-- NOTE: VariableStorageComponent (target_x, target_y) added in a17.lua, ascension:on_player_spawned() -->
 
   <LightComponent
     _enabled="1"

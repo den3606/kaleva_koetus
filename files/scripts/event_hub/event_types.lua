@@ -18,8 +18,7 @@ local EventTypes = {
   NEW_GAME_PLUS_STARTED = "new_game_plus_started",
 }
 
--- Event argument definitions (for handlers)
--- Note: source and event_type are handled by EventBroker
+-- deprecated
 local EventArgs = {
   [EventTypes.ENEMY_SPAWN] = {
     { name = "entity_id", type = "number" },
