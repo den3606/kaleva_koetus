@@ -1,4 +1,5 @@
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
+local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
 
 local EventDefs = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/event_types.lua")
 local AscensionTags = EventDefs.Tags
@@ -15,7 +16,7 @@ local eventBroker = dofile_once("mods/kaleva_koetus/files/scripts/event_hub/even
 local EnemyDetector = dofile_once("mods/kaleva_koetus/files/scripts/enemy_detector.lua")
 -- local SpellDetector = dofile_once("mods/kaleva_koetus/files/scripts/spell_detector.lua")
 local ImageEditor = dofile_once("mods/kaleva_koetus/files/scripts/image_editor.lua")
-local nxml_helper = dofile_once("mods/kaleva_koetus/files/scripts/lib/utils/nxml_helper.lua")
+local RNG = dofile_once("mods/kaleva_koetus/files/scripts/random_genarator.lua")
 
 local mark_enemy_as_processed
 -- log:info("Kaleva Koetus mod loading...")
@@ -37,6 +38,10 @@ function OnModPostInit()
   -- log:debug("Mod - OnModPostInit()")
 
   ascensionManager:on_mod_post_init()
+end
+
+function OnMagicNumbersAndWorldSeedInitialized()
+  RNG.init_root_seed()
 end
 
 function OnWorldInitialized()
@@ -97,8 +102,6 @@ function OnWorldPreUpdate()
 end
 
 function OnWorldPostUpdate() end
-
-function OnMagicNumbersAndWorldSeedInitialized() end
 
 -- append files
 ModLuaFileAppend(

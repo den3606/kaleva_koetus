@@ -1,3 +1,5 @@
+-- Currently not used.
+
 -- selene: allow(undefined_variable)
 local bit = bit
 
