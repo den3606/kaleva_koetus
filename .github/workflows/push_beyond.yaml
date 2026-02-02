@@ -1,0 +1,11 @@
+name: CI on Push to Beyond
+
+on:
+  push:
+    branches:
+      - beyond2
+  workflow_call:
+
+jobs:
+  call-main-ci:
+    uses: ./.github/workflows/push-main.yaml
