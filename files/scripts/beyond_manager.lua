@@ -28,6 +28,7 @@ function BeyondManager:init()
   ModLuaFileAppend("data/scripts/biomes/boss_arena.lua", "mods/kaleva_koetus/files/scripts/appends/boss_arena.lua")
   ModLuaFileAppend("data/scripts/animals/necromancer_shop_spawn.lua", "mods/kaleva_koetus/files/scripts/appends/necromancer_shop_spawn.lua")
   ModLuaFileAppend("data/scripts/perks/gold_explosion.lua", "mods/kaleva_koetus/files/scripts/appends/gold_explosion.lua")
+  ModLuaFileAppend("data/scripts/perks/perk.lua", "mods/kaleva_koetus/files/scripts/appends/perk.lua")
 
   local error_tracker = nxml_helper.create_tracker_ignoring({ "duplicate_attribute" })
   nxml_helper.use_error_handler(nxml, error_tracker.error_handler, function()
@@ -168,6 +169,9 @@ function BeyondManager:on_world_initialized()
   end
   function Events.on.NEW_GAME_PLUS_STARTED()
     return self:on_new_game_plus_started()
+  end
+  function Events.on.PERK_REMOVE_ALL(...)
+    return self:on_perk_remove_all(...)
   end
   function Events.on.POTION_GENERATED(...)
     return self:on_potion_generated(...)
@@ -322,6 +326,14 @@ function BeyondManager:on_new_game_plus_started()
   for _, beyond in ipairs(self.active_levels) do
     if beyond.on_new_game_plus_started then
       beyond:on_new_game_plus_started()
+    end
+  end
+end
+
+function BeyondManager:on_perk_remove_all(...)
+  for _, beyond in ipairs(self.active_levels) do
+    if beyond.on_perk_remove_all then
+      beyond:on_perk_remove_all(...)
     end
   end
 end

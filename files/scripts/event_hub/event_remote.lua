@@ -7,6 +7,7 @@ local json = dofile_once("mods/kaleva_koetus/files/scripts/lib/jsonlua/json.lua"
 ---@field GOLD_SPAWN fun(entity_id:number)
 ---@field NECROMANCER_SPAWN fun(x:number, y:number)
 ---@field NEW_GAME_PLUS_STARTED fun()
+---@field PERK_REMOVE_ALL fun(player_entity_id:number)
 ---@field POTION_GENERATED fun(entity_id:number)
 ---@field SHOP_CARD_SPAWN fun(entity_ids:number[], x:number, y:number)
 ---@field SHOP_WAND_SPAWN fun(entity_ids:number[], x:number, y:number)

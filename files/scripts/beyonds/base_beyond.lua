@@ -20,6 +20,7 @@
 ---@field on_gold_spawn fun(self:Beyond, entity_id:number)
 ---@field on_necromancer_spawn fun(self:Beyond, x:number, y:number)
 ---@field on_new_game_plus_started fun(self:Beyond)
+---@field on_perk_remove_all fun(self:Beyond, player_entity_id: number)
 ---@field on_potion_generated fun(self:Beyond, entity_id:number)
 ---@field on_shop_card_spawn fun(self:Beyond, entity_ids:number[], x:number, y:number)
 ---@field on_shop_wand_spawn fun(self:Beyond, entity_ids:number[], x:number, y:number)
