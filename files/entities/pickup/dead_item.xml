@@ -1,0 +1,29 @@
+<Entity tags="teleportable_NOT">
+  <InheritTransformComponent
+		_tags="enabled_in_world,enabled_in_hand,enabled_in_inventory"
+  ></InheritTransformComponent>
+
+	<ItemComponent
+		_tags="enabled_in_world"
+		item_name="$kaleva_koetus_item_dead_item"
+    stats_count_as_item_pick_up="0"
+		play_hover_animation="0"
+		play_spinning_animation="0"
+    play_pick_sound="0"
+		ui_sprite="mods/kaleva_koetus/files/ui_gfx/items/dead_item.png"
+		ui_description="$kaleva_koetus_itemdesc_dead_item"
+		is_pickable="1"
+		preferred_inventory="QUICK"
+	></ItemComponent>
+	
+  <VariableStorageComponent
+    name="player_entity_id"
+    value_int="0"
+  ></VariableStorageComponent>
+
+  <LuaComponent
+		_tags="enabled_in_inventory"
+    _enabled="0"
+    script_enabled_changed="mods/kaleva_koetus/files/scripts/items/detect_drop.lua"
+  ></LuaComponent>
+</Entity>
