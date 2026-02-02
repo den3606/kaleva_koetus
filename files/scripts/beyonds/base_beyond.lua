@@ -10,6 +10,7 @@
 ---@field on_world_initialized fun(self:Beyond)
 ---@field on_player_spawned fun(self:Beyond, player_entity_id: number)
 ---@field on_world_pre_update fun(self:Beyond)
+---@field on_world_post_update fun(self:Beyond)
 
 ---@class Beyond
 ---@field on_book_generated fun(self:Beyond, entity_id:number)

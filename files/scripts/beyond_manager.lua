@@ -253,11 +253,19 @@ function BeyondManager:on_world_pre_update()
     Events.direct.ENEMY_POST_SPAWN(enemy_data.id, enemy_data.x, enemy_data.y)
   end
 
-  Events.flush_queue()
-
   for _, beyond in ipairs(self.active_levels) do
     if beyond.on_world_pre_update then
       beyond:on_world_pre_update()
+    end
+  end
+end
+
+function BeyondManager:on_world_post_update()
+  Events.flush_queue()
+
+  for _, beyond in ipairs(self.active_levels) do
+    if beyond.on_world_post_update then
+      beyond:on_world_post_update()
     end
   end
 end
