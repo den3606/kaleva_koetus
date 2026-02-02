@@ -29,10 +29,6 @@ local function scale_levitation(player_entity_id)
   end
 
   local current_max = ComponentGetValue2(character_data_component, "fly_time_max")
-  if not current_max then
-    log:error("Failed to read fly_time_max: %s", tostring(current_max))
-    return
-  end
 
   local new_max = current_max * LEVITATION_SCALE
   ComponentSetValue2(character_data_component, "fly_time_max", new_max)

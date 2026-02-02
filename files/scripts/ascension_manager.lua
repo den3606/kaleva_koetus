@@ -68,7 +68,7 @@ end
 
 local function _load_ascension(level, max_level)
   if level < 1 or level > max_level then
-    log:error("Invalid ascension level requested: %s", tostring(level))
+    log:warn("Invalid ascension level requested: %s", tostring(level))
     return nil
   end
 
@@ -79,7 +79,7 @@ local function _load_ascension(level, max_level)
     -- log:debug("Loaded Ascension %d", level)
     return ascension
   else
-    log:error("Failed to load Ascension %d: %s", level, tostring(ascension))
+    log:warn("Failed to load Ascension %d: %s", level, tostring(ascension))
     return nil
   end
 end
@@ -225,12 +225,6 @@ local function _add_ascension_info_perk(player_entity_id, current_level)
 end
 
 function AscensionManager:on_player_spawned(player_entity_id)
-  local entity_id = tonumber(player_entity_id)
-  if not entity_id then
-    log:error("Invalid player entity id: %s", tostring(player_entity_id))
-    return
-  end
-
   log:info(#self.active_levels)
   log:info(self.active_levels[#self.active_levels])
   if self.current_level > 0 and self.active_levels[#self.active_levels].level == self.current_level then
@@ -245,7 +239,7 @@ function AscensionManager:on_player_spawned(player_entity_id)
 
   for _, ascension in ipairs(self.active_levels) do
     if ascension.on_player_spawned then
-      ascension:on_player_spawned(entity_id)
+      ascension:on_player_spawned(player_entity_id)
     end
   end
 end
