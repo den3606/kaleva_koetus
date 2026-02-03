@@ -52,7 +52,7 @@ function beyond:on_player_spawned(player_entity_id)
 
   local x, y = EntityGetTransform(player_entity_id)
   for slot_x = 2, 3 do
-    local dead_item = EntityLoad("mods/kaleva_koetus/files/entities/pickup/dead_item.xml", x, y)
+    local dead_item = EntityLoad("mods/kaleva_koetus/files/entities/items/pickup/dead_item.xml", x, y)
     local item_component_id = EntityGetFirstComponentIncludingDisabled(dead_item, "ItemComponent")
     if item_component_id ~= nil then
       ComponentSetValue2(item_component_id, "inventory_slot", slot_x, 0)
