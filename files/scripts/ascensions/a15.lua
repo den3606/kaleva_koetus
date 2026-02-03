@@ -59,26 +59,15 @@ local function get_file_content_ui_name_overrided(filename, ui_name, entity_name
 end
 
 function ascension:on_mod_post_init()
-  local translated_prefixes = {
-    ["en"] = "Incomplete ",
-    ["ru"] = "Неполное ",
-    ["pt-br"] = "Incompleto ",
-    ["es-es"] = "Incompleto ",
-    ["de"] = "Unvollständig ",
-    ["fr-fr"] = "Incomplet ",
-    ["it"] = "Incompleto ",
-    ["pl"] = "Niekompletne ",
-    ["zh-cn"] = "未完成的",
-    ["jp"] = "未完成の",
-    ["ko"] = "불완전한",
-  }
   local common_text = ModTextFileGetContent("data/translations/common.csv")
   local parsed_common = common_csv.parse(common_text)
 
   local prefixes = {}
   local language_list, min_columns = parsed_common:parse_header()
-  for index, language in ipairs(language_list) do
-    prefixes[index] = translated_prefixes[language] or translated_prefixes["en"]
+  local incomplete_prefixes = parsed_common:query("kaleva_koetus_incomplete_prefix")
+  incomplete_prefixes = incomplete_prefixes or { "Incomplete " }
+  for index, _ in ipairs(language_list) do
+    prefixes[index] = incomplete_prefixes[index] or incomplete_prefixes[1]
   end
 
   local key_to_extended_key = {}

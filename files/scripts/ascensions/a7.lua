@@ -1,6 +1,7 @@
 local nxml = dofile_once("mods/kaleva_koetus/files/scripts/lib/luanxml/nxml.lua")
 
-local reduce_potion = dofile_once("mods/kaleva_koetus/files/scripts/ascensions/a7_reduce_potion_capacity.lua")
+local reduce_potion = dofile_once("mods/kaleva_koetus/files/scripts/items/reduce_potion_capacity.lua")
+local MATERIAL_SCALE = 0.5
 
 -- local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 -- local log = Logger:new("a7.lua")
@@ -17,7 +18,7 @@ function ascension:on_mod_init()
     content:create_child("LuaComponent", {
       execute_every_n_frame = "-1",
       remove_after_executed = "1",
-      script_item_picked_up = "mods/kaleva_koetus/files/scripts/appends/potion_aggressive_pick_up.lua",
+      script_item_picked_up = "mods/kaleva_koetus/files/scripts/appends/potion_aggressive_pick_up_a7.lua",
     })
   end
 end
@@ -31,7 +32,7 @@ function ascension:on_potion_generated(entity_id)
     return
   end
 
-  reduce_potion(entity_id)
+  reduce_potion(entity_id, MATERIAL_SCALE)
 end
 
 return ascension

@@ -1,0 +1,16 @@
+<Entity tags="effect_protection">
+  <InheritTransformComponent />
+
+  <GameEffectComponent
+    _tags="effect_protection_all"
+    custom_effect_id="INCOMPLETE_PROTECTION_ALL"
+    effect="CUSTOM"
+    frames="7200"
+  ></GameEffectComponent>
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/status_effects/incomplete_protection_all_init.lua"
+    execute_on_added="1"
+    execute_every_n_frame="-1"
+  ></LuaComponent>
+</Entity>
