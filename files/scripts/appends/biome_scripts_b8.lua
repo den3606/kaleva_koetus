@@ -14,5 +14,5 @@ end
 -- selene: allow(unused_variable)
 function spawn_heart(x, y, ...)
   local max_id = EntitiesGetMaxID()
-  return post_spawn_heart(x, y, max_id, _spawn_heart(...))
+  return post_spawn_heart(x, y, max_id, _spawn_heart(x, y, ...))
 end
