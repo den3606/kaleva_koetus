@@ -1,0 +1,7 @@
+<Entity>
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/beyonds/b9_food_clock.lua"
+    execute_on_added="1"
+    remove_after_executed="1"
+  ></LuaComponent>
+</Entity>

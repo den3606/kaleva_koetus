@@ -1,6 +1,7 @@
 local Logger = dofile_once("mods/kaleva_koetus/files/scripts/lib/logger.lua")
 local log = Logger:new("image_editor.lua")
 
+---@class ImageEditor
 local ImageEditor = {}
 
 -- ABGR(0xAABBGGRR) を分解
@@ -74,12 +75,24 @@ local function invert_hue_rgb(r, g, b)
   return math.floor(r2 * 255 + 0.5), math.floor(g2 * 255 + 0.5), math.floor(b2 * 255 + 0.5)
 end
 
---- @param color_abgr
---- @return color_abgr
+local function rgb_to_gray(r, g, b)
+  return math.floor(r * 0.299 + g * 0.587 + b * 0.114 + 0.5)
+end
+
+---@param color_abgr integer
+---@return number inverted_color_abgr
 function ImageEditor:invert_hue_abgr(color_abgr)
   local r, g, b, a = abgr_to_rgba(color_abgr)
   local r2, g2, b2 = invert_hue_rgb(r, g, b)
   return rgba_to_abgr(r2, g2, b2, a)
+end
+
+---@param color_abgr number
+---@return number gray_abgr
+function ImageEditor:grayscale_abgr(color_abgr)
+  local r, g, b, a = abgr_to_rgba(color_abgr)
+  local gray = rgb_to_gray(r, g, b)
+  return rgba_to_abgr(gray, gray, gray, a)
 end
 
 function ImageEditor:override_image(target_image_path, override_image_path)

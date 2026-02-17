@@ -1,0 +1,24 @@
+<Entity>
+  <InheritTransformComponent />
+
+  <GameEffectComponent
+    custom_effect_id="SAVING_GRACE_COOLDOWN"
+    effect="CUSTOM"
+    frames="54000"
+  ></GameEffectComponent>
+
+  <UIIconComponent
+		name="$kaleva_koetus_status_saving_grace_cooldown"
+		description="$kaleva_koetus_statusdesc_saving_grace_cooldown"
+		icon_sprite_file="mods/kaleva_koetus/files/ui_gfx/status_indicators/saving_grace_cooldown.png"
+		is_perk="0"
+		display_above_head="0"
+		display_in_hud="1"
+	></UIIconComponent>
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/beyonds/b9_saving_grace_enable.lua"
+    execute_on_removed="1"
+    execute_every_n_frame="-1"
+  ></LuaComponent>
+</Entity>

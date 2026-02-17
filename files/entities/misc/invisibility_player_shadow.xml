@@ -1,0 +1,16 @@
+<Entity tags="kaleva_koetus_player_shadow">
+  <Base file="data/entities/misc/invisibility_last_known_player_position.xml">
+    <LifetimeComponent
+      _remove_from_base="1"
+    ></LifetimeComponent>
+  </Base>
+
+  <!-- Looks Cool -->
+  <!--
+  <SpriteComponent
+    image_file="data/particles/radar_enemy_strong.png"
+    offset_x="3.5"
+    offset_y="3.5"
+  ></SpriteComponent>
+  -->
+</Entity>

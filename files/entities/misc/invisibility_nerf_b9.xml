@@ -1,0 +1,15 @@
+<Entity>
+  <InheritTransformComponent />
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/beyonds/b9_invisibility_shadow_init.lua"
+    execute_every_n_frame="0"
+    remove_after_executed="1"
+  ></LuaComponent>
+
+  <LuaComponent
+    script_source_file="mods/kaleva_koetus/files/scripts/beyonds/b9_invisibility_shadow_destroy.lua"
+    execute_on_removed="1"
+    execute_every_n_frame="-1"
+  ></LuaComponent>
+</Entity>
