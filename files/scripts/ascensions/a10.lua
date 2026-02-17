@@ -59,7 +59,7 @@ local function perform_fungal_shift(player_entity_id)
   SetRandomSeed(pos_x + GameGetFrameNum(), pos_y)
   if rand(0, 1) > 0.5 then
     local function spawn(x, y)
-      _ = EntityLoad("data/entities/particles/treble_eye.xml", x, y)
+      local _ = EntityLoad("data/entities/particles/treble_eye.xml", x, y)
     end
 
     local x, y = pos_x + rand(-100, 100), pos_y + rand(-80, 80)

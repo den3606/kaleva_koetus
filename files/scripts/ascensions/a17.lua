@@ -58,7 +58,7 @@ function ascension:on_player_spawned(player_entity_id)
         end
       end
     end
-    _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
+    local _ = EntityAddComponent2(friend_entity_id, "VariableStorageComponent", {
       name = "target_x",
       value_float = x,
     })
