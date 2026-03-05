@@ -749,6 +749,12 @@ globals:
     args:
     - type: number
       required: true
+  CellFactory_HasTag:
+    args:
+    - type: number
+      required: true
+    - type: string
+      required: true
   GameGetCameraPos:
     args: []
     must_use: true
